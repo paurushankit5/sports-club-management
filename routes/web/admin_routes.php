@@ -1,6 +1,6 @@
 <?php
-	// Route::group(['middleware' => ['checkadmin'], 'prefix' => 'phpadmin'], function(){
-	Route::group([ 'prefix' => 'sportsadmin'], function(){
+	Route::group(['middleware' => ['checkSuperUser'], 'prefix' => 'sportsadmin'], function(){
+		//Route::group([ 'prefix' => 'sportsadmin'], function(){
 		
 		Route::get('', function(){
 			return view('admin.dashboard');

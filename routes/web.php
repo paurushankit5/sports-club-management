@@ -12,9 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('admin.dashboard');
+    return view('welcome');
 });
 
 foreach(glob(dirname(__FILE__) . '/web/*.php') AS $file){
 	require_once($file);
 }
+
+Auth::routes();
+
+Route::get('logout', function(){
+	Auth::logout();
+	return redirect('/');
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
