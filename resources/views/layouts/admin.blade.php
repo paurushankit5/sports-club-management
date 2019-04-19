@@ -366,6 +366,7 @@
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#page-layouts" aria-expanded="false" aria-controls="page-layouts">
                 <span class="menu-title">Games</span>
@@ -377,6 +378,33 @@
                   <li class="nav-item"> <a class="nav-link" href="#">Table Tennis</a></li>
                   <li class="nav-item"> <a class="nav-link" href="#">Roller Skating</a></li>
                   <li class="nav-item"> <a class="nav-link" href="#">Football</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#sidebar-tournament" aria-expanded="false" aria-controls="page-layouts">
+                <span class="menu-title">Tournament </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-apps menu-icon"></i>
+              </a>
+              <div class="collapse" id="sidebar-tournament">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="#">League</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="#">Knock-Out</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#sidebar-player" aria-expanded="false" aria-controls="page-layouts">
+                <span class="menu-title">Players </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-apps menu-icon"></i>
+              </a>
+              <div class="collapse" id="sidebar-player">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="#">Table Tennis Player</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="#">Football Player</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="#">Roller Skating Player</a></li>
                 </ul>
               </div>
             </li>
@@ -691,9 +719,6 @@
     <script src="{{ asset('admin/js/settings.js') }}"></script>
     <script src="{{ asset('admin/js/todolist.js') }}"></script>
     <!-- endinject -->
-    <!-- Custom js for this page-->
-    <!-- End custom js for this page-->
-  </body>
 
-<!-- Mirrored from www.bootstrapdash.com/demo/purple/jquery/pages/tables/basic-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Apr 2019 16:31:08 GMT -->
+  </body>
 </html>
