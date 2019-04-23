@@ -6,13 +6,12 @@
 			return view('admin.dashboard');
 		})->name('adminDashboard');
 
-		Route::get('/clubs', function(){
-			return view('admin.showclubs');
-		})->name('adminClubs');
+		
+		Route::get('sendmail','ClubController@sendmail');
+		
 
-		Route::get('/addclub', function(){
-			return view('admin.createClub');
-		})->name('adminAddClub');
+		Route::resource('/clubs','ClubController');
+
 		 
 	});
 

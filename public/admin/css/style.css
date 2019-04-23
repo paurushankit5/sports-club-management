@@ -15550,7 +15550,7 @@ dl {
   .jsgrid .jsgrid-table td {
     vertical-align: middle;
     font-size: 0.875rem;
-    line-height: 1;
+    line-height: 1.5;
     white-space: nowrap; }
     .table th img, .jsgrid .jsgrid-table th img,
     .table td img,

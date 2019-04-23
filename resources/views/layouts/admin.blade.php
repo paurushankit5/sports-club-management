@@ -361,7 +361,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('adminClubs') }}">
+              <a class="nav-link" href="{{ route('clubs.index') }}">
                 <span class="menu-title">Clubs</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
@@ -662,7 +662,7 @@
                 <!-- <div class="border-bottom">
                   <h6 class="font-weight-normal mb-3">Projects</h6>
                 </div> -->
-                <a href="{{ route('adminAddClub') }}" class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add Club</a>
+                <a href="{{ route('clubs.create') }}" class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add Club</a>
                 <!-- <div class="mt-4">
                   <div class="border-bottom">
                     <p class="text-secondary">Categories</p>
@@ -688,7 +688,22 @@
                 </ol>
               </nav>
             </div>
-
+            <div class="flash-message">
+              @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                  @if(Session::has('alert-' . $msg))
+                      <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+                  @endif
+              @endforeach
+              @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            </div>
             @yield('content')
           </div>
           <!-- content-wrapper ends -->
@@ -719,6 +734,6 @@
     <script src="{{ asset('admin/js/settings.js') }}"></script>
     <script src="{{ asset('admin/js/todolist.js') }}"></script>
     <!-- endinject -->
-
+    @yield('after_scripts')
   </body>
 </html>
