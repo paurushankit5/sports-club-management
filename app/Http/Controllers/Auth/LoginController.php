@@ -32,6 +32,9 @@ class LoginController extends Controller
         {
             return route('adminDashboard');
         }
+        else if(\Auth::user()->role_id == 1 ){
+            return route('clubDashboard');
+        }
         return '/';
     }
 

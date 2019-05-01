@@ -1,0 +1,27 @@
+Player can not see otherplayer numbers except coachand admin
+Coach can see players details including number but can not modify
+Admin can make all changes
+
+
+Representative
+
+
+
+Defining fees structure
+1. Reg fees/One time fees/Enrollment fees
+2. Monthly Fees
+	Standard Batch
+	Advanced Batch
+3. Half Yearly Fees
+	Standard
+	Advanced Batch
+4. Yearly Fees
+	Standard Batch
+	Advanced Batch
+
+Discount with remark
+Discounted fees = Actual fees - discount amount
+
+
+Late payment fees in fees structure page
+This field will be a checkbox with a textbox

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Club;
 use App\User;
 use App\Role;
+use App\Sport;
+use App\SportUserClub;
 use Illuminate\Http\Request;
 use Session;
 use Mail;
@@ -32,7 +34,10 @@ class ClubController extends Controller
     public function create()
     {
         $roles  = Role::where('is_global',1)->orderBy('role_name')->get();
-        $array  =   array('roles'   =>  $roles);
+        $sports  = Sport::orderBy('sport_name')->get();
+        $array  =   array('roles'   =>  $roles,
+                        "sports"    =>  $sports
+                        );
         return view('admin.createClub',$array);
     }
 
@@ -44,6 +49,7 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'club_name'         => 'required|max:255',
             'gst_no'            => 'required|unique:clubs',
@@ -55,6 +61,7 @@ class ClubController extends Controller
             'lname'             => 'required',
             'user_email'        => 'required|unique:users,email',
             'user_mobile'       => 'required|unique:users,mobile',
+            'sports'            => 'required',
 
         ]);
         //\DB::transaction(function () {
@@ -78,6 +85,16 @@ class ClubController extends Controller
             $club->pin                  = $request->pin;
             $club->save();
 
+            if(count($request->sports))
+            {
+                foreach ($request->sports as $sport) {
+                    $club_sport               = new SportUserClub;
+                    $club_sport->sport_id     = $sport;
+                    $club_sport->club_id      = $club->id;
+                    $club_sport->save();
+                }
+            }
+
             $pwd                        =   'sport'.rand(11111111,99999999);
             $user                       =   new User;
             $user->fname                =   $request->fname;
@@ -87,14 +104,17 @@ class ClubController extends Controller
             $user->mobile               =   $request->user_mobile;
             $user->alternate_mobile     =   $request->user_alternate_mobile;
             $user->is_active            =   true;
+            $user->club_id              =   $club->id;
             $user->role_id              =   1;
             $user->password             =   \Hash::make($pwd);
             $user->save();
 
-            $data = array('name'=> $user->fname." ".$user->lname, 'email' => $user->email, 'password'    => $pwd  );
+           
+            
+            $data = array('name'=> $user->fname." ".$user->lname, 'email' => $user->email  );
             
             Mail::to($user->email)->send(new TestEmail($data));
-            Session::flash('alert-primary', 'Organization added successfully');
+            Session::flash('alert-success', 'Organization added successfully');
             return redirect(route('clubs.index'));
         }
         catch (\Exception $e) {

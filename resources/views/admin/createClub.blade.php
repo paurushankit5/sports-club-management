@@ -30,6 +30,16 @@
 <!--                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
  -->              </div>
                   <div class="form-group">
+                    <label>Select Games*</label>
+                    <select class="form-control" name="sports[]" multiple >
+                      @if(count($sports))
+                        @foreach($sports as $sport)
+                          <option value="{{ $sport->id }}">{{ $sport->sport_name }}</option>
+                        @endforeach
+                      @endif
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
                             <label>GST No.*</label>

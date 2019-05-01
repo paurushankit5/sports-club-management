@@ -27,3 +27,17 @@ Route::get('logout', function(){
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function(){
+		
+	Route::get('myprofile', 'UserController@myprofile')->name('myprofile');
+	Route::get('user/profile/{id}', 'UserController@getoneuserprofile')->name('getoneuserprofile');
+	Route::get('editprofile', 'UserController@editprofile')->name('editprofile');
+
+	Route::post('updateProfilePic', 'UserController@updateProfilePic')->name('updateProfilePic');
+	Route::post('storeidproof', 'UserController@storeidproof')->name('storeidproof');
+	Route::post('updateprofile', 'UserController@updateprofile')->name('updateprofile');	
+
+		 
+});
+

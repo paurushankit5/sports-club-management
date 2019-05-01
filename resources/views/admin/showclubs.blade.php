@@ -57,11 +57,10 @@
                     </tr>
                   @endforeach
                 @endif
-                <tr>
-                  <td colspan="4"> {{ $clubs->links() }} </td>
-                </tr>
+                
               </tbody>
             </table>
+            {{ $clubs->links() }}
           </div>
         </div>
       </div>
