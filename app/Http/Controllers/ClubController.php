@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Sport;
 use App\SportUserClub;
+use App\Fee;
 use Illuminate\Http\Request;
 use Session;
 use Mail;
@@ -172,5 +173,66 @@ class ClubController extends Controller
 
         echo Mail::to('paurushankit5@gmail.com')->send(new TestEmail($data));
                     
+    }
+
+    public function fees(){
+        $sports = \Auth::user()->club->sports;
+
+        if(count($sports))
+        {
+            for($i=0;$i<count($sports);$i++)
+            {
+                $array = array(
+                                "club_id" =>    \Auth::user()->club_id,
+                                "sport_id"  =>  $sports[$i]["id"]
+                            );
+                $sports[$i]['fees'] = Fee::where($array)->get();
+            }
+        }
+        //$fees = \Auth::user()->club->sports;
+        // if(!count($fees))
+        // {
+        //     return view('club.addfees');
+        // }
+        $array = compact('sports');
+        return view('club.fees', $array);
+
+        
+    }
+    public function storefees(Request $request){
+        $request->validate([
+            'sport_id'         => 'required',
+            'category'         => 'required',
+            'monthly'         => 'required',
+            'quarterly'         => 'required',
+            'half_yearly'         => 'required',
+            'yearly'         => 'required'
+
+
+        ]);
+        //echo "<pre>";
+        try{
+            if(count($request->category))
+            {
+                for($i=0;$i<count($request->category);$i++)
+                {
+                    $fees = new Fee;
+                    $fees->sport_id     =   $request->sport_id;
+                    $fees->club_id      =   \Auth::user()->club_id;
+                    $fees->monthly      =   $request->monthly[$i];
+                    $fees->quarterly      =   $request->quarterly[$i];
+                    $fees->half_yearly      =   $request->half_yearly[$i];
+                    $fees->yearly      =   $request->yearly[$i];
+                    $fees->category_name      =   $request->category[$i];
+                    $fees->late_fine_day      =   $request->late_fees_day[$i];
+                    $fees->late_fine_amount      =   $request->late_fees[$i];
+                    $fees->Save();
+                }
+            }
+        return redirect(route('club_fees'));
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

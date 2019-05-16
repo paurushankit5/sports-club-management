@@ -36,7 +36,14 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::post('updateProfilePic', 'UserController@updateProfilePic')->name('updateProfilePic');
 	Route::post('storeidproof', 'UserController@storeidproof')->name('storeidproof');
-	Route::post('updateprofile', 'UserController@updateprofile')->name('updateprofile');	
+	Route::post('updateprofile', 'UserController@updateprofile')->name('updateprofile');
+	Route::post('storePlayerMembership', 'UserController@storePlayerMembership')->name('storePlayerMembership');
+
+	Route::post('addCoachFees', 'UserController@addCoachFees')->name('addCoachFees');
+
+	Route::get('user/payment/{user_id}/{month}/{year}','PaymentController@payment')->name('payment');	
+	Route::get('user/showpayment/{user_id}/{month}/{year}','PaymentController@showpayment')->name('showpayment');	
+	Route::post('user/payment/{user_id}/{month}/{year}','PaymentController@storepayment')->name('storepayment');	
 
 		 
 });

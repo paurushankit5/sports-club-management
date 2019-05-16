@@ -48,6 +48,11 @@ class User extends Authenticatable
     }
     
     public function sports(){
-        return $this->belongsToMany('App\Sport','sport_user_club');
+        return $this->belongsToMany('App\Sport','sport_user_club')->withPivot('coach_id');
     }
+
+    public function coachfees(){
+        return $this->hasOne('App\CoachFee');
+    }
+
 }

@@ -17,4 +17,12 @@ class Sport extends Model
     {
         return $this->belongsToMany('App\User');
     }
+    public function fees(){
+    	return $this->hasMany('App\Fee');
+    }
+
+    // public function coach(){
+    //     return $this->belongsToMany('App\User', 'coach_id');
+    // }
+
 }

@@ -11,6 +11,7 @@
 		Route::post('/storeuser','PlayerController@storeuser')->name('users.store');	
 
 		Route::get('/sports/player/{sport_id}','PlayerController@getPlayerBySport');
+		Route::get('/sports/coach/{sport_id}','PlayerController@getCoachBySport');
 
 		Route::get('/test', function(){
 			$array = array(
@@ -18,5 +19,16 @@
 						);
 			return view('emails.welcome',$array);
 		});
+
+		Route::get('/fees', 'ClubController@fees')->name('club_fees');
+		Route::post('/storefees', 'ClubController@storefees')->name('fees.store');
+
+
+		Route::get('/changeuserstatus/{id}', 'UserController@changeuserstatus')->name('changeuserstatus');
+		Route::get('/addcoachtoplayer/{sport_id}/{user_id}', 'UserController@addcoachtoplayer')->name('addcoachtoplayer');
+		Route::post('/assigncoach', 'UserController@assigncoach')->name('assigncoach');
+
+
 	});
+
 ?>

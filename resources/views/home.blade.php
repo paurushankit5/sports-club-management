@@ -15,7 +15,7 @@
                     @endif
 
                     You are logged in!
-                                                {{ \Auth::user()->role_id }}
+                    {{ \Auth::user()->role->id }}
 
                 </div>
             </div>

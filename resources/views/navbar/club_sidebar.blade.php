@@ -31,6 +31,12 @@
                 <i class="mdi mdi-apps menu-icon"></i>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('club_fees') }}">
+                <span class="menu-title">Fees Structure</span>
+                <i class="mdi mdi-currency-inr menu-icon"></i>
+              </a>
+            </li>
 
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-tournament" aria-expanded="false" aria-controls="page-layouts">
@@ -55,7 +61,23 @@
                 <ul class="nav flex-column sub-menu">
                   @if(count(\Auth::user()->club->sports))
                     @foreach(\Auth::user()->club->sports as $sport)
-                      <li class="nav-item"> <a class="nav-link" href="{{ url('/organization/sports/player/'.$sport->id) }}">{{ $sport->sport_name }} Players</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{{ url('/organization/sports/player/'.$sport->id) }}">{{ $sport->sport_name }}</a></li>
+                    @endforeach
+                  @endif
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#sidebar-coach" aria-expanded="false" aria-controls="page-layouts">
+                <span class="menu-title">Coaches </span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-apps menu-icon"></i>
+              </a>
+              <div class="collapse" id="sidebar-coach">
+                <ul class="nav flex-column sub-menu">
+                  @if(count(\Auth::user()->club->sports))
+                    @foreach(\Auth::user()->club->sports as $sport)
+                      <li class="nav-item"> <a class="nav-link" href="{{ url('/organization/sports/coach/'.$sport->id) }}">{{ $sport->sport_name }}</a></li>
                     @endforeach
                   @endif
                 </ul>

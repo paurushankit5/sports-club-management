@@ -14,6 +14,9 @@
         $(".uploadidproof").on('click', function(){
             $("#idProofModal").modal('toggle');
         });
+        $(".sessionrate").click(function(){
+            $("#sessionratemodal").modal('toggle');
+        });
 
     </script>
 @endsection
@@ -111,6 +114,9 @@
                 </div>
             </div>
 
+            @component('components.coachfee')
+                @slot('user' , \Auth::user())
+            @endcomponent
         </div>
       
       

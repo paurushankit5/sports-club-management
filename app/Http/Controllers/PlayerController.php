@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Sport;
 use App\SportUserClub;
+use App\CoachFee;
 use Mail;
 use App\Mail\TestEmail;
 use Session;
@@ -69,8 +70,8 @@ class PlayerController extends Controller
         }
         try{
         	$user                       =   new User;
-            $user->fname                =   $request->fname;
-            $user->lname                =   $request->lname;
+            $user->fname                =   ucfirst($request->fname);
+            $user->lname                =   ucfirst($request->lname);
             $user->email                =   $request->user_email;
             $user->alternate_email      =   $request->user_alternate_email;
             $user->mobile               =   $request->user_mobile;
@@ -79,6 +80,15 @@ class PlayerController extends Controller
             $user->role_id              =   $role->id;
             $user->club_id              =   \Auth::user()->club_id;
             $user->save();
+
+            //if the user is a coach set his/her initial fees to 0
+            if($role->id == 10)
+            {
+                $coachFee = new CoachFee;
+                $coachFee->user_id = $user->id;
+                $coachFee->session_rate = 0;
+                $coachFee->save();
+            }
 
             if(count($request->sports))
             {
@@ -95,7 +105,7 @@ class PlayerController extends Controller
             
             Mail::to($user->email)->send(new TestEmail($data));
             Session::flash('alert-success', 'User added successfully');
-            return redirect(route('users.create'));
+            return redirect(route('getoneuserprofile',$user->id));
 
 
         
@@ -121,8 +131,33 @@ class PlayerController extends Controller
 
         $array = array(
                         'users'  =>  $users,
-                        "sport"  =>  $sport
+                        "sport"  =>  $sport,
+                        'user_type' => 'Players'   
                         );
         return view('user.getPlayerBySport',$array);
     }
+
+    public function getCoachBySport($sport_id)
+    {
+        $sport = Sport::findOrFail($sport_id);
+      
+        //echo "<pre>";
+        $array = array(
+                        "club_id"   =>  \Auth::user()->club->id,
+                        "role_id"   =>  10
+                    );
+        $users= User::where($array)
+                        ->whereHas("sports", function($q){
+                           $q->where("sports.id",request()->segment(4));
+                        })->get();
+
+        $array = array(
+                        'users'  =>  $users,
+                        "sport"  =>  $sport,
+                        'user_type' => 'Coaches'   
+
+                        );
+        return view('user.getPlayerBySport',$array);
+    }
+
 }
