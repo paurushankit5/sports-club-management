@@ -25,8 +25,8 @@
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
-      @includeWhen(\Auth::user()->role->id == 1, 'navbar.club_navbar')
-      @includeWhen(\Auth::user()->role->id == 10, 'navbar.club_navbar')
+      @includeWhen(\Auth::chweck() && \Auth::user()->role->id == 1, 'navbar.club_navbar')
+      @includeWhen(\Auth::chweck() && \Auth::user()->role->id == 10, 'navbar.club_navbar')
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
         <!-- partial:../../partials/_settings-panel.html -->
@@ -192,8 +192,8 @@
         </div>
         <!-- partial -->
         <!-- partial:../../partials/_sidebar.html -->
-        @includeWhen(\Auth::user()->role->id == 1, 'navbar.club_sidebar')
-        @includeWhen(\Auth::user()->role->id == 10, 'navbar.club_sidebar')
+        @includeWhen(\Auth::chweck() && \Auth::user()->role->id == 1, 'navbar.club_sidebar')
+        @includeWhen(\Auth::chweck() && \Auth::user()->role->id == 10, 'navbar.club_sidebar')
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
