@@ -59,8 +59,9 @@ class PaymentController extends Controller
     }
     public function storepayment(Request $request){
         try{
-            //echo "<prE>";
-            //print_r($_REQUEST);
+            // echo "<prE>";
+            // print_r($_REQUEST);
+            // exit;
             $id=  request()->segment(3);
             $month=  request()->segment(4);
             $year=  request()->segment(5);
@@ -70,32 +71,6 @@ class PaymentController extends Controller
                 $i=0;
                 foreach($user->sports as $sport)
                 {
-                    if($sport->pivot->coach_id!=Null)
-                    {
-                        $coach = User::where('id',$sport->pivot->coach_id)->first();
-                        if($coach)
-                        {
-                            $array = array(
-                                                "user_id" => $sport->pivot->coach_id,
-                                            );
-                            $coach['fee'] = CoachFee::where($array)->first(); 
-                            if($coach['fee']['session_rate'] != Null && isset($_REQUEST['session_count_'.$sport->id]))
-                            {
-                                $payment = new Payment;
-                                $payment->month = $month;
-                                $payment->year = $year;
-                                $payment->user_id = $id;
-                                $payment->sport_id = $sport->id;
-                                $payment->coach_id = $coach->id;
-                                $payment->amount = $request['session_count_'.$sport->id] * $coach['fee']['session_rate'];
-                                $payment->discount = $request['discount_coach_session_'.$sport->id];
-                                $payment->total_amount = $payment->amount - $payment->discount;
-                                $payment->session_count = $request['session_count_'.$sport->id];                    
-                                $payment->per_session_charge = $coach['fee']['session_rate']; 
-                                $payment->save();                   
-                            }
-                        }
-                    }
                     $array = array(
                         "club_id" =>    $user->club_id,
                         "sport_id"  =>  $sport->id
@@ -168,7 +143,9 @@ class PaymentController extends Controller
                             $payment->sport_id = $sport->id;
                             $payment->amount = $membership_fees;
                             $payment->discount = $request['membership_discount_'.$sport->id];
+                            $payment->notes = $request['membership_note_'.$sport->id];
                             $payment->total_amount = $payment['amount'] - $payment['discount'];
+                            $payment->payment_mode = $membership_duration;
                             $payment->save();
                             $k++;
                         }
@@ -194,6 +171,21 @@ class PaymentController extends Controller
                         //echo "save<br>";
                     }
                 }
+            }
+            if(isset($request->session_charges) && $request->session_charges != '' && $request->session_charges > 0)
+            {
+                $payment = new Payment;
+                $payment->month = $month;
+                $payment->year = $year;
+                $payment->user_id = $id;
+                $payment->amount = $request['session_charges'];
+                $payment->total_amount = $request['session_charges'];
+                $payment->is_session_charge = true;
+                $payment->save();   
+
+                $user = \Auth::user();
+                $user->advance_amount += $request->session_charges;
+                $user->save();
             }
             return redirect(route('showpayment', array($id,$month,$year)));
         }

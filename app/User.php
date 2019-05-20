@@ -55,4 +55,9 @@ class User extends Authenticatable
         return $this->hasOne('App\CoachFee');
     }
 
+    public function recordpayments()
+    {
+        return $this->hasMany('App\RecordPayment')->orderBy('payment_date','DESC');
+    }
+
 }

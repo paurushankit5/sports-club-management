@@ -97,7 +97,7 @@
                     </tbody>
                 </table>
                 @if($user->role_id == 2 && $user->club_id == \Auth::user()->club_id && (\Auth::user()->role_id==1 || \Auth::user()->role_id==10) )
-                    <a href="/user/payment/{{ $user->id }}/{{ date('m') }}/{{ date('Y') }}">Add Payment</a>
+                    <a href="/user/payment/{{ $user->id }}/{{ date('m') }}/{{ date('Y') }}">Add Invoice</a>
 
                 @endif
               </div>
@@ -132,6 +132,11 @@
                                     <td colspan="2" class="text-center">
                                         <a href="{{ route('changeuserstatus',$user->id) }}" class="btn btn-rounded btn-dark btn-sm changepic">{{ $user->is_active == 0 ? 'Activate' : 'Deactivate' }} User</a>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">
+                                        <a href="{{ route('recordpayment',$user->id) }}" class="btn btn-rounded btn-sm btn-info">Record Payment</a>
+                                    </th>
                                 </tr>
                             </table>
                         </div>
