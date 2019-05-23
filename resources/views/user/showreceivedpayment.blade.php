@@ -14,7 +14,9 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Payment Received from {{ $user->fname." ".$user->lname }}</h4>
+                <h4 class="card-title">Payment Received from <a href="{{ route('getoneuserprofile', $user->id) }}">{{ $user->fname." ".$user->lname }}</a>
+                    <a href="{{ route('recordpayment',$user->id) }}" class="btn btn-rounded btn-sm btn-info pull-right">Record Payment</a>
+                </h4>
                  	<div class="table-responsive">
                         <table class="table table-striped">
                             <thead>

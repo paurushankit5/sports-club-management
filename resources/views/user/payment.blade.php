@@ -1,8 +1,8 @@
 @extends('layouts.all')
 
-@section('title' , 'Payment')
+@section('title' , 'Invoice Page for '.$user->fname.' '.$user->lname.' ('.date('M-Y',strtotime($month.'/11/'.$year)).')')
 
-@section('page_header' , 'Payment')
+@section('page_header' , 'Invoice Page for '.$user->fname.' '.$user->lname.' ('.date('M-Y',strtotime($month.'/11/'.$year)).')')
 
 
 
@@ -151,9 +151,20 @@
             <form method="post" action="{{ route('storepayment', array($user->id, $month, $year)) }}">
             @csrf 
             <div class="card">
+
                 <div class="card-body">
-                    
+                    <h3 class="card-title">Invoice Page for <a href="{{route('getoneuserprofile', $user->id) }}">{{$user->fname.' '.$user->lname}}</a> ({{ date('M-Y',strtotime($month.'/11/'.$year)) }}) </h3>
                 	<div class="">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <a href="" class="btn btn-info">{{ date('M-Y',strtotime("-1 month",strtotime($month.'/11/'.$year))) }}</a>
+                                <a href="" class="btn btn-info disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
+                                <a href="" class="btn btn-info">{{ date('M-Y',strtotime("+1 month",strtotime($month.'/11/'.$year))) }}</a>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                        </div> 
                 		@if(count($user->sports))
                             <div class="table-responsive">
                                 <table class="table table-striped">
@@ -189,15 +200,7 @@
                                             </th>
                 						</tr>                					
                 			         @endforeach
-                                     <tr>
-                                         <th colspan="4"><span class="pull-right">Total:</span></th>
-                                         <td>&#x20B9; <span id="final_amount">{{ $final_amount }}</span></td>
-                                     </tr>
-                                     <tr>
-                                         <th colspan="5">
-                                            <input type="submit" class="btn btn-primary pull-right">
-                                         </th>
-                                     </tr>
+                                     
                                 </table>
                             </div>
                 		@endif
@@ -233,8 +236,16 @@
                                     <td>&#x20B9; <span class="total_extra_fees">0</span></td>
                                 </tr>
                             </tbody>
+                            <tr>
+                                <th colspan="4"><span class="pull-right">Total:</span></th>
+                                <td>&#x20B9; <span id="final_amount">{{ $final_amount }}</span></td>
+                            </tr>
                         </table>
-                    </div>               
+                    </div>
+
+                    <br>   
+                    <input type="submit" class="btn btn-primary pull-right">
+         
               </div>
             </div>
             

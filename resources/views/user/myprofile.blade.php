@@ -22,14 +22,14 @@
 @endsection
 @section('content')
     <div class="row">      
-        <div class="col-lg-8 grid-margin stretch-card">
+        <div class="col-lg-8 order-2 order-sm-1 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">My Profile
                 
                     <a href="{{ route('editprofile') }}" title="Edit" class="btn btn-info pull-right btn-sm btn-rounded" title="Add Sports Club / Organization"><i class="mdi mdi-grease-pencil"></i></a>
                   </h4>
-                    
+                <div class="table-responsive">   
                 <table class="table table-striped">             
                     <tbody>
                         <tr>
@@ -78,7 +78,7 @@
                             <td> @if(\Auth::user()->dob != '') {{ date('d-M-Y', strtotime(\Auth::user()->dob)) }} @endif</td>
                         </tr>
                         <tr>
-                            <th>Emergency Contact Details</th>
+                            <th>Emergency Details</th>
                             <td>
                                  @if(\Auth::user()->emergency_contact_name != '') {{ \Auth::user()->emergency_contact_name }} <br> @endif
                                  @if(\Auth::user()->emergency_contact_number != '') {{ \Auth::user()->emergency_contact_number }} <br> @endif
@@ -90,10 +90,11 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
               </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 order-1 order-sm-2">
             <div class="card card-profile ">
                 <div class="card-avatar">
                     <img
@@ -114,9 +115,14 @@
                 </div>
             </div>
 
-            @component('components.coachfee')
+            @component('<components class="coachfee"></components>')
                 @slot('user' , \Auth::user())
             @endcomponent
+
+            <br>
+            <br>
+            <br>
+            <br>
         </div>
       
       

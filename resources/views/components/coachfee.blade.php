@@ -35,7 +35,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Enter Session Rate:</label>
-                        <input type="number" required class="form-control" name="session_rate">
+                        <input type="number" required value="{{ $user->coachFees->session_rate }}" class="form-control" name="session_rate">
                         <input type="hidden" required class="form-control" name="id" value="{{ $user->id }}">
                     </div>                      
                  </div>

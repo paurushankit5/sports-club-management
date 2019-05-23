@@ -46,5 +46,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('user/payment/{user_id}/{month}/{year}','PaymentController@storepayment')->name('storepayment');	
 
 		 
+	Route::get('/showreceivedpayment/{id}','RecordPaymentcontroller@showreceivedpayment')->name('showreceivedpayment');
+
 });
 

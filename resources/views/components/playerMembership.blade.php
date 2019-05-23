@@ -4,26 +4,30 @@
     <div class="card ">
         <div class="content text-center">
             <br>
-            <h4 class="card-title text-primary">Membership Plan</h4>
-            <table class="table">              
-                @if(count($user->sports))
-                    @foreach($user->sports as $sport)
-                        <tr>
-                            <th>{{ $sport->sport_name }}</th>
-                            <td>
-                                @if($sport->membership)
-                                    {{ $sport->membership->fees->category_name }}<br>
-                                    &#x20B9; {{ $sport->membership->fees[$sport->membership->membership_type] }} {{ ucwords($sport->membership->membership_type) }}
-                                @endif
-                            </td>
-                             @if((\Auth::user()->role_id == 10 || \Auth::user()->role_id == 1) && \Auth::user()->club_id == $user->club_id)
-                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#membership_modal" title="Add Membership"><i class="mdi mdi-plus"></i> </button></td>
-                            @endif
-
-                        </tr>
-                    @endforeach
+            <h4 class="card-title text-primary">Membership Plan
+                @if((\Auth::user()->role_id == 10 || \Auth::user()->role_id == 1) && \Auth::user()->club_id == $user->club_id)
+                    <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#membership_modal" title="Add Membership"><i class="mdi mdi-pencil"></i> </button>
                 @endif
-            </table>
+            </h4>
+            <div class="table-responsive">
+                <table class="table">              
+                    @if(count($user->sports))
+                        @foreach($user->sports as $sport)
+                            <tr>
+                                <th>{{ $sport->sport_name }}</th>
+                                <td>
+                                    @if($sport->membership)
+                                        {{ $sport->membership->fees->category_name }}<br>
+                                        &#x20B9; {{ $sport->membership->fees[$sport->membership->membership_type] }} {{ ucwords($sport->membership->membership_type) }}
+                                    @endif
+                                </td>
+                                 
+
+                            </tr>
+                        @endforeach
+                    @endif
+                </table>
+            </div>
         </div>
     </div>
  
@@ -49,18 +53,27 @@
                                     @if($sport->club_fees!=Null)
                                         <tr>
                                             <th><label>Membership <input type="hidden" value="{{ $sport->id }}" name="sport_ids[]" required /></label></th>
-                                            <th><label>Monthly <input type="radio" required name="member_type_{{ $sport->id }}" value="monthly"></label></th>
-                                            <th><label>Quarterly <input type="radio" name="member_type_{{ $sport->id }}" value="quarterly"></label></th>
-                                            <th><label>Half-Yearly <input type="radio" name="member_type_{{ $sport->id }}" value="half_yearly"></label></th>
-                                            <th><label>Yearly <input type="radio" name="member_type_{{ $sport->id }}" value="yearly"></label></th>
+                                            <th><label>Monthly <input
+                                                @if($sport->membership->membership_type == 'monthly') checked  @endif
+                                             type="radio" required name="member_type_{{ $sport->id }}" value="monthly"></label></th>
+                                            <th><label>Quarterly <input type="radio"
+                                            @if($sport->membership->membership_type == 'quarterly') checked  @endif
+                                             name="member_type_{{ $sport->id }}" value="quarterly"></label></th>
+                                            <th><label>Half-Yearly <input type="radio"
+                                            @if($sport->membership->membership_type == 'half_yearly') checked  @endif
+                                             name="member_type_{{ $sport->id }}" value="half_yearly"></label></th>
+                                            <th><label>Yearly <input type="radio"
+                                            @if($sport->membership->membership_type == 'yearly') checked  @endif
+                                             name="member_type_{{ $sport->id }}" value="yearly"></label></th>
                                             <th>Late Fees</th>
                                         </tr>
                                         @foreach($sport->club_fees as $club_fee)
                                             <tr>
                                                 <td>
+
                                                     <label>
                                                     {{ $club_fee->category_name }} 
-                                                        <input type="radio" required name="fee_id_{{ $sport->id }}" value="{{ $club_fee->id }}">
+                                                        <input @if($sport->membership->fees->id == $club_fee->id) checked @endif type="radio"  required name="fee_id_{{ $sport->id }}" value="{{ $club_fee->id }}">
                                                     </label>
                                                 </td>
                                                 <td>&#x20B9; {{ $club_fee->monthly }}</td>

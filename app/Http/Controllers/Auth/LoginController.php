@@ -35,6 +35,9 @@ class LoginController extends Controller
         else if(\Auth::user()->role_id == 1 ){
             return route('clubDashboard');
         }
+        else if(\Auth::user()->role_id == 10 ){
+            return route('coachDashboard');
+        }
         return '/';
     }
 

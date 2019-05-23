@@ -1,8 +1,8 @@
 @extends('layouts.all')
 
-@section('title' , 'Payment')
+@section('title' , 'Invoice for '.date('M-Y', strtotime(\Request::segment(4)."/1/".\Request::segment(5))))
 
-@section('page_header' , 'Payment')
+@section('page_header' , 'Invoice for '.date('M-Y', strtotime(\Request::segment(4)."/1/".\Request::segment(5))) )
 
 
 
@@ -17,7 +17,8 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Extra Charges</h4>
+                    <h4 class="card-title">Invoice For {{ date('M-Y', strtotime(\Request::segment(4)."/1/".\Request::segment(5))) }}</h4>
+                    <p><a href="{{ route('getoneuserprofile', $user->id) }}">{{ $user->fname." ".$user->lname}}</a></p>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -53,7 +54,7 @@
                                     					Session Charges <br>
                                     				</td>                                				
                                     			@endif
-                                    			<td> {{ date('d-M-Y',strtotime($payment->month.'/1/'.$payment->year)) }} </td>
+                                    			<td> {{ date('M-Y',strtotime($payment->month.'/1/'.$payment->year)) }} </td>
                                 				<td><b>&#x20B9; {{ $payment->amount }}</b> </td>
                                                 <td>
                                                     <b>&#x20B9; {{ $payment->discount }}</b> 

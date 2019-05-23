@@ -30,8 +30,8 @@
 
 		Route::get('/recordpayment/{id}', 'RecordPaymentcontroller@recordpayment')->name('recordpayment');
 		Route::post('/storerecordpayment/{id}', 'RecordPaymentcontroller@storerecordpayment')->name('storerecordpayment');
-		Route::get('/showreceivedpayment/{id}','RecordPaymentcontroller@showreceivedpayment')->name('showreceivedpayment');
 
+		Route::post('/getinvoices/{id}', 'PaymentController@getinvoices')->name('getinvoices');
 
 	});
 

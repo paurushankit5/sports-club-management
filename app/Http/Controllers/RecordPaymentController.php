@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\RecordPayment;
 use App\Payment;
 use App\User;
+use Session;
 use Illuminate\Http\Request;
 
 class RecordPaymentController extends Controller
@@ -18,13 +19,17 @@ class RecordPaymentController extends Controller
 
                     );
         $user = User::where($array)->firstOrFail();
-        $user->payment_received = RecordPayment::where('user_id',$id)->sum('payment_received');
+        $user->payment_received = RecordPayment::where('user_id',$id)->orderBy('created_at', 'DESC')->sum('payment_received');
         $user->invoice_generated = Payment::where('user_id',$id)->sum('total_amount');
+
         $array = array(
                         "user"  =>  $user
                     );
         
-
+        if($user->invoice_generated - $user->payment_received <= 0){
+            Session::flash('alert-danger', 'You have no pending amount to recieve');
+            return redirect(route('getoneuserprofile', $user->id));
+        }   
         return view('user.recordpayment',$array);
     }
     public function storerecordpayment($id){

@@ -21,9 +21,6 @@ class CreateSessionsTable extends Migration
             $table->date('session_date')->nullable();
             $table->bigInteger('session_charge')->default(0);
             $table->bigInteger('session_count')->default(1);
-            $table->bigInteger('amount')->default(0);
-            $table->bigInteger('discount')->default(0);
-            $table->string('notes')->nullable();
             $table->bigInteger('final_amount')->default(0);
             $table->foreign('sport_id')->references('id')->on('sports');            
             $table->foreign('user_id')->references('id')->on('users');            

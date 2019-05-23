@@ -87,8 +87,8 @@ class PaymentController extends Controller
                         
                         $membership_fees = $user->sports[$i]['membership']['fees'][$user->sports[$i]['membership']['membership_type']];
                         $membership_duration = $user->sports[$i]['membership']['membership_type'];
-                        //echo $membership_fees."<br>";
-                        //echo $membership_duration."<br>";
+                        // echo $membership_fees."<br>";
+                        // echo $membership_duration."<br>";
                         if($membership_duration == 'monthly')
                         {
                             $start = $month;
@@ -131,28 +131,36 @@ class PaymentController extends Controller
                         }
                         $k=0;
                         for($j=$start;$j<=$end;$j++){
-                            if($k!=0)
+                            if($month != $j)
                             {
-                                $membership_fees =   0;
-                                $request['membership_discount_'.$sport->id] = 0;
+                                $m_fees =   0;
+                                $discount_amount = 0;
                             }
+                            else{
+                                $m_fees = $membership_fees;
+                                $discount_amount = $request['membership_discount_'.$sport->id];
+
+                            }
+                           // echo $m_fees."<br><br>";
                             $payment = new Payment;
                             $payment->month = $j;
                             $payment->year = $year;
                             $payment->user_id = $id;
                             $payment->sport_id = $sport->id;
-                            $payment->amount = $membership_fees;
-                            $payment->discount = $request['membership_discount_'.$sport->id];
+                            $payment->amount = $m_fees;
+                            $payment->discount = $discount_amount;
                             $payment->notes = $request['membership_note_'.$sport->id];
                             $payment->total_amount = $payment['amount'] - $payment['discount'];
                             $payment->payment_mode = $membership_duration;
                             $payment->save();
                             $k++;
+
                         }
                     }                                 
                     $i++;
                 }
             }
+            //exit;
             if(count($request->category))
             {
                 for($i=0;$i<count($request->category);$i++)
@@ -183,7 +191,7 @@ class PaymentController extends Controller
                 $payment->is_session_charge = true;
                 $payment->save();   
 
-                $user = \Auth::user();
+                $user = User::findOrFail($id);
                 $user->advance_amount += $request->session_charges;
                 $user->save();
             }
@@ -200,9 +208,20 @@ class PaymentController extends Controller
                         "user_id" => $user_id,
                     );
         $payments = Payment::where($array)->with(array('sport','coach'))->get();
+        $user = User::findOrFail($user_id);
         $array    =     array(  
-                                "payments"  => $payments
+                                "payments"  => $payments,
+                                "user"      => $user
                             );
         return view('user.showpayment',$array);
+    }
+    public function getinvoices($id)
+    {
+        //\DB::connection()->enableQueryLog();
+        $invoices = Payment::distinct()
+                            ->where('user_id',$id)
+                            ->where('amount' , '>' , 0)
+                            ->orderBy('year','DESC')->orderBy('month','DESC')->get(['month','year']);
+        return $invoices;
     }
 }
