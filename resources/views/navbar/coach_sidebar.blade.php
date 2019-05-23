@@ -31,10 +31,10 @@
                 <i class="mdi mdi-apps menu-icon"></i>
               </a>
             </li>
-
+            
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-player" aria-expanded="false" aria-controls="page-layouts">
-                <span class="menu-title">Players </span>
+                <span class="menu-title">Add Sessions </span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-apps menu-icon"></i>
               </a>
