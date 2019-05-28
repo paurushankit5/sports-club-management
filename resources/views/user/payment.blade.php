@@ -158,7 +158,7 @@
                         <div class="row">
                             <div class="col-md-6 offset-md-3">
                                 <a href="" class="btn btn-info">{{ date('M-Y',strtotime("-1 month",strtotime($month.'/11/'.$year))) }}</a>
-                                <a href="" class="btn btn-info disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
+                                <a href="" class="btn btn-success disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
                                 <a href="" class="btn btn-info">{{ date('M-Y',strtotime("+1 month",strtotime($month.'/11/'.$year))) }}</a>
                             </div>
                             <br>

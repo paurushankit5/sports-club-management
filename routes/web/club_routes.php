@@ -30,8 +30,8 @@
 		Route::get('/addcoachtoplayer/{sport_id}/{user_id}', 'UserController@addcoachtoplayer')->name('addcoachtoplayer');
 		Route::post('/assigncoach', 'UserController@assigncoach')->name('assigncoach');
 
-		Route::get('/recordpayment/{id}', 'RecordPaymentcontroller@recordpayment')->name('recordpayment');
-		Route::post('/storerecordpayment/{id}', 'RecordPaymentcontroller@storerecordpayment')->name('storerecordpayment');
+		Route::get('/recordpayment/{id}', 'RecordPaymentController@recordpayment')->name('recordpayment');
+		Route::post('/storerecordpayment/{id}', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
 
 		Route::post('/getinvoices/{id}', 'PaymentController@getinvoices')->name('getinvoices');
 
