@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -59,5 +61,15 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\RecordPayment')->orderBy('payment_date','DESC');
     }
+
+    public function payments(){
+        return $this->hasMany('App\Payment');
+    }
+
+     public function payments2(){
+        return $this->hasMany('App\Payment');
+    }
+
+
 
 }

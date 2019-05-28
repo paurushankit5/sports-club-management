@@ -23,6 +23,8 @@
 		Route::get('/fees', 'ClubController@fees')->name('club_fees');
 		Route::post('/storefees', 'ClubController@storefees')->name('fees.store');
 
+		Route::get('/payment/players/{month}/{year}', 'ClubController@payment_module')->name('payment_module');
+
 
 		Route::get('/changeuserstatus/{id}', 'UserController@changeuserstatus')->name('changeuserstatus');
 		Route::get('/addcoachtoplayer/{sport_id}/{user_id}', 'UserController@addcoachtoplayer')->name('addcoachtoplayer');

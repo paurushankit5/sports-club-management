@@ -15,10 +15,11 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">Record Payment for {{ $user->fname." ".$user->lname }}</h4>
+                    <div class="alert alert-fill-primary">Payment Due: &#x20B9; {{ $user->invoice_generated - $user->payment_received ? $user->invoice_generated - $user->payment_received : 0 }}</div>
                  	<form class="form-horizontal" method="post" action="{{ route('storerecordpayment', $user->id) }}">
                  		@csrf
                  		<div class="form-group">
-                 			<label>Amount Received*</label>
+                 			<label>Payment Amount*</label>
                  			<input type="number" required  value="{{ $user->invoice_generated - $user->payment_received ? $user->invoice_generated - $user->payment_received : 0 }}" class="form-control" min="0" max="100000" name="payment_received">
                  		</div>
                  		<div class="form-group">

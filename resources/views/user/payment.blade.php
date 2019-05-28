@@ -206,7 +206,7 @@
                 		@endif
                 	</div> 
                     <div class="col-12">
-                        <h3 class="card-title">Session Charges</h3>
+                        <h3 class="card-title">Coaching Session Charges</h3>
                         <div class="form-group">
                             <label>Session charge</label>
                             <input type="number" value="0" min="0" max="100000" name="session_charges" class="form-control session_charges">

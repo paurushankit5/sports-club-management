@@ -235,4 +235,26 @@ class ClubController extends Controller
             return $e->getMessage();
         }
     }
+    public function payment_module($month, $year){
+        $array  =   array(
+                        'role_id' => 2,
+                        'is_active' =>  1,
+                        'club_id'   =>  \Auth::user()->club_id
+                    );
+        $users  =   User::where($array)->with([
+                                    'payments2' => function ($query) use($month, $year){
+                                $array  = array(
+                                                    "month"   =>  $month,
+                                                    "year"   =>  $year,
+                                                );
+                                    $query->where($array);
+                                },'recordpayments','payments'])->get();
+        
+        $array  =   array(
+                            'users'   =>  $users,
+                            'month'   =>  $month,
+                            'year'   =>  $year
+                        );
+        return view('club.payment_module', $array);
+    }
 }
