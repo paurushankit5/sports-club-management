@@ -126,21 +126,24 @@ class UserController extends Controller
                         if($sport->pivot->coach_id!=Null)
                         {
                             $user->sports[$i]['coach'] = User::where('id',$sport->pivot->coach_id)->first();
-                            $array = array(
+                        }  
+                        $array = array(
                                 "club_id" =>    $user->club_id,
                                 "sport_id"  =>  $sport->id
                             );
-                            $user->sports[$i]['club_fees'] =  Fee::where($array)->get();
-                             $array = array(
-                                "user_id"   =>  $user->id,
-                                "sport_id"   =>  $sport->id,
-                            );
-                            $user->sports[$i]['membership'] = PlayerMembership::where($array)->first();
-                            if($user->sports[$i]['membership'] != Null)
-                            {
-                                $user->sports[$i]['membership']['fees'] = Fee::find($user->sports[$i]['membership']->fee_id);
-                            }
-                        }                       
+                        //\DB::connection()->enableQueryLog();     
+                        $user->sports[$i]['club_fees'] =  Fee::where($array)->get();
+                        //print_r(\DB::getQueryLog());
+                        //exit;
+                         $array = array(
+                            "user_id"   =>  $user->id,
+                            "sport_id"   =>  $sport->id,
+                        );
+                        $user->sports[$i]['membership'] = PlayerMembership::where($array)->first();
+                        if($user->sports[$i]['membership'] != Null)
+                        {
+                            $user->sports[$i]['membership']['fees'] = Fee::find($user->sports[$i]['membership']->fee_id);
+                        }                     
                         $i++;
                     }
                 }

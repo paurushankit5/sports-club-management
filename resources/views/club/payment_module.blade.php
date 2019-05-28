@@ -30,8 +30,8 @@
           <div class="card-body">
             <h4 class="card-title"> Payment </h4>
             <div class="row">
-	            <div class="col-md-4" id="date">
-	            	<select class="form-control" id="month	">
+	            <div class="col-md-4">
+	            	<select class="form-control" id="month">
 	            		<option value="1">Jan</option>
 	            		<option value="2">Feb</option>
 	            		<option value="3">Mar</option>

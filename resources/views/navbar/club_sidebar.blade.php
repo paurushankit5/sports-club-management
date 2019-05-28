@@ -38,7 +38,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('payment_module', [ date('m'), date('Y') ]) }}">
+              <a class="nav-link" href="{{ route('payment_module', array(date('m'), date('Y') )) }}">
                 <span class="menu-title">Payment</span>
                 <i class="mdi mdi-currency-inr menu-icon"></i>
               </a>

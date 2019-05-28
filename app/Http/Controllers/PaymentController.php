@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Payment;
 use App\User;
 use App\Fee;
 use App\CoachFee;
 use App\PlayerMembership;
 use Illuminate\Http\Request;
+use Session;
 
 class PaymentController extends Controller
 {
@@ -31,12 +31,12 @@ class PaymentController extends Controller
                                             "user_id" => $sport->pivot->coach_id,
                                         );
                         $user->sports[$i]['coach']['fee'] = CoachFee::where($array)->first(); 
-                    }
-                    $array = array(
+                    }                    
+                }
+                $array = array(
                         "club_id" =>    $user->club_id,
                         "sport_id"  =>  $sport->id
                     );
-                }
                 $user->sports[$i]['club_fees'] =  Fee::where($array)->get();
                  $array = array(
                     "user_id"   =>  $user->id,
@@ -46,6 +46,10 @@ class PaymentController extends Controller
                 if($user->sports[$i]['membership'] != Null)
                 {
                     $user->sports[$i]['membership']['fees'] = Fee::find($user->sports[$i]['membership']->fee_id);
+                }
+                else{
+                    Session::flash('alert-danger', 'Please set the membership plan first.');
+                    return redirect(route('getoneuserprofile', $user->id));
                 }
                                       
                 $i++;

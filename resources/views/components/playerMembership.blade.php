@@ -54,35 +54,35 @@
                                         <tr>
                                             <th><label>Membership <input type="hidden" value="{{ $sport->id }}" name="sport_ids[]" required /></label></th>
                                             <th><label>Monthly <input
-                                                @if($sport->membership->membership_type == 'monthly') checked  @endif
+                                                @if(isset($sport->membership->membership_type ) && $sport->membership->membership_type == 'monthly') checked  @endif
                                              type="radio" required name="member_type_{{ $sport->id }}" value="monthly"></label></th>
                                             <th><label>Quarterly <input type="radio"
-                                            @if($sport->membership->membership_type == 'quarterly') checked  @endif
+                                            @if(isset($sport->membership->membership_type ) && $sport->membership->membership_type == 'quarterly') checked  @endif
                                              name="member_type_{{ $sport->id }}" value="quarterly"></label></th>
                                             <th><label>Half-Yearly <input type="radio"
-                                            @if($sport->membership->membership_type == 'half_yearly') checked  @endif
+                                            @if(isset($sport->membership->membership_type ) && $sport->membership->membership_type == 'half_yearly') checked  @endif
                                              name="member_type_{{ $sport->id }}" value="half_yearly"></label></th>
                                             <th><label>Yearly <input type="radio"
-                                            @if($sport->membership->membership_type == 'yearly') checked  @endif
+                                            @if(isset($sport->membership->membership_type ) && $sport->membership->membership_type == 'yearly') checked  @endif
                                              name="member_type_{{ $sport->id }}" value="yearly"></label></th>
-                                            <th>Late Fees</th>
                                         </tr>
+                                        @if(count($sport->club_fees))
                                         @foreach($sport->club_fees as $club_fee)
                                             <tr>
                                                 <td>
 
                                                     <label>
                                                     {{ $club_fee->category_name }} 
-                                                        <input @if($sport->membership->fees->id == $club_fee->id) checked @endif type="radio"  required name="fee_id_{{ $sport->id }}" value="{{ $club_fee->id }}">
+                                                        <input @if(isset($sport->membership->fees->id) && $sport->membership->fees->id == $club_fee->id) checked @endif type="radio"  required name="fee_id_{{ $sport->id }}" value="{{ $club_fee->id }}">
                                                     </label>
                                                 </td>
                                                 <td>&#x20B9; {{ $club_fee->monthly }}</td>
                                                 <td>&#x20B9; {{ $club_fee->quarterly }}</td>
                                                 <td>&#x20B9; {{ $club_fee->half_yearly }}</td>
                                                 <td>&#x20B9; {{ $club_fee->yearly }}</td>
-                                                <td> {{ $club_fee->late_fine_day }} days <br> &#x20B9; {{ $club_fee->late_fine_amount }}</td>
                                             </tr>
                                         @endforeach
+                                        @endif
                                     @endif
                                 @endforeach
                             @endif
