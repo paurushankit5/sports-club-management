@@ -86,6 +86,9 @@
             							 N/A
             							@endif
             						</td>
+                                    <td>
+                                        <a href="{{ route('recordpayment',$user->id) }}" target="_blank" class="btn btn-rounded btn-sm btn-info">Record Payment</a>
+                                    </td>
             					</tr>
             				@endforeach
             			@endif
