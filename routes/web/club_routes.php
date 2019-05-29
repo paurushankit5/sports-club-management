@@ -22,6 +22,7 @@
 
 		Route::get('/fees', 'ClubController@fees')->name('club_fees');
 		Route::post('/storefees', 'ClubController@storefees')->name('fees.store');
+		Route::post('/update_late_fees', 'ClubController@update_late_fees')->name('update_late_fees');
 
 		Route::get('/payment/players/{month}/{year}', 'ClubController@payment_module')->name('payment_module');
 
@@ -31,7 +32,6 @@
 		Route::post('/assigncoach', 'UserController@assigncoach')->name('assigncoach');
 
 		Route::get('/recordpayment/{id}', 'RecordPaymentController@recordpayment')->name('recordpayment');
-		Route::post('/storerecordpayment/{id}', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
 
 		Route::post('/getinvoices/{id}', 'PaymentController@getinvoices')->name('getinvoices');
 

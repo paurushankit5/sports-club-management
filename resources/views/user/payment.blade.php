@@ -15,14 +15,15 @@
             $('[data-toggle="popover"]').popover();  
             $(".align-self-center").click();
             
-            $(document).on('blur keyup', '.extra_fees', function(){
-               getextrafeestotal(this);
-            });
 
-            $(document).on('blur keyup', '.extra_discount', function(){
-               getextrafeestotal(this);
-            });
  
+        });
+        $(document).on('blur keyup', '.extra_fees', function(){
+           getextrafeestotal(this);
+        });
+
+        $(document).on('blur keyup', '.extra_discount', function(){
+           getextrafeestotal(this);
         });
 
         $(".session_charges").on('blur keyup',function(){
@@ -55,9 +56,12 @@
             {
                 total = 0;
             }
-            final_amount = final_amount - $(a).closest('tr').find('.total_extra_fees').html() + total
+            final_amount = (final_amount * 10 - $(a).closest('tr').find('td:eq( 4 )').html().replace(/[^0-9]/g,'') * 10 + total *10 )/10;
+
+            console.log(final_amount);
+
             $("#final_amount").html(final_amount);
-            $(a).closest('tr').find('.total_extra_fees').html(total);
+            $(a).closest('tr').find('td:eq( 4 )').html('&#x20B9; '+ total);
 
         }
 
@@ -146,7 +150,17 @@
 @endsection
 @section('content')
     <div class="row">  
-           
+        <div class="col-md-12">
+            <div class="col-md-6 offset-md-3">
+                <a href='{{ route("payment", [$user->id,date("m",strtotime("-1 month",strtotime($month."/11/".$year))),date("Y",strtotime("-1 month",strtotime($month."/11/".$year))) ]) }}' class="btn btn-info">{{ date('M-Y',strtotime("-1 month",strtotime($month.'/11/'.$year))) }}</a>
+                <a href="#" class="btn btn-success disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
+                <a href='{{ route("payment", [$user->id,date("m",strtotime("+1 month",strtotime($month."/11/".$year))),date("Y",strtotime("+1 month",strtotime($month."/11/".$year))) ]) }}' class="btn btn-info">{{ date('M-Y',strtotime("+1 month",strtotime($month.'/11/'.$year))) }}</a>
+            </div>
+            <br>
+            <br>
+            <br>
+        </div> 
+        @if(!$invoice_generated)    
         <div class="col-12 grid-margin">
             <form method="post" action="{{ route('storepayment', array($user->id, $month, $year)) }}">
             @csrf 
@@ -155,16 +169,7 @@
                 <div class="card-body">
                     <h3 class="card-title">Invoice Page for <a href="{{route('getoneuserprofile', $user->id) }}">{{$user->fname.' '.$user->lname}}</a> ({{ date('M-Y',strtotime($month.'/11/'.$year)) }}) </h3>
                 	<div class="">
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
-                                <a href="" class="btn btn-info">{{ date('M-Y',strtotime("-1 month",strtotime($month.'/11/'.$year))) }}</a>
-                                <a href="" class="btn btn-success disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
-                                <a href="" class="btn btn-info">{{ date('M-Y',strtotime("+1 month",strtotime($month.'/11/'.$year))) }}</a>
-                            </div>
-                            <br>
-                            <br>
-                            <br>
-                        </div> 
+                        
                 		@if(count($user->sports))
                             <div class="table-responsive">
                                 <table class="table table-striped">
@@ -254,6 +259,20 @@
       
       
     </div>
+    @else
+        <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-success alert-fill-success">
+                    <p>Invoice has been created for the user for this particular month.</p>
+                </div>
+                <div class="text-center">
+                    <a href="{{ route('showpayment', [$user->id,$month,$year]) }}" class="btn btn-primary">View Invoice</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    @endif
 </form>
 </div>
 

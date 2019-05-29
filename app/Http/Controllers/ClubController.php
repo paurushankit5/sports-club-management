@@ -224,8 +224,8 @@ class ClubController extends Controller
                     $fees->half_yearly      =   $request->half_yearly[$i];
                     $fees->yearly      =   $request->yearly[$i];
                     $fees->category_name      =   $request->category[$i];
-                    $fees->late_fine_day      =   $request->late_fees_day[$i];
-                    $fees->late_fine_amount      =   $request->late_fees[$i];
+                    //$fees->late_fine_day      =   $request->late_fees_day[$i];
+                    //$fees->late_fine_amount      =   $request->late_fees[$i];
                     $fees->Save();
                 }
             }
@@ -256,5 +256,13 @@ class ClubController extends Controller
                             'year'   =>  $year
                         );
         return view('club.payment_module', $array);
+    }
+    public function update_late_fees(Request $request){
+        if($request->late_fees >= 0  && $request->late_fees <=100000){
+            \Auth::user()->club->late_fees = $request->late_fees;
+            \Auth::user()->club->save();
+            Session::flash('alert-success', 'Late fees updated successfully');
+        }
+        return back()->withInput();
     }
 }

@@ -17,7 +17,7 @@
 				var month 	= 	$("#month").val();
 				window.location ='/organization/payment/players/'+month+'/'+year ;
 			});
-		});
+            
 	</script>
 @endsection
 
@@ -32,25 +32,25 @@
             <div class="row">
 	            <div class="col-md-4">
 	            	<select class="form-control" id="month">
-	            		<option value="1">Jan</option>
-	            		<option value="2">Feb</option>
-	            		<option value="3">Mar</option>
-	            		<option value="4">Apr</option>
-	            		<option value="5">May</option>
-	            		<option value="6">Jun</option>
-	            		<option value="7">Jul</option>
-	            		<option value="8">Aug</option>
-	            		<option value="9">Sep</option>
-	            		<option value="10">Oct</option>
-	            		<option value="11">Nov</option>
-	            		<option value="12">Dec</option>
+	            		<option value="1" @if($month == 1) selected @endif>Jan</option>
+	            		<option value="2" @if($month == 2) selected @endif>Feb</option>
+	            		<option value="3" @if($month == 3) selected @endif>Mar</option>
+	            		<option value="4" @if($month == 4) selected @endif>Apr</option>
+	            		<option value="5" @if($month == 5) selected @endif>May</option>
+	            		<option value="6" @if($month == 6) selected @endif>Jun</option>
+	            		<option value="7" @if($month == 7) selected @endif>Jul</option>
+	            		<option value="8" @if($month == 8) selected @endif>Aug</option>
+	            		<option value="9" @if($month == 9) selected @endif>Sep</option>
+	            		<option value="10" @if($month == 10) selected @endif>Oct</option>
+	            		<option value="11" @if($month == 11) selected @endif>Nov</option>
+	            		<option value="12" @if($month == 12) selected @endif>Dec</option>
 	            	</select>
 	            	<br>
 	            </div>
 	            <div class="col-md-4">
 	            	<select class="form-control" id="year">
 	            		@for($i=date('Y'); $i>=2019;$i--)
-	            			<option>{{ $i }}</option>
+	            			<option  @if($year == $i) selected @endif >{{ $i }}</option>
 	            		@endfor
 	            	</select>
 	            	<br>
@@ -66,17 +66,17 @@
             				<th>Invoice</th>
             				<th>Payment Due</th>
             				<th>Last Payment Details</th>
-            				<th>Record Payment</th>
+            				<th>Action</th>
             			</tr>
             		</thead>
             		<tbody>
             			@if(count($users))
             				@php $i=1; @endphp
             				@foreach($users as $user)
-            					<tr>
+            					<tr id="user_{{ $user->id }}">
             						<td>{{ $i++ }}</td>
-            						<td>{{ $user->fname." ".$user->lname }}</td>
-            						<td>{!! count($user->payments2) ? 'Generated' : '<a href="/user/payment/'.$user->id.'/'.$month.'/'.$year.'" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>'  !!}</td>
+            						<td><a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a></td>
+            						<td>{!! count($user->payments2) ? '<a href="'.route('showpayment', ['user_id' => $user->id,'month'=> $month,'year'=> $year]) .'" target="_blank" class="btn btn-rounded btn-sm btn-success">View Invoice</a>' : '<a href="/user/payment/'.$user->id.'/'.$month.'/'.$year.'" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>'  !!}</td>
             						<td>&#x20B9; {{ $user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') }}</td>
             						<td>
             							@if(count($user->recordpayments))
@@ -87,7 +87,11 @@
             							@endif
             						</td>
                                     <td>
-                                        <a href="{{ route('recordpayment',$user->id) }}" target="_blank" class="btn btn-rounded btn-sm btn-info">Record Payment</a>
+                                        @if($user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') > 0)
+                                            <button class="btn btn-rounded btn-sm btn-info recordpayment" data-user_id="{{ $user->id }}">Record Payment</button>
+                                        @else
+                                            No Dues
+                                        @endif
                                     </td>
             					</tr>
             				@endforeach
@@ -102,4 +106,6 @@
       
       
     </div>
+    @includeWhen(\Auth::check() && \Auth::user()->role->id == 1, 'components.recordPaymentComponent')
+
 @endsection

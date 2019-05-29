@@ -206,6 +206,9 @@
                 </ol>
               </nav>
             </div>
+            <div class="loadingDiv"  id="loadingDiv" style="display:none;position:fixed;top:0px;right:0px;width:100%;height:100%;background-color:#666;background-image:url({{ asset('images/loading.gif') }}); background-repeat:no-repeat;background-position:center;z-index:10000000;  opacity: 0.4;">
+          
+            </div>
             <div class="flash-message">
               @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                   @if(Session::has('alert-' . $msg))
@@ -253,5 +256,6 @@
     <script src="{{ asset('admin/js/todolist.js') }}"></script>
     <!-- endinject -->
     @yield('after_scripts')
+    @yield('after_scripts2')
   </body>
 </html>

@@ -32,17 +32,47 @@ class RecordPaymentController extends Controller
         }   
         return view('user.recordpayment',$array);
     }
-    public function storerecordpayment($id){
-        // echo "<pre>";
-        // print_r($_REQUEST);
-        $payment = new RecordPayment;
-        $payment->user_id           =   $id;
-        $payment->receiver_id       =   \Auth::user()->id;  
-        $payment->payment_received  =   $_REQUEST['payment_received'];
-        $payment->payment_date      =   $_REQUEST['payment_date'];
-        $payment->notes             =   $_REQUEST['notes'];
-        $payment->save();
-        return redirect(route('showreceivedpayment',$id));
+    public function storerecordpayment(Request $request){
+        if( (\Auth::user()->role_id == 1 || \Auth::user()->role_id == 10))
+        {
+            if($_REQUEST['late_fees'])
+            {
+                $array      =   array(
+
+                                );
+                $payment    =   Payment::where($array)->first();
+                if($payment){
+                    $month = $payment->month;
+                    $year = $payment->year;
+                }
+                else{
+                    $month = date('m');
+                    $year = date('Y');
+                }
+                $payment = new Payment;
+                $payment->month = $month;
+                $payment->year = $year;
+                $payment->user_id = $_REQUEST['user_id'];
+                $payment->amount = \Auth::user()->club->late_fees;
+                $payment->discount = 0;
+                $payment->total_amount = \Auth::user()->club->late_fees;
+                $payment->extra_fields = 'Late Fees';
+                $payment->save();
+
+            }
+            $payment = new RecordPayment;
+            $payment->user_id           =   $_REQUEST['user_id'];
+            $payment->receiver_id       =   \Auth::user()->id;  
+            $payment->payment_received  =   $_REQUEST['payment_received'];
+            $payment->payment_date      =   $_REQUEST['payment_date'];
+            $payment->notes             =   $_REQUEST['notes'];
+            $payment->save();
+            return $payment->id;
+        }
+        else{
+            return ('You are noy authorized to perform this task');
+        }
+        
     }
 
     public function showreceivedpayment($id)
@@ -60,6 +90,24 @@ class RecordPaymentController extends Controller
             return view('user.showreceivedpayment',$array);
 
         }
+    }
+
+    public function getpaymentdetails(Request $request)
+    {
+        $array = array(
+                        "id"        =>  $request->user_id,
+                        "club_id"   =>  \Auth::user()->club_id,
+                        "role_id"   =>  2 
+                    );
+        $user = User::where($array)->firstOrFail();
+        $user->payment_received = RecordPayment::where('user_id',$request->user_id)->orderBy('created_at', 'DESC')->sum('payment_received');
+        $user->invoice_generated = Payment::where('user_id',$request->user_id)->sum('total_amount');
+        $late_fees = \Auth::user()->club->late_fees;
+        $array  = array(
+                        "user"  =>  $user,
+                        "late_fees" =>  $late_fees
+                    );
+        return $array;
     }
     
 }

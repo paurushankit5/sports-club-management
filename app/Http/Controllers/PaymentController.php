@@ -55,9 +55,17 @@ class PaymentController extends Controller
                 $i++;
             }
         }
+        $array  =   array(
+                            "user_id"   =>      $user->id,
+                            "month"   =>      $month,
+                            "year"   =>      $year,
+                        );
+        $invoice_generated   =   count(Payment::where($array)->where('total_amount', '>', 0)->get()) ? true : false ;
+
         $array = array('user'   => $user,
                         'month' => $month,
                         'year' => $year,
+                        'invoice_generated' => $invoice_generated,
                         );
         return view ('user.payment',$array);
     }

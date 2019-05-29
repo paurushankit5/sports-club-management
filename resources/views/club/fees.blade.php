@@ -62,14 +62,56 @@
                 alert(e);
             }
         }
-
+        $(".edit-late-fees").on('click', function(){
+            $("#late_fees_span_1").addClass('d-none');
+            $("#late_fees_span_2").removeClass('d-none');
+        });
   </script>
 @endsection
 
 
 @section('content')
     <div class="row">
-        <div class="col-12 grid-margin">            
+        <div class="col-12 grid-margin">  
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr class="bg-primary text-white">
+                                        <th colspan="2">
+                                            Late Fees
+                                        </th>
+                                    </tr>
+                                    <tr class="">
+                                        <td>Late Fees</td>
+                                        <td>
+                                            <span id="late_fees_span_1">&#x20B9; {{ \Auth::user()->club->late_fees }} <button class="btn btn-info btn-sm pull-right edit-late-fees"><i class="mdi mdi-pencil"></i></button></span>
+                                            <span id="late_fees_span_2" class="d-none">
+                                            <div class="form-group">
+                                                <form method="post" action="{{ route('update_late_fees') }}">
+                                                    @csrf
+                                                    <div class="input-group col-xs-12">
+                                                      <input type="number" value="{{ \Auth::user()->club->late_fees }}" min="0" max="100000" class="form-control" placeholder="Enter Late Fees" name="late_fees">
+                                                      <span class="input-group-append">
+                                                        <button type="submit" class=" btn btn-gradient-primary" style="height:39px;" type="button"><i class="mdi mdi-content-save-all"></i></button>
+                                                      </span>
+                                                    </div>
+                                                </form>
+                                              </div>
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <br>      
+            <br>      
             @if(count($sports))
                 @foreach($sports as $sport)
                     <div class="card">
@@ -84,7 +126,6 @@
                                                 <th>Quarterly</th>
                                                 <th>Half-Yearly</th>
                                                 <th>Yearly</th>
-                                                <th>Late Fees</th>
                                             </tr>
                                             @foreach($sport['fees'] as $fees)
                                                 <tr>
@@ -93,17 +134,17 @@
                                                     <td> &#x20B9; {{ $fees->quarterly }}</td>
                                                     <td> &#x20B9; {{ $fees->half_yearly }}</td>
                                                     <td> &#x20B9; {{ $fees->yearly }}</td>
-                                                    <td> After {{$fees->late_fine_day}} days <br> &#x20B9; {{ $fees->late_fine_amount }}</td>
                                                 </tr>
                                             @endforeach
                                         </table>
                                     @else
-                                        <form method="post" action="{{ route('fees.store') }}">
-                                        <input type="hidden" name="sport_id" value={{ $sport->id }}>
-                                        @csrf
+                                        
                                             <div class="table-responsive">
                                                 <INPUT type="button" class="btn btn-primary" value="Add More Category" onclick="addRow('dataTable{{$sport->id}}')" />
                                                 <INPUT type="button" class="btn btn-danger" value="Remove Category"   onclick="deleteRow('dataTable{{$sport->id}}')" />
+                                                <form method="post" action="{{ route('fees.store') }}">
+                                                    <input type="hidden" name="sport_id" value={{ $sport->id }}>
+                                                    @csrf
                                                     <TABLE    class="table table-striped">
                                                         <thead>
                                                                 <tr>
@@ -113,8 +154,7 @@
                                                                     <th>Quarterly </th>
                                                                     <th>Half-Yearly </th>
                                                                     <th>Yearly</th>
-                                                                    <th>Late Fees Day<a href="#"><i class="mdi mdi-information" data-toggle="popover" data-content="This is the last day after which late fees will be added "></i></a></th>
-                                                                    <th>Late Fees Amount<a href="#"><i class="mdi mdi-information" data-toggle="popover" data-content="Provide Late fees amount that will be added to the players if he/she does not pay the fees before the prescribed day."></i></a></th>
+                                                                    
                                                                 </tr>
                                                           </thead>
                                                           <tbody id="dataTable{{$sport->id}}">            
@@ -125,8 +165,7 @@
                                                                     <td><input type="number" class="form-control" name="quarterly[]" required></td>
                                                                     <td><input type="number" class="form-control" name="half_yearly[]" required></td>
                                                                     <td><input type="number" class="form-control" name="yearly[]" required></td>
-                                                                    <td><input type="number" class="form-control" value="7" name="late_fees_day[]" required></td>
-                                                                    <td><input type="number" class="form-control" name="late_fees[]" required></td>                                      
+                                                                                                          
                                                               </tr>
                                                               <tr>
                                                                     <td><INPUT type="checkbox"  name="chk[]"/></td>
@@ -135,8 +174,7 @@
                                                                     <td><input type="number" class="form-control" name="quarterly[]" required></td>
                                                                     <td><input type="number" class="form-control" name="half_yearly[]" required></td>
                                                                     <td><input type="number" class="form-control" name="yearly[]" required></td>
-                                                                    <td><input type="number" class="form-control" name="late_fees_day[]" value="7" required></td>
-                                                                    <td><input type="number" class="form-control" name="late_fees[]" required></td>                                      
+                                                                                                         
                                                               </tr>
                                                               
                                                           </tbody>       
@@ -146,7 +184,8 @@
                                             <div class="form-group">
                                                 <br>
                                                 <input type="submit" class="btn btn-primary"/>
-                                            </div> 
+                                            </div>
+                                        </form> 
                                     @endif
                                 
                             </div>                            

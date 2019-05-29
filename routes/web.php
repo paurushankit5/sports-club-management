@@ -47,6 +47,10 @@ Route::group(['middleware' => ['auth']], function(){
 
 		 
 	Route::get('/showreceivedpayment/{id}','RecordPaymentcontroller@showreceivedpayment')->name('showreceivedpayment');
+	Route::post('/getpaymentdetails','RecordPaymentController@getpaymentdetails')->name('getpaymentdetails');
+
+	Route::post('/storerecordpayment', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
+
 
 });
 
