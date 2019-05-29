@@ -15,8 +15,15 @@
 			$(".showpayments").on('click', function(){
 				var year 	= 	$("#year").val();
 				var month 	= 	$("#month").val();
-				window.location ='/organization/payment/players/'+month+'/'+year ;
+                if(year != '' && month !='')
+                {
+                    window.location ='/organization/payment/players/'+month+'/'+year ;
+                }
+                else{
+                    alert('Invalid Request');
+                }
 			});
+        });
             
 	</script>
 @endsection

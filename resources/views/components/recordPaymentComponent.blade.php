@@ -28,7 +28,7 @@
 			                 	<div class="col-md-6">
 			                 		<div class="form-group">
 			                 			<label>Payment Date*</label>
-			                 			<input type="date" value="{{ date('Y-m-d') }}" class="form-control" name="payment_date" id="payment_date" required >
+			                 			<input type="date" value="{{ date('Y-m-d') }}"  class="form-control" name="payment_date" id="payment_date" required >
 			                 		</div>
 			                 	</div>
 		                 	</div>

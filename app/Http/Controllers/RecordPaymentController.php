@@ -35,7 +35,7 @@ class RecordPaymentController extends Controller
     public function storerecordpayment(Request $request){
         if( (\Auth::user()->role_id == 1 || \Auth::user()->role_id == 10))
         {
-            if($_REQUEST['late_fees'])
+            if($_REQUEST['late_fees'] == 'true')
             {
                 $array      =   array(
 
@@ -67,7 +67,8 @@ class RecordPaymentController extends Controller
             $payment->payment_date      =   $_REQUEST['payment_date'];
             $payment->notes             =   $_REQUEST['notes'];
             $payment->save();
-            return $payment->id;
+           // return $payment->id;
+            return $_REQUEST['late_fees'];
         }
         else{
             return ('You are noy authorized to perform this task');
