@@ -12,6 +12,7 @@ use App\CoachFee;
 use App\SportUserClub;
 use App\Payment;
 use App\PlayerMembership;
+use PDF;
 
 
 class UserController extends Controller
@@ -310,5 +311,12 @@ class UserController extends Controller
         }
         return redirect(route('getoneuserprofile',$request->user_id));
 
+    }
+
+    public function demo(){
+        $array  = array('user'  =>  \Auth::user());
+        $pdf = PDF::loadView('pdf.invoice', $array);
+        return $pdf->download('invoice.pdf');
+        //return view('pdf.invoice');
     }
 }

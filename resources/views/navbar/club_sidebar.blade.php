@@ -44,7 +44,7 @@
               </a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-tournament" aria-expanded="false" aria-controls="page-layouts">
                 <span class="menu-title">Tournament </span>
                 <i class="menu-arrow"></i>
@@ -56,7 +56,7 @@
                   <li class="nav-item"> <a class="nav-link" href="#">Knock-Out</a></li>
                 </ul>
               </div>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-player" aria-expanded="false" aria-controls="page-layouts">
                 <span class="menu-title">Players </span>

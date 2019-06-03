@@ -52,5 +52,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/storerecordpayment', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
 
 
+	Route::get('/demo', 'UserController@demo'); 
+
 });
 

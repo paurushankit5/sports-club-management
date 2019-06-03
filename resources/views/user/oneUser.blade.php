@@ -186,7 +186,7 @@
                                 </tr>
                                 <tr>
                                     <th colspan="2">
-                                        <button class="btn btn-rounded btn-sm btn-info view_invoices">View Invoices</button>
+                                        <button class="btn btn-rounded btn-sm btn-info view_invoices">Show Invoices</button>
                                         <div class="modal fade" id="invoices_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content ">

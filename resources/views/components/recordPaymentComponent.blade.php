@@ -14,7 +14,7 @@
 		                	<div class="form-group">
  			                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  			                    <label class="form-check-label">
-			                        <input type="checkbox" class="form-check-input" id="record_payment_late_fees_2"> AppLy Late Fees &#x20B9; <span id="record_payment_late_fees"></span> 
+			                        <input type="checkbox" class="form-check-input" id="record_payment_late_fees_2"> Apply Late Fees &#x20B9; <span id="record_payment_late_fees"></span> 
 			                    </label>
  		                    </div>
 	                 		<div class="row">
@@ -122,7 +122,8 @@
             				if(data)
             				{
             					$("#recordPaymentModal").modal("toggle");
-            					$("#user_"+user_id).remove();
+            					//$("#user_"+user_id).remove();
+                                location.reload();
             				}
             			}
             		});
