@@ -17,7 +17,10 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Invoice For {{ date('M-Y', strtotime(\Request::segment(4)."/1/".\Request::segment(5))) }}</h4>
+                    <h4 class="card-title">
+                        Invoice For {{ date('M-Y', strtotime(\Request::segment(4)."/1/".\Request::segment(5))) }}
+                        <a href="{{ route('downloadInvoice',[$user->id, \Request::segment(4), \Request::segment(5)]) }}" target="_blank" class="btn btn-primary btn-sm pull-right">Download Invoice</a>
+                    </h4>
                     <p><a href="{{ route('getoneuserprofile', $user->id) }}">{{ $user->fname." ".$user->lname}}</a></p>
                     <div class="table-responsive">
                         <table class="table table-striped">

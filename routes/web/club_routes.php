@@ -35,6 +35,9 @@
 
 		Route::post('/getinvoices/{id}', 'PaymentController@getinvoices')->name('getinvoices');
 
+		route::get('/revenue/{month}/{year}','RecordPaymentController@getMonthlyRevenue')->name('revenue_module');
+		route::get('/revenueByCoach/{month}/{year}','RecordPaymentController@revenueByCoach')->name('revenueByCoach');
+
 	});
 
 ?>

@@ -8,6 +8,7 @@ use App\CoachFee;
 use App\PlayerMembership;
 use Illuminate\Http\Request;
 use Session;
+use PDF;
 
 class PaymentController extends Controller
 {
@@ -214,12 +215,7 @@ class PaymentController extends Controller
         }
     }
     public function showpayment($user_id,$month,$year){
-        $array = array(
-                        "month" => $month,
-                        "year"  => $year,
-                        "user_id" => $user_id,
-                    );
-        $payments = Payment::where($array)->with(array('sport','coach'))->get();
+        $payments = $this->getOneMonthInvoice($user_id,$month,$year);
         $user = User::findOrFail($user_id);
         $array    =     array(  
                                 "payments"  => $payments,
@@ -235,5 +231,32 @@ class PaymentController extends Controller
                             ->where('amount' , '>' , 0)
                             ->orderBy('year','DESC')->orderBy('month','DESC')->get(['month','year']);
         return $invoices;
+    }
+
+    public function downloadInvoice($user_id, $month, $year){
+        $payments = $this->getOneMonthInvoice($user_id,$month,$year);
+        $user = User::findOrFail($user_id);
+         $array    =     array(  
+                                "payments"  => $payments,
+                                "user"      => $user
+                            );
+         return view('pdf.invoice', $array);
+        $pdf = PDF::loadView('pdf.invoice', $array);
+        return $pdf->stream();
+        //return $pdf->download('invoice.pdf');
+        //return view('pdf.invoice',$array);
+        //$html = view('pdf.invoice',$array)->render();
+
+        //return PDF2::load($html)->filename('invoice.pdf')->download();
+
+    }
+
+    public function getOneMonthInvoice($user_id,$month,$year){
+        $array = array(
+                        "month" => $month,
+                        "year"  => $year,
+                        "user_id" => $user_id,
+                    );
+        return Payment::where($array)->with(array('sport','coach'))->get();
     }
 }

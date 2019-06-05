@@ -2,11 +2,11 @@
 
 @section('title' , 'Payment')
 
-@section('page_header' , 'Payment')
+@section('page_header' , "Revenue For ".date('M-Y',strtotime($month.'/01/'.$year)) )
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('clubDashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Payments</li>
+    <li class="breadcrumb-item active" aria-current="page">revenue</li>
 @endsection
 
 @section('after_scripts')
@@ -17,26 +17,12 @@
 				var month 	= 	$("#month").val();
                 if(year != '' && month !='')
                 {
-                    window.location ='/organization/payment/players/'+month+'/'+year ;
+                    window.location ='/organization/revenue/'+month+'/'+year ;
                 }
                 else{
                     alert('Invalid Request');
                 }
 			});
-            $(".release_invoice").on('click', function(){
-                var r = confirm(" Are you sure you want to release all invoices?");
-                if(r)
-                {
-                    $.ajax({
-                        type    : 'POST',
-                        url     :   "{{ route('release_invoice') }}",
-                        data    :   {
-                            "_token"    :   "{{ cdrf_token() }}",
-                            ""
-                        }
-                    })
-                }
-            })
         });
             
 	</script>
@@ -49,13 +35,12 @@
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title"> Payment 
-                @if($release_invoice)
-                    <button class="btn btn-success btn-sm float-right release_invoice"> Release Invoice</button>
-                @endif
+            <h4 class="card-title"> 
+                Revenue For {{ date('M-Y',strtotime($month.'/01/'.$year)) }} 
+                <a href="{{ route('revenueByCoach', [$month,$year]) }}" class="btn btn-primary pull-right btn-sm">Revenue By Coach</a>
             </h4>
             <br>
-            <br>
+            <br>    
             <div class="row">
 	            <div class="col-md-4">
 	            	<select class="form-control" id="month">
@@ -82,7 +67,7 @@
 	            	</select>
 	            	<br>
 	            </div>
-	            <div class="col-md-4"><button class="btn btn-primary btn-block showpayments">Show Payments</button></div>
+	            <div class="col-md-4"><button class="btn btn-primary btn-block showpayments">Show Revenue</button></div>
         	</div>
             <div class="table-responsive">
             	<table class="table table-striped">
@@ -90,37 +75,28 @@
             			<tr>
             				<th>#</th>
             				<th>Player</th>
-            				<th>Invoice</th>
-            				<th>Payment Due</th>
-            				<th>Last Payment Details</th>
-            				<th>Action</th>
+            				<th>Amount</th>
+            				<th>Payment Date</th>
             			</tr>
             		</thead>
             		<tbody>
-            			@if(count($users))
+            			@if(count($receivedPayments))
             				@php $i=1; @endphp
-            				@foreach($users as $user)
-            					<tr id="user_{{ $user->id }}">
-            						<td>{{ $i++ }}</td>
-            						<td><a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a></td>
-            						<td>{!! count($user->payments2) ? '<a href="'.route('showpayment', ['user_id' => $user->id,'month'=> $month,'year'=> $year]) .'" target="_blank" class="btn btn-rounded btn-sm btn-success">View Invoice</a>' : '<a href="/user/payment/'.$user->id.'/'.$month.'/'.$year.'" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>'  !!}</td>
-            						<td>&#x20B9; {{ $user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') }}</td>
-            						<td>
-            							@if(count($user->recordpayments))
-            								&#x20B9; {{ $user->recordpayments[0]->payment_received }} <br>
-            								{{ date('d-M-Y',strtotime($user->recordpayments[0]->payment_date)) }}
-            							@else
-            							 N/A
-            							@endif
-            						</td>
+            				@foreach($receivedPayments as $payment)
+            					<tr>
+                                    <td>{{ $i++ }}</td>
                                     <td>
-                                        @if($user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') > 0)
-                                            <button class="btn btn-rounded btn-sm btn-info recordpayment" data-user_id="{{ $user->id }}">Record Payment</button>
-                                        @else
-                                            No Dues
+                                        <a href="{{ route('getoneuserprofile', $payment->user->id) }}" target="_blank">{{ $payment->user->fname." ".$payment->user->lname }}</a>
+                                    </td>
+                                    <td><b>&#x20B9; {{ $payment->payment_received }}</b></td>
+                                    <td> 
+                                        {{ $payment->payment_date }}
+                                        @if($payment->notes != '')
+                                            <br>
+                                            <small>{{ $payment->notes }}</small>
                                         @endif
                                     </td>
-            					</tr>
+                                </tr>
             				@endforeach
             			@endif
             		</tbody>

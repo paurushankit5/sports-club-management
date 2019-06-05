@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\RecordPayment;
 use App\Payment;
 use App\User;
+use App\Session as CoachSession;
 use Session;
 use Illuminate\Http\Request;
 
@@ -110,5 +111,41 @@ class RecordPaymentController extends Controller
                     );
         return $array;
     }
+
+    public function getMonthlyRevenue($month, $year)
+    {
+        $receivedPayments =     RecordPayment::with('user')
+                                                ->whereMonth('payment_date', $month)
+                                                ->whereYear('payment_date', $year)
+                                                ->orderBy('payment_date')
+                                                ->get();
+        $array  = array('receivedPayments'  =>  $receivedPayments,
+                        'month' =>  $month,
+                        'year'  =>  $year
+                        );
+        return view('club.getMonthlyRevenue',$array);
+    }
     
+    public function revenueByCoach($month, $year)
+    {
+        //\DB::connection()->enableQueryLog();
+
+        $sessions   =   CoachSession::select('coach_id', \DB::raw('SUM(final_amount) as total_amount'),  \DB::raw('SUM(session_count) as total_sessions'))
+                                    ->with('users')
+                                    ->whereHas("users", function($q){
+                                           $q->where("users.club_id",\Auth::user()->club_id);
+                                        })
+                                    ->whereMonth('session_date' , $month)
+                                    ->whereYear('session_date', $year)
+                                    ->groupBy('coach_id')
+                                    ->get();
+        //print_r(\DB::getQueryLog());
+        //exit;
+        $array  = array('sessions'  =>  $sessions,
+                        'month' =>  $month,
+                        'year'  =>  $year
+                        );
+        return view('club.revenueByCoach',$array);
+
+    }
 }

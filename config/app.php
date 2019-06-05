@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         CrudGenerator\CrudGeneratorServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Vsmoraes\Pdf\PdfServiceProvider::class,
+
 
 
 
@@ -230,6 +232,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF2' => 'Vsmoraes\Pdf\PdfFacade',
+
 
 
     ],

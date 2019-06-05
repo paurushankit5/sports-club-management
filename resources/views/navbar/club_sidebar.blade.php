@@ -43,6 +43,12 @@
                 <i class="mdi mdi-currency-inr menu-icon"></i>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('revenue_module', array(date('m'), date('Y') )) }}">
+                <span class="menu-title">Revenue</span>
+                <i class="mdi mdi-currency-inr menu-icon"></i>
+              </a>
+            </li>
 
             <!-- <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-tournament" aria-expanded="false" aria-controls="page-layouts">

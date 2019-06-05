@@ -54,5 +54,10 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('/demo', 'UserController@demo'); 
 
+	Route::get('downloadInvoice/{user_id}/{month}/{year}','PaymentController@downloadInvoice')->name('downloadInvoice');
+
+	Route::get('/email', 'EmailController@sendEmail');
+
+
 });
 

@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Sport;
 use App\SportUserClub;
+use App\ReleaseInvoice;
 use App\Fee;
 use Illuminate\Http\Request;
 use Session;
@@ -242,18 +243,37 @@ class ClubController extends Controller
                         'club_id'   =>  \Auth::user()->club_id
                     );
         $users  =   User::where($array)->with([
-                                    'payments2' => function ($query) use($month, $year){
+                                'payments2' => function ($query) use($month, $year){
                                 $array  = array(
                                                     "month"   =>  $month,
                                                     "year"   =>  $year,
                                                 );
                                     $query->where($array);
                                 },'recordpayments','payments'])->get();
+
+        $array  =   array(
+                            "month"   =>  $month,
+                            "year"   =>  $year,
+                            'club_id'   =>  \Auth::user()->club_id
+                        );
+        $release_invoice = true;
+        if(!ReleaseInvoice::where($array)->first() && count($users)){            
+            foreach($users as $user)
+            {
+                if(!count($user->payments2))
+                {
+                    $release_invoice = false;
+                    break;
+                }
+            }            
+        }
+            
         
         $array  =   array(
                             'users'   =>  $users,
                             'month'   =>  $month,
-                            'year'   =>  $year
+                            'year'   =>  $year,
+                            'release_invoice'   =>  $release_invoice
                         );
         return view('club.payment_module', $array);
     }

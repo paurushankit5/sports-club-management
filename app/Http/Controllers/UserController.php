@@ -13,6 +13,7 @@ use App\SportUserClub;
 use App\Payment;
 use App\PlayerMembership;
 use PDF;
+use PDF2;
 
 
 class UserController extends Controller
@@ -315,8 +316,14 @@ class UserController extends Controller
 
     public function demo(){
         $array  = array('user'  =>  \Auth::user());
-        $pdf = PDF::loadView('pdf.invoice', $array);
-        return $pdf->download('invoice.pdf');
-        //return view('pdf.invoice');
+        //$pdf = PDF::loadView('pdf.invoice', $array);
+        //return $pdf->download('invoice.pdf');
+        //return $pdf->stream();
+
+        $html = view('pdf.invoice')->render();
+
+        return PDF2::load($html)->filename('invoice.pdf')->download();
+
+        return view('pdf.invoice');
     }
 }

@@ -215,7 +215,7 @@
                       <p class="alert alert-fill-{{ $msg }} alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
                   @endif
               @endforeach
-              @if ($errors->any())
+              @if (isset($errors) && $errors->any())
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
