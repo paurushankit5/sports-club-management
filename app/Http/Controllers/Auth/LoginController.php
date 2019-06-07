@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\ManagerController;
 
 class LoginController extends Controller
 {
@@ -28,17 +29,10 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-        if(\Auth::user()->is_superuser)
-        {
-            return route('adminDashboard');
-        }
-        else if(\Auth::user()->role_id == 1 ){
-            return route('clubDashboard');
-        }
-        else if(\Auth::user()->role_id == 10 ){
-            return route('coachDashboard');
-        }
-        return '/';
+        $manager    =   new ManagerController;
+        $route =    $manager->findRoutes(\Auth::user() );
+        return route($route);
+       // return '/';
     }
 
 

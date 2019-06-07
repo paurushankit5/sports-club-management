@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 foreach(glob(dirname(__FILE__) . '/web/*.php') AS $file){
 	require_once($file);

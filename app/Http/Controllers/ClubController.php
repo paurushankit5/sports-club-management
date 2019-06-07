@@ -28,6 +28,23 @@ class ClubController extends Controller
         return view('admin.showclubs',$array);
     }
 
+
+    public function clubDetails($id){
+        $club = Club::findOrFail($id);
+        //$club->users  =   User::where($array)->orderBy('role_id')->get();
+        $array  = array('club'  =>  $club);
+        return view('admin/clubDetails', $array);
+    }
+
+    public function loginAsUser($id){
+        $array  =   array(
+                            "id"        =>  $id,
+                            "is_active" =>  1
+                        );
+        $user = User::where($array)->firstOrFail();
+        \Auth::login($user);
+        return redirect('/');
+    }
     /**
      * Show the form for creating a new resource.
      *
