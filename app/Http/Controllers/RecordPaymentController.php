@@ -8,6 +8,7 @@ use App\User;
 use App\Session as CoachSession;
 use Session;
 use Illuminate\Http\Request;
+use App\ReleaseInvoice;
 
 class RecordPaymentController extends Controller
 {
@@ -146,6 +147,26 @@ class RecordPaymentController extends Controller
                         'year'  =>  $year
                         );
         return view('club.revenueByCoach',$array);
+
+    }
+
+    public function release_invoice(Request $request){
+        $array      =       array(
+                                    "month"     =>   $request->month,
+                                    "year"      =>   $request->year,
+                                    "club_id"   =>   \Auth::user()->club_id
+                                );
+        $release_invoice    =   ReleaseInvoice::where($array)->get();
+        if(!count($release_invoice))
+        {
+            $release_invoice            =   new ReleaseInvoice;
+            $release_invoice->month     =   $request->month;
+            $release_invoice->year      =   $request->year;
+            $release_invoice->club_id   =   \Auth::user()->club_id;
+            $release_invoice->save();
+            return 1;
+        }
+        return "Invalid Request";
 
     }
 }

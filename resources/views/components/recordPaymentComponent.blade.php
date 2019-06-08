@@ -121,7 +121,7 @@
             				$("#loadingDiv").hide();
             				if(data)
             				{
-            					$("#recordPaymentModal").modal("toggle");
+            					//$("#recordPaymentModal").modal("toggle");
             					//$("#user_"+user_id).remove();
                                 location.reload();
             				}

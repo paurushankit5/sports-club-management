@@ -285,15 +285,14 @@ class ClubController extends Controller
                     break;
                 }
             }            
-        }
-            
-        
+        }     
         $array  =   array(
                             'users'   =>  $users,
                             'month'   =>  $month,
                             'year'   =>  $year,
                             'release_invoice'   =>  $release_invoice
                         );
+        //echo date('Y-M-d',strtotime($year."/".$month."/1"));
         return view('club.payment_module', $array);
     }
     public function update_late_fees(Request $request){
