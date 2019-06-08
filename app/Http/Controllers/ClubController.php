@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Session;
 use Mail;
 use App\Mail\TestEmail;
+use App\Http\Controllers\ManagerController;
 
 class ClubController extends Controller
 {
@@ -28,6 +29,24 @@ class ClubController extends Controller
         return view('admin.showclubs',$array);
     }
 
+    public function clubDetail($id){
+        $array  =   array('id'  =>  $id);
+        $club   =   Club::where($array)->with('users')->first();
+        $array  =   array(
+                            "club"  =>  $club
+                        );
+        return view('admin.clubDetails',$array);
+    }
+    public function loginAsUser($id){
+        $user   =   User::findOrFail($id)->with(['users' => function($q){
+            $q->orderby(['role_id']);
+        }]);
+        \Auth::loginUsingId($id);
+        $manager    =   new ManagerController;
+        $route      =   $manager->findUserDashboard();
+        return redirect()->route($route);
+
+    }
     /**
      * Show the form for creating a new resource.
      *

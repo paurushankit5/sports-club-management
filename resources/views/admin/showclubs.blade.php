@@ -50,7 +50,7 @@
                         {{ $club->mobile ." ". $club->alternate_mobile }}
                       </td>
                       <td>
-                        <a href="#" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('clubDetail', $club->id) }}" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a>
                         <a href="#" class="btn btn-success" title="Edit"><i class="fa fa-pencil"></i></a>
                         <a href="#" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></a>
                       </td>

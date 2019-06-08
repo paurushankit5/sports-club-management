@@ -11,6 +11,8 @@
 		
 
 		Route::resource('/clubs','ClubController');
+		Route::get('/clubDetail/{id}','ClubController@clubDetail')->name('clubDetail');
+		Route::get('/loginAsUser/{id}','ClubController@loginAsUser')->name('loginAsUser');
 
 		 
 	});
