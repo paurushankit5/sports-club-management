@@ -58,6 +58,9 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('/email', 'EmailController@sendEmail');
 
+	Route::post('/storeuser','PlayerController@storeuser')->name('users.store');	
+
+
 
 });
 

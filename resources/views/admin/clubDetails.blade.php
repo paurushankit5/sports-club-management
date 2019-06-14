@@ -14,7 +14,9 @@
       <div class="col-12 grid-margin">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">{{ $club->club_name }}</h4>
+            <h4 class="card-title">{{ $club->club_name }}
+                <a href="{{ route('clubs.createUser', $club->id) }}" class="btn pull-right btn-sm btn-gradient-primary mt-">+ Add Users</a>
+            </h4>
              	<div class="table table-responsive">
              		<table class="table">
              			<tr>

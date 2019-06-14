@@ -25,8 +25,8 @@
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
-      @includeWhen(\Auth::check() && \Auth::user()->role->id == 1, 'navbar.club_navbar')
-      @includeWhen(\Auth::check() && \Auth::user()->role->id == 10, 'navbar.coach_navbar')
+      @includeWhen(!\Auth::user()->is_superuser && \Auth::check() && \Auth::user()->role->id == 1, 'navbar.club_navbar')
+      @includeWhen(!\Auth::user()->is_superuser && \Auth::check() && \Auth::user()->role->id == 10, 'navbar.coach_navbar')
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
         <!-- partial:../../partials/_settings-panel.html -->
@@ -192,8 +192,8 @@
         </div>
         <!-- partial -->
         <!-- partial:../../partials/_sidebar.html -->
-        @includeWhen(\Auth::check() && \Auth::user()->role->id == 1, 'navbar.club_sidebar')
-        @includeWhen(\Auth::check() && \Auth::user()->role->id == 10, 'navbar.coach_sidebar')
+        @includeWhen(\Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 1, 'navbar.club_sidebar')
+        @includeWhen(\Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 10, 'navbar.coach_sidebar')
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">

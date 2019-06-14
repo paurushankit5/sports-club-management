@@ -17,12 +17,23 @@ class PaymentController extends Controller
                         "id"         =>  $user_id,
                         "role_id"    =>  2,
                     );
-        $user =  User::where($array)->firstOrFail();
+        $user =  User::where($array)->with('sports')->firstOrFail();
         if(count($user->sports))
         {
             $i=0;
             foreach($user->sports as $sport)
             {
+                //check if the invoice has been generated for this month
+                $array  =   array(
+                                    "month" =>  $month,
+                                    "year"  =>  $year,
+                                    "user_id"   =>  $user_id,
+                                    "sport_id"  =>  $sport->id
+                                );
+                $user->sports[$i]->invoice_generated = Payment::where($array)->count() ? 1 : 0;
+                //exit;
+
+
                 if($sport->pivot->coach_id!=Null)
                 {
                     $user->sports[$i]['coach'] = User::where('id',$sport->pivot->coach_id)->first();

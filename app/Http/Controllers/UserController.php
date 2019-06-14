@@ -7,6 +7,8 @@ use Session;
 use App\User;
 use App\Sport;
 use App\Fee;
+use App\Role;
+use App\Club;
 use App\Idproof;
 use App\CoachFee;
 use App\SportUserClub;
@@ -116,7 +118,7 @@ class UserController extends Controller
     	$user = User::findOrFail($id);
 
 
-    	if(($user->role_id == 2 || $user->role_id == 10) || (\Auth::user()->role_id == 1 && $user->club_id == \Auth::user()->club_id) )//if user is a player or a coach, anyone can see his/her profile.
+    	if(\Auth::user()->is_superuser || ($user->role_id == 2 || $user->role_id == 10) || (\Auth::user()->role_id == 1 && $user->club_id == \Auth::user()->club_id) )//if user is a player or a coach, anyone can see his/her profile.
     	{    		
             if($user->role_id==2)
             {
@@ -325,5 +327,14 @@ class UserController extends Controller
         return PDF2::load($html)->filename('invoice.pdf')->download();
 
         return view('pdf.invoice');
+    }
+
+    public function createUser($id){
+        $club   =   Club::findOrFail($id);
+        $array  =   array(
+                            "club"  =>  $club,
+                            "roles" =>  Role::all()
+                        );
+        return view('admin.createUser', $array);
     }
 }

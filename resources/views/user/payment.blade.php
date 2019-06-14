@@ -175,36 +175,37 @@
                                 <table class="table table-striped">
                             @php $final_amount = 0; @endphp
                 			@foreach($user->sports as $sport)
-                				
-                						<tr class="bg-primary">
-                							<th colspan="5"><h3 class="text text-center text-white">{{ $sport->sport_name }}</h3></th>
-                						</tr>                						
-                						<tr data-fees="{{ $sport->membership->fees[$sport->membership->membership_type] }}" data-sport_id="{{ $sport->id }}">
-                							<th>
-	                							@if($sport->membership)
-	                								{{ $sport->membership->fees->category_name }}
-	                							@endif
-                							</th>
-                                            <th>
-                                                Payment Mode:<br>
-                                                {{ ucwords($sport->membership->membership_type) }}
-                                            </th>
-                                            <th>&#x20B9; {{ $sport->membership->fees[$sport->membership->membership_type] }} </th>
-                                            <th>
-                                                Discount:<br>
-                                                <input type="number" min="0" class="form-control discount-game"  value="0" name="membership_discount_{{ $sport->id }}" id="membership_discount_{{ $sport->id }}">
-                                                <br>
-                                                <input type="text" name="membership_note_{{ $sport->id }}" placeholder="Enter Your Remarks" class="form-control discount-game-note d-none">
-                                            </th>
-                                            <th>
-                                                @php
-                                                    $final_amount += $sport->membership->fees[$sport->membership->membership_type]; 
-                                                @endphp
-                                                Total: <br>&#x20B9;
-                                                <span id="membership_total_{{ $sport->id }}">{{ $sport->membership->fees[$sport->membership->membership_type] }}</span>
-                                            </th>
-                						</tr>                					
-                			         @endforeach
+                                @if(!$sport->invoice_generated)
+                				<tr class="bg-primary">
+        							<th colspan="5"><h3 class="text text-center text-white">{{ $sport->sport_name }}</h3></th>
+        						</tr>                						
+        						<tr data-fees="{{ $sport->membership->fees[$sport->membership->membership_type] }}" data-sport_id="{{ $sport->id }}">
+        							<th>
+            							@if($sport->membership)
+            								{{ $sport->membership->fees->category_name }}
+            							@endif
+        							</th>
+                                    <th>
+                                        Payment Mode:<br>
+                                        {{ ucwords($sport->membership->membership_type) }}
+                                    </th>
+                                    <th>&#x20B9; {{ $sport->membership->fees[$sport->membership->membership_type] }} </th>
+                                    <th>
+                                        Discount:<br>
+                                        <input type="number" min="0" class="form-control discount-game"  value="0" name="membership_discount_{{ $sport->id }}" id="membership_discount_{{ $sport->id }}">
+                                        <br>
+                                        <input type="text" name="membership_note_{{ $sport->id }}" placeholder="Enter Your Remarks" class="form-control discount-game-note d-none">
+                                    </th>
+                                    <th>
+                                        @php
+                                            $final_amount += $sport->membership->fees[$sport->membership->membership_type]; 
+                                        @endphp
+                                        Total: <br>&#x20B9;
+                                        <span id="membership_total_{{ $sport->id }}">{{ $sport->membership->fees[$sport->membership->membership_type] }}</span>
+                                    </th>
+        						</tr>    
+                                @endif            					
+        			         @endforeach
                                      
                                 </table>
                             </div>

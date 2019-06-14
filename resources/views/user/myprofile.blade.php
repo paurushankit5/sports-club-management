@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            @component('<components class="coachfee"></components>')
+            @component('components.coachfee')
                 @slot('user' , \Auth::user())
             @endcomponent
 

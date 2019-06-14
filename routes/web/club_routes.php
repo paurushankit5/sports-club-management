@@ -8,7 +8,6 @@
 
 		Route::get('/users','PlayerController@clubuser')->name('users.all');	 
 		Route::get('/adduser','PlayerController@adduser')->name('users.create');	 
-		Route::post('/storeuser','PlayerController@storeuser')->name('users.store');	
 
 		Route::get('/sports/player/{sport_id}','PlayerController@getPlayerBySport');
 		Route::get('/sports/coach/{sport_id}','PlayerController@getCoachBySport');
@@ -39,6 +38,8 @@
 		Route::get('/revenueByCoach/{month}/{year}','RecordPaymentController@revenueByCoach')->name('revenueByCoach');
 
 		Route::post('/release_invoice','RecordPaymentController@release_invoice')->name('release_invoice');
+
+
 
 	});
 
