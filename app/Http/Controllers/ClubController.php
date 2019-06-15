@@ -41,12 +41,26 @@ class ClubController extends Controller
         $user   =   User::findOrFail($id)->with(['users' => function($q){
             $q->orderby(['role_id']);
         }]);
+        Session::put('admin_id', \Auth::user()->id);
+        //echo Session::get('admin_id');
         \Auth::loginUsingId($id);
         $manager    =   new ManagerController;
         $route      =   $manager->findUserDashboard();
         return redirect()->route($route);
 
     }
+    public function loginAsSuperadmin(){
+        if(Session::has('admin_id'))
+        {
+            $id = Session::get('admin_id');
+            $user   =   User::findOrFail($id);
+            \Auth::loginUsingId($id);
+            Session::forget('admin_id');
+            return redirect()->route('adminDashboard');
+        }
+        return redirect()->route('index');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

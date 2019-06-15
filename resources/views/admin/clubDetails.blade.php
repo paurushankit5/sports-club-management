@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.all')
 
 @section('title' , $club->club_name)
 

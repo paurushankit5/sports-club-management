@@ -1,13 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.all')
 
 @section('title' , 'Add Organization / Sports Club')
 
 @section('page_header' , 'Add Sports Club')
-
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="#">Tables</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Add Organization / Sports Club</li>
-@endsection
 
 @section('after_scripts')
   

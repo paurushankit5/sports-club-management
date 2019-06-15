@@ -337,4 +337,6 @@ class UserController extends Controller
                         );
         return view('admin.createUser', $array);
     }
+
+    
 }

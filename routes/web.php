@@ -22,6 +22,9 @@ foreach(glob(dirname(__FILE__) . '/web/*.php') AS $file){
 Auth::routes();
 
 Route::get('logout', function(){
+	if(\Session::has('admin_id')){
+		\Session::forget('admin_id');
+	}
 	Auth::logout();
 	return redirect('/');
 });
@@ -59,6 +62,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/email', 'EmailController@sendEmail');
 
 	Route::post('/storeuser','PlayerController@storeuser')->name('users.store');	
+
+	Route::get('/loginAsSuperadmin', 'ClubController@loginAsSuperadmin')->name('loginAsSuperadmin');
 
 
 
