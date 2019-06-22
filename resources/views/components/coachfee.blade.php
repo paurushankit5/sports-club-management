@@ -13,7 +13,7 @@
                         </button>
                     </th>
                 </tr>
-                @if($user->id == \Auth::user()->id || (\Auth::user()->role_id == 1 && \Auth::user()->club_id == $user->club_id))
+                @if(\Auth::user()->is_superuser || ($user->id == \Auth::user()->id || (\Auth::user()->role_id == 1 && \Auth::user()->club_id == $user->club_id)))
                     <tr>
                         <th colspan="2"> @if($user->coachFess == null) <button class="btn btn-primary sessionrate">Update Session Rate</button> @endif</th>
                     </tr>

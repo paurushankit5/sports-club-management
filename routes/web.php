@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/showreceivedpayment/{id}','RecordPaymentcontroller@showreceivedpayment')->name('showreceivedpayment');
 	Route::post('/getpaymentdetails','RecordPaymentController@getpaymentdetails')->name('getpaymentdetails');
 
-	Route::post('/storerecordpayment', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
+	Route::post('/storerecordpayment/{user_id}', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
 
 
 	Route::get('/demo', 'UserController@demo'); 
@@ -65,7 +65,14 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('/loginAsSuperadmin', 'ClubController@loginAsSuperadmin')->name('loginAsSuperadmin');
 
+	Route::post('/removeSportUserAssociation/{user_id}', 'SportController@removeSportUserAssociation')->name('removeSportUserAssociation');
+	Route::get('/getUnAssociatedSports/{user_id}', 'SportController@getUnAssociatedSports')->name('getUnAssociatedSports');
+	Route::post('/storeUnAssociatedSports/{user_id}', 'SportController@storeUnAssociatedSports')->name('storeUnAssociatedSports');
 
+	Route::get('/user/edit/profile/{id}', 'UserController@editOneProfile')->name('editOneProfile');
+	Route::post('/user/edit/profile/{id}', 'UserController@updateoneuserprofile')->name('updateoneuserprofile');
+
+	Route::post('/storeuseridproof/{id}','UserController@storeuseridproof')->name('storeuseridproof');
 
 });
 

@@ -16,7 +16,7 @@ use App\Payment;
 use App\PlayerMembership;
 use PDF;
 use PDF2;
-
+use App\Http\Controllers\CommonController;
 
 class UserController extends Controller
 {
@@ -174,8 +174,11 @@ class UserController extends Controller
                                         ->orWhere($array3)
                                         ->get();
             }
-
-            $array  = array('user'  =>  $user);
+            $idproofs  = Idproof::orderBy('proof_name')->get();
+            $array  = array(
+                            'user'  =>  $user,
+                            "idproofs"  => $idproofs
+                            );
             return view('user.oneUser',$array);
     	}
         else{
@@ -196,7 +199,7 @@ class UserController extends Controller
             'session_rate'             		=> 'required|numeric|min:0',
         ]);	
     	$user = User::findOrFail($request->id);
-    	if(\Auth::user()->id == $user->id || (\Auth::user()->club_id == $user->club_id && \Auth::user()->role_id == 1))
+    	if(\Auth::user()->is_superuser || (\Auth::user()->id == $user->id || (\Auth::user()->club_id == $user->club_id && \Auth::user()->role_id == 1)))
     	{
     		$coachFee = 	CoachFee::where('user_id', $user->id)->first();
     		if(!$coachFee)
@@ -224,7 +227,7 @@ class UserController extends Controller
     public function changeuserstatus($id)
     {
         $user = User::findOrFail($id);
-        if(\Auth::user()->club_id == $user->club_id && \Auth::user()->role_id ==1)
+        if(\Auth::user()->is_superuser || (\Auth::user()->club_id == $user->club_id && \Auth::user()->role_id ==1))
         {
             $user->is_active = !$user->is_active;
             $user->save();
@@ -233,14 +236,18 @@ class UserController extends Controller
         return redirect(route('getoneuserprofile',$id));
     }
     public function addcoachtoplayer($sport_id,$user_id){
-        $array = array('id' =>  $user_id,"club_id" => \Auth::user()->club_id,"role_id"  => 2);
+
+        $array = array('id' =>  $user_id,"role_id"  => 2);
+        if(!\Auth::user()->is_superuser){
+            $array['club_id']   = \Auth::user()->club_id;
+        }
         $user = User::where($array)
                  ->whereHas("sports", function($q){
                            $q->where("sports.id",request()->segment(3));
                         })
                 ->firstOrFail();
 
-        $array = array('club_id'    => \Auth::user()->club_id, 'role_id' => 10, "is_active" => true);
+        $array = array('club_id'    => $user->club_id, 'role_id' => 10, "is_active" => true);
 
         $coaches = User::where($array)
                         ->whereHas('sports', function($q){
@@ -270,7 +277,10 @@ class UserController extends Controller
         ]);
         if($request->coach_id == '')
             $request->coach_id = null;
-        $array  = array('id' => $request->user_id, "role_id" => 2, 'club_id' => \Auth::user()->club_id);
+        $array  = array('id' => $request->user_id, "role_id" => 2);
+         if(!\Auth::user()->is_superuser){
+            $array['club_id']   = \Auth::user()->club_id;
+        }
         $user = User::where($array)->firstOrFail();
         $array  = array('user_id' => $request->user_id,'sport_id' => $request->sport_id);
         $sport = SportUserClub::where($array)->firstOrFail();
@@ -288,7 +298,7 @@ class UserController extends Controller
         //echo "<prE>";
         //print_r($_REQUEST);
         $user = User::findOrFail($request->user_id);
-        if(\Auth::user()->club_id == $user->club_id && (\Auth::user()->role_id == 10 || \Auth::user()->role_id==1)){
+        if(\Auth::user()->is_superuser || (\Auth::user()->club_id == $user->club_id && (\Auth::user()->role_id == 10 || \Auth::user()->role_id==1))){
             if(count($request->sport_ids))
             {
                 foreach($request->sport_ids as $sport_id)
@@ -338,5 +348,71 @@ class UserController extends Controller
         return view('admin.createUser', $array);
     }
 
-    
+    public function editOneProfile($id){
+        $user   =   User::findOrFail($id);
+        if(CommonController::checkClubAdminOrSuperUser($user)){
+            $array  =   array('user'    =>  $user);
+            return view('editOneProfile', $array);
+        }
+        abort(404);
+    }
+    public function updateoneuserprofile(Request $request, $id){
+        $user   =   User::findOrFail($id);
+        if(CommonController::checkClubAdminOrSuperUser($user)){
+            $request->validate([
+            'fname'                     => 'required',
+            'lname'                     => 'required',
+            'user_alternate_email'      => 'nullable|email',
+            'user_mobile'               => 'required|unique:users,mobile,'.$user->id,
+            ]); 
+            try{
+                
+                $user->fname  =     $request->fname;
+                $user->lname  =     $request->lname;
+                $user->alternate_email  =   $request->user_alternate_email;
+                $user->mobile  =    $request->user_mobile;
+                $user->alternate_mobile  =      $request->user_alternate_mobile;
+                $user->emergency_contact_name  =    $request->emergency_contact_name;
+                $user->emergency_contact_number  =      $request->emergency_contact_number;
+                $user->blood_group  =   $request->blood_group;
+                $user->dob  =   $request->dob;
+                $user->save();
+                Session::flash('alert-success', 'Profile updated successfully');
+                return redirect(route('getoneuserprofile', $id));
+                
+            }
+            catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        }
+        abort(404);
+    }
+    public function storeuseridproof(Request $request, $id){
+        $request->validate([
+                'id_proof_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'id_proof'     => 'required',
+        ]);
+        try {
+            $user = User::findOrFail($id);
+            if($user->id_proof_pic!='')
+            {
+                @unlink(public_path('/images/'.$user->id_proof_pic));
+            }
+            $image = $request->file('id_proof_pic');
+            $id_proof_pic = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $id_proof_pic);
+
+
+            $user->id_proof     = $request->id_proof;
+            $user->id_proof_pic = $id_proof_pic;
+            $user->save();
+            Session::flash('alert-success', 'Profile Pic updated successfully');
+            return redirect(route('getoneuserprofile', $id));
+            
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        } 
+    }
 }

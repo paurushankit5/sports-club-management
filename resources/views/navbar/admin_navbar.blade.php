@@ -23,11 +23,17 @@
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                 <div class="nav-profile-img">
-                  <img src="{{ asset('admin/jpg/face1.jpg') }}" alt="image">
+                  <img 
+                       @if( \Auth::user()->profile_pic != '' )
+                           src="{{ asset('images/'.\Auth::user()->profile_pic) }}"   
+                      @else
+                           src="{{ asset('noprofilepic.png') }}"
+                      @endif
+                    alt="{{ \Auth::user()->fname." ".\Auth::user()->lname }}"/>
                   <span class="availability-status online"></span>
                 </div>
                 <div class="nav-profile-text">
-                  <p class="mb-1 text-black">Mr. Paurush</p>
+                  <p class="mb-1 text-black">{{ \Auth::user()->fname." ".\Auth::user()->lname }}</p>
                 </div>
               </a>
               <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">

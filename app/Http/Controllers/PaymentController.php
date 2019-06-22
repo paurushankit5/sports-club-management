@@ -93,8 +93,12 @@ class PaymentController extends Controller
             if(count($user->sports))
             {
                 $i=0;
+                //echo "<pre>";
+                //print_r($_REQUEST);
                 foreach($user->sports as $sport)
                 {
+                    //print_r($sport);
+
                     $array = array(
                         "club_id" =>    $user->club_id,
                         "sport_id"  =>  $sport->id
@@ -105,10 +109,9 @@ class PaymentController extends Controller
                         "sport_id"   =>  $sport->id,
                     );
                     $user->sports[$i]['membership'] = PlayerMembership::where($array)->first();
-                    if($user->sports[$i]['membership'] != Null)
+                    if($user->sports[$i]['membership'] != Null && isset($_REQUEST['membership_discount_'.$sport->id]))
                     {
                         $user->sports[$i]['membership']['fees'] = Fee::find($user->sports[$i]['membership']->fee_id);
-                        
                         $membership_fees = $user->sports[$i]['membership']['fees'][$user->sports[$i]['membership']['membership_type']];
                         $membership_duration = $user->sports[$i]['membership']['membership_type'];
                         // echo $membership_fees."<br>";
@@ -172,7 +175,7 @@ class PaymentController extends Controller
                             $payment->user_id = $id;
                             $payment->sport_id = $sport->id;
                             $payment->amount = $m_fees;
-                            $payment->discount = $discount_amount;
+                            $payment->discount = isset($discount_amount) ? $discount_amount : 0;
                             $payment->notes = $request['membership_note_'.$sport->id];
                             $payment->total_amount = $payment['amount'] - $payment['discount'];
                             $payment->payment_mode = $membership_duration;
@@ -183,6 +186,7 @@ class PaymentController extends Controller
                     }                                 
                     $i++;
                 }
+                //exit;
             }
             //exit;
             if(count($request->category))

@@ -24,7 +24,7 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $clubs = Club::paginate(env('RESULT_LIMIT'));
+        $clubs = Club::with('users')->paginate(env('RESULT_LIMIT'));
         $array  =   array('clubs' =>     $clubs);
         return view('admin.showclubs',$array);
     }
@@ -281,7 +281,7 @@ class ClubController extends Controller
                                                     "month"   =>  $month,
                                                     "year"   =>  $year,
                                                 );
-                                    $query->where($array);
+                                    $query->where($array)->where('total_amount', '>', 0);
                                 },'recordpayments','payments'])->get();
 
         $array  =   array(
@@ -290,16 +290,16 @@ class ClubController extends Controller
                             'club_id'   =>  \Auth::user()->club_id
                         );
         $release_invoice = true;
-        if(!ReleaseInvoice::where($array)->first() && count($users)){            
-            foreach($users as $user)
-            {
-                if(!count($user->payments2))
-                {
-                    $release_invoice = false;
-                    break;
-                }
-            }            
-        }     
+        // if(!ReleaseInvoice::where($array)->first() && count($users)){            
+        //     foreach($users as $user)
+        //     {
+        //         if(!count($user->payments2))
+        //         {
+        //             $release_invoice = false;
+        //             break;
+        //         }
+        //     }            
+        // }     
         $array  =   array(
                             'users'   =>  $users,
                             'month'   =>  $month,
