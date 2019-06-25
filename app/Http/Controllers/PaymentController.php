@@ -9,6 +9,12 @@ use App\PlayerMembership;
 use Illuminate\Http\Request;
 use Session;
 use PDF;
+use App\Mail\SendInvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendInvoiceJob;
+use Carbon\Carbon;
+
+
 
 class PaymentController extends Controller
 {
@@ -251,13 +257,13 @@ class PaymentController extends Controller
     public function downloadInvoice($user_id, $month, $year){
         $payments = $this->getOneMonthInvoice($user_id,$month,$year);
         $user = User::findOrFail($user_id);
-         $array    =     array(  
+        $array    =     array(  
                                 "payments"  => $payments,
                                 "user"      => $user
                             );
          return view('pdf.invoice', $array);
-        $pdf = PDF::loadView('pdf.invoice', $array);
-        return $pdf->stream();
+        // $pdf = PDF::loadView('pdf.invoice', $array);
+        // return $pdf->stream();
         //return $pdf->download('invoice.pdf');
         //return view('pdf.invoice',$array);
         //$html = view('pdf.invoice',$array)->render();
@@ -274,4 +280,18 @@ class PaymentController extends Controller
                     );
         return Payment::where($array)->with(array('sport','coach'))->get();
     }
+    public function mail(){
+        $payments = $this->getOneMonthInvoice(25,6,2019);
+
+        $user = User::findOrFail(25);
+        $array    =     array(  
+                                "payments"  => $payments,
+                                "user"      => $user
+                            );
+        //return view('pdf.invoice', $array);
+        //dispatch(new SendInvoiceJob($array, "paurushankit5@gmail.com"))->delay(60 * .5);
+        Mail::to('paurushankit5@gmail.com')->send(new SendInvoiceMail($array));
+        echo 'email sent';
+    }
+
 }

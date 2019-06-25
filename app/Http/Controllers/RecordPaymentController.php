@@ -158,22 +158,39 @@ class RecordPaymentController extends Controller
     }
 
     public function release_invoice(Request $request){
-        $array      =       array(
-                                    "month"     =>   $request->month,
-                                    "year"      =>   $request->year,
-                                    "club_id"   =>   \Auth::user()->club_id
-                                );
-        $release_invoice    =   ReleaseInvoice::where($array)->get();
-        if(!count($release_invoice))
+        if(count($request->user_ids))
         {
-            $release_invoice            =   new ReleaseInvoice;
-            $release_invoice->month     =   $request->month;
-            $release_invoice->year      =   $request->year;
-            $release_invoice->club_id   =   \Auth::user()->club_id;
-            $release_invoice->save();
-            return 1;
+            try{
+                \DB::beginTransaction();
+                foreach($request->user_ids as $user_id){
+                    $array      =       array(
+                                        "month"     =>   $request->month,
+                                        "year"      =>   $request->year,
+                                        "user_id"   =>   $user_id
+                                    );
+                    $release_invoice    =   ReleaseInvoice::where($array)->get();
+                    if(!count($release_invoice))
+                    {
+                        $release_invoice            =   new ReleaseInvoice;
+                        $release_invoice->month     =   $request->month;
+                        $release_invoice->year      =   $request->year;
+                        $release_invoice->user_id   =   $user_id;
+                        $release_invoice->save();
+                    }
+                }
+                \DB::commit();
+                $status = 1;
+                $msg = 'Your request to release invoice has been successfully submitted.';
+            }
+            catch(Exception $e) {
+                \DB::rollBack();
+                $status = 0;
+                $msg = $e->getMessage();
+            }
         }
-        return "Invalid Request";
-
+        $array  = array('status'    =>  $status,
+                        'msg'       =>  $msg
+                        );
+        return $array;
     }
 }

@@ -76,3 +76,4 @@ Route::group(['middleware' => ['auth']], function(){
 
 });
 
+Route::get('/mail1','PaymentController@mail');

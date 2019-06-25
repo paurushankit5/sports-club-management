@@ -153,11 +153,11 @@
                                         {{ $sport->sport_name }}
                                         @if($user->role_id == 2)
                                             @if($sport->coach)
-                                                (
-                                                    <a href="{{ route('getoneuserprofile',$sport->coach->id) }}">{{$sport->coach->fname}}
-                                                        {{$sport->coach->lname}}
-                                                    </a>
-                                                )                                                
+                                            (
+                                                <a href="{{ route('getoneuserprofile',$sport->coach->id) }}">{{$sport->coach->fname}}
+                                                    {{$sport->coach->lname}}
+                                                </a>
+                                            )                                                
                                             @endif
                                             <button data-sport_id="{{ $sport->id }}" class="btn btn-sm btn-danger float-right delete-sport-user" title="Delete Sports"><i class="fa fa-times"></i></button>
                                              <a href="{{ route('addcoachtoplayer',array($sport->id,$user->id)) }}" class="btn btn-primary btn-sm float-right" title="Edit" title="Assign/Remove Coach"><i class="mdi mdi-pencil"></i></a>

@@ -282,7 +282,14 @@ class ClubController extends Controller
                                                     "year"   =>  $year,
                                                 );
                                     $query->where($array)->where('total_amount', '>', 0);
-                                },'recordpayments','payments'])->get();
+                                },'recordpayments','payments',
+                                'release_invoice' => function($query) use($month, $year){
+                                    $array  = array(
+                                                    "month"   =>  $month,
+                                                    "year"   =>  $year,
+                                                );
+                                    $query->where($array);
+                                }])->get();
 
         $array  =   array(
                             "month"   =>  $month,
