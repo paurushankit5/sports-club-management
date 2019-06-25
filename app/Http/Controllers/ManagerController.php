@@ -22,4 +22,3 @@ class ManagerController extends Controller
         return 'index';
     }
 }
-
