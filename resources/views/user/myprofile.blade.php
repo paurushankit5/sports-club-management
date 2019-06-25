@@ -45,24 +45,26 @@
                                 @if(\Auth::user()->alternate_mobile != '') {{ \Auth::user()->alternate_mobile }} <br> @endif
                             </td>
                         </tr>
-                        <tr>
-                            <th>Club</th>
-                            <td>{{ \Auth::user()->club->club_name }}</td>
-                        </tr> 
-                        <tr>
-                            <th>Role</th>
-                            <td>{{ \Auth::user()->role->role_name }}</td>
-                        </tr>
-                        @if(\Auth::user()->sports)
+                        @if(! \Auth::user()->is_superuser)
                             <tr>
-                                <th>Sports</th>
-                                <td>
-                                    @foreach( \Auth::user()->sports as $sport)
-                                        {{ $sport->sport_name }}<br>
-                                    @endforeach
-                                </td>
+                                <th>Club</th>
+                                <td>{{ \Auth::user()->club->club_name }}</td>
+                            </tr> 
+                            <tr>
+                                <th>Role</th>
+                                <td>{{ \Auth::user()->role->role_name }}</td>
                             </tr>
-                        @endif   
+                            @if(\Auth::user()->sports)
+                                <tr>
+                                    <th>Sports</th>
+                                    <td>
+                                        @foreach( \Auth::user()->sports as $sport)
+                                            {{ $sport->sport_name }}<br>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            @endif   
+                        @endif
                         <tr>
                             <th>ID Proof</th>
                             <td>
@@ -115,7 +117,7 @@
                 </div>
             </div>
 
-            @component('<components class="coachfee"></components>')
+            @component('components.coachfee')
                 @slot('user' , \Auth::user())
             @endcomponent
 

@@ -177,6 +177,7 @@ return [
         CrudGenerator\CrudGeneratorServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Vsmoraes\Pdf\PdfServiceProvider::class,
+        // Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
 
 
 

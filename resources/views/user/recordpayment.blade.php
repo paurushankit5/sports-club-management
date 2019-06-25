@@ -28,7 +28,7 @@
                  		</div>
                  		<div class="form-group">
                  			<label>Remarks</label>
-                 			<input type="text" required  placeholder="Enter Remarks if any" class="form-control"  name="notes">
+                 			<input type="text"  placeholder="Enter Remarks if any" class="form-control"  name="notes">
                  		</div>
                  		<div class="form-group">
                  			<input type="submit" class="btn btn-primary">

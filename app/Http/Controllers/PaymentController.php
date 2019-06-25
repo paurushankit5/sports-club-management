@@ -9,6 +9,12 @@ use App\PlayerMembership;
 use Illuminate\Http\Request;
 use Session;
 use PDF;
+use App\Mail\SendInvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendInvoiceJob;
+use Carbon\Carbon;
+
+
 
 class PaymentController extends Controller
 {
@@ -17,12 +23,23 @@ class PaymentController extends Controller
                         "id"         =>  $user_id,
                         "role_id"    =>  2,
                     );
-        $user =  User::where($array)->firstOrFail();
+        $user =  User::where($array)->with('sports')->firstOrFail();
         if(count($user->sports))
         {
             $i=0;
             foreach($user->sports as $sport)
             {
+                //check if the invoice has been generated for this month
+                $array  =   array(
+                                    "month" =>  $month,
+                                    "year"  =>  $year,
+                                    "user_id"   =>  $user_id,
+                                    "sport_id"  =>  $sport->id
+                                );
+                $user->sports[$i]->invoice_generated = Payment::where($array)->count() ? 1 : 0;
+                //exit;
+
+
                 if($sport->pivot->coach_id!=Null)
                 {
                     $user->sports[$i]['coach'] = User::where('id',$sport->pivot->coach_id)->first();
@@ -82,8 +99,12 @@ class PaymentController extends Controller
             if(count($user->sports))
             {
                 $i=0;
+                //echo "<pre>";
+                //print_r($_REQUEST);
                 foreach($user->sports as $sport)
                 {
+                    //print_r($sport);
+
                     $array = array(
                         "club_id" =>    $user->club_id,
                         "sport_id"  =>  $sport->id
@@ -94,10 +115,9 @@ class PaymentController extends Controller
                         "sport_id"   =>  $sport->id,
                     );
                     $user->sports[$i]['membership'] = PlayerMembership::where($array)->first();
-                    if($user->sports[$i]['membership'] != Null)
+                    if($user->sports[$i]['membership'] != Null && isset($_REQUEST['membership_discount_'.$sport->id]))
                     {
                         $user->sports[$i]['membership']['fees'] = Fee::find($user->sports[$i]['membership']->fee_id);
-                        
                         $membership_fees = $user->sports[$i]['membership']['fees'][$user->sports[$i]['membership']['membership_type']];
                         $membership_duration = $user->sports[$i]['membership']['membership_type'];
                         // echo $membership_fees."<br>";
@@ -161,7 +181,7 @@ class PaymentController extends Controller
                             $payment->user_id = $id;
                             $payment->sport_id = $sport->id;
                             $payment->amount = $m_fees;
-                            $payment->discount = $discount_amount;
+                            $payment->discount = isset($discount_amount) ? $discount_amount : 0;
                             $payment->notes = $request['membership_note_'.$sport->id];
                             $payment->total_amount = $payment['amount'] - $payment['discount'];
                             $payment->payment_mode = $membership_duration;
@@ -172,6 +192,7 @@ class PaymentController extends Controller
                     }                                 
                     $i++;
                 }
+                //exit;
             }
             //exit;
             if(count($request->category))
@@ -236,13 +257,13 @@ class PaymentController extends Controller
     public function downloadInvoice($user_id, $month, $year){
         $payments = $this->getOneMonthInvoice($user_id,$month,$year);
         $user = User::findOrFail($user_id);
-         $array    =     array(  
+        $array    =     array(  
                                 "payments"  => $payments,
                                 "user"      => $user
                             );
          return view('pdf.invoice', $array);
-        $pdf = PDF::loadView('pdf.invoice', $array);
-        return $pdf->stream();
+        // $pdf = PDF::loadView('pdf.invoice', $array);
+        // return $pdf->stream();
         //return $pdf->download('invoice.pdf');
         //return view('pdf.invoice',$array);
         //$html = view('pdf.invoice',$array)->render();
@@ -259,4 +280,18 @@ class PaymentController extends Controller
                     );
         return Payment::where($array)->with(array('sport','coach'))->get();
     }
+    public function mail(){
+        $payments = $this->getOneMonthInvoice(25,6,2019);
+
+        $user = User::findOrFail(25);
+        $array    =     array(  
+                                "payments"  => $payments,
+                                "user"      => $user
+                            );
+        //return view('pdf.invoice', $array);
+        //dispatch(new SendInvoiceJob($array, "paurushankit5@gmail.com"))->delay(60 * .5);
+        Mail::to('paurushankit5@gmail.com')->send(new SendInvoiceMail($array));
+        echo 'email sent';
+    }
+
 }

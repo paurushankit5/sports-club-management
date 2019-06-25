@@ -32,6 +32,9 @@ class PlayerController extends Controller
 
     public function storeuser(Request $request)
     {
+        if(!(\Auth::user()->is_superuser || \Auth::user()->role_id == 1)){
+            return redirect('index');
+        }
     	if($request->role == 0){        	
 	    	$request->validate([
 	            'role'         		=> 'required',            
@@ -78,9 +81,11 @@ class PlayerController extends Controller
             $user->alternate_mobile     =   $request->user_alternate_mobile;
             $user->is_active            =   true;
             $user->role_id              =   $role->id;
-            $user->club_id              =   \Auth::user()->club_id;
+            $user->club_id              =   \Auth::user()->is_superuser ? $request->club_id : \Auth::user()->club_id;
             $user->save();
-
+            // echo "<pre>";
+            // print_r($_REQUEST);
+            // exit;
             //if the user is a coach set his/her initial fees to 0
             if($role->id == 10)
             {
@@ -105,6 +110,7 @@ class PlayerController extends Controller
             
             Mail::to($user->email)->send(new TestEmail($data));
             Session::flash('alert-success', 'User added successfully');
+            //echo "good";    
             return redirect(route('getoneuserprofile',$user->id));
 
 

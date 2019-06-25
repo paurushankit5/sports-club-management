@@ -51,16 +51,64 @@
                         alert("No invoices generated yet.");
                     }
                 }
-            })
-        })
+            });
+        });
+        $(".delete-sport-user").on('click', function(){
+            var r = confirm("Do you really want to remove this game from the user?");
+            if(r){
+                var sport_id = $(this).attr('data-sport_id');
+                $.ajax({
+                    type    : 'POST',
+                    url     :  "{{ route('removeSportUserAssociation', $user->id) }}",
+                    data    :   {
+                        "sport_id"  :   sport_id,
+                        "_token"    :   "{{ csrf_token() }}"
+                    },
+                    success :   function(data){
+                        //console.log(data);
+                        location.reload();
+                    }
+                });
+            }
+        });
+        $(".addpsorts").on('click', function(){
+            $.ajax({
+                type : "GET",
+                url  : "{{ route('getUnAssociatedSports', $user->id) }}",
+                success : function(data){
+                    console.log(data.status);
+                    $("#add_sports_ids").html();
+                    if(data.status == 1){
+                        $.each(data.data, function(i,value){
+                            $("#add_sports_ids").append("<option value='"+i+"'>"+value.sport_name+"</option>");
+                        });
+                        $("#addpsortsModal").modal('toggle');
+
+                    }else{
+                        alert("No sports available to associate "); 
+                    }
+                    
+                }
+            });
+        });
+        $(".uploadidproof").on('click', function(){
+            $("#idProofModal").modal('toggle');
+        });
+
     </script>
+
 @endsection
 @section('content')
     <div class="row">      
         <div class="col-lg-8 order-2 order-sm-1 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">{{ $user->fname." ".$user->lname }}'s Profile</h4>
+                <h4 class="card-title">
+                    {{ $user->fname." ".$user->lname }}'s Profile 
+                    @if(\Auth::user()->is_superuser || (\Auth::user()->role_id == 1 && \Auth::user()->club_id == $user->club_id ))
+                        <a href="{{ route('editOneProfile', $user->id) }}" class="btn btn-primary float-right btn-sm"><i class="fa fa-pencil"></i></a>
+                    @endif
+                </h4>
                 <div class="table-responsive">
                 <table class="table table-striped">             
                     <tbody>
@@ -68,7 +116,7 @@
                             <th>Name</th>
                             <td>{{ $user->fname." ".$user->lname }}</td>
                         </tr>
-                         @if($user->club_id == \Auth::user()->club_id)
+                         @if(\Auth::user()->is_superuser || $user->club_id == \Auth::user()->club_id)
                         <tr>
                             <th>Contact <br> Details</th>
                             <td>
@@ -81,7 +129,13 @@
                         @endif
                         <tr>
                             <th>Club</th>
-                            <td>{{ $user->club->club_name }}</td>
+                            <td>
+                                @if(\Auth::user()->is_superuser) 
+                                    <a href="{{ route('clubDetail', $user->club_id) }}"> {{ $user->club->club_name }} </a>
+                                @else 
+                                    {{ $user->club->club_name }}
+                                @endif
+                            </td>
                         </tr> 
                         <tr>
                             <th>Role</th>
@@ -91,29 +145,37 @@
                             <tr>
                                 <th>Sports</th>
                                 <td>
+                                    @if(\Auth::user()->is_superuser || (\Auth::user()->role_id == 1 && \Auth::user()->club_id == $user->club_id ))
+                                        <button class="btn btn-sm btn-success float-right addpsorts"><i class="fa fa-plus"></i></button>
+                                        <br><br>
+                                    @endif
                                     @foreach( $user->sports as $sport)
                                         {{ $sport->sport_name }}
                                         @if($user->role_id == 2)
                                             @if($sport->coach)
-                                                (
-                                                    <a href="{{ route('getoneuserprofile',$sport->coach->id) }}">{{$sport->coach->fname}}
-                                                        {{$sport->coach->lname}}
-                                                    </a>
-                                                )                                                
+                                            (
+                                                <a href="{{ route('getoneuserprofile',$sport->coach->id) }}">{{$sport->coach->fname}}
+                                                    {{$sport->coach->lname}}
+                                                </a>
+                                            )                                                
                                             @endif
-                                            <a href="{{ route('addcoachtoplayer',array($sport->id,$user->id)) }}" class="btn btn-primary btn-sm float-right" title="Assign/Remove Coach"><i class="mdi mdi-pencil"></i></a>
+                                            <button data-sport_id="{{ $sport->id }}" class="btn btn-sm btn-danger float-right delete-sport-user" title="Delete Sports"><i class="fa fa-times"></i></button>
+                                             <a href="{{ route('addcoachtoplayer',array($sport->id,$user->id)) }}" class="btn btn-primary btn-sm float-right" title="Edit" title="Assign/Remove Coach"><i class="mdi mdi-pencil"></i></a>
+
                                         @endif
                                         <hr>
                                     @endforeach
                                 </td>
                             </tr>
                         @endif
-                        @if($user->club_id == \Auth::user()->club_id && \Auth::user()->role_id == 1)
+                        @if(\Auth::user()->is_superuser || ($user->club_id == \Auth::user()->club_id && \Auth::user()->role_id == 1))
                             <tr>
                                 <th>ID Proof</th>
                                 <td>
                                     @if( $user->id_proof !='')
                                         <a href="{{ url('images/'.$user->id_proof_pic) }}" target="_blank">{{ $user->id_proof }}</a>
+                                    @else
+                                        <button class="btn btn-outline-danger btn-icon-text uploadidproof">Upload</button>
                                     @endif
                                 </td>
                             </tr> 
@@ -163,7 +225,7 @@
                     <h5 class=" text-primary">{{ $user->fname." ".$user->lname }}</h5>
                     <br>
                     <br>
-                    @if(\Auth::user()->club_id == $user->club_id && (\Auth::user()->role_id ==1 || \Auth::user()->club_id ==10) )
+                    @if(\Auth::user()->is_superuser || ( \Auth::user()->club_id == $user->club_id && (\Auth::user()->role_id ==1 || \Auth::user()->club_id ==10)) )
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
@@ -226,9 +288,74 @@
             @endcomponent
 
         </div>
+        <div class="modal fade" id="addpsortsModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{ route('storeUnAssociatedSports', $user->id) }}" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Change Pic</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Select Sports:</label>
+                            <select class="form-control" id='add_sports_ids' name="add_sports_ids[]" multiple>
+                                
+                            </select>
+                        </div>                      
+                     </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Submit
+                        </button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
       
       
-      
+    </div>
+
+    <div class="modal fade" id="idProofModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ route('storeuseridproof', $user->id) }}" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Upload ID Proof</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group">
+                        <label>ID Proof*</label>
+                        <select class="form-control" name="id_proof" id="id_proof">
+                            @if(count($idproofs))
+                                @foreach($idproofs as $idproof)
+                                    <option>{{ $idproof->proof_name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_proof_pic" class="col-form-label">Upload ID Proof:</label>
+                        <input type="file" accept="image/*" required class="form-control" id="id_proof_pic" name="id_proof_pic">
+                    </div>                      
+                 </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="mdi mdi-upload btn-icon-prepend"></i> Upload
+                    </button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
     </div>
 
      

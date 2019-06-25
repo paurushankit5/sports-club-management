@@ -24,28 +24,34 @@
                 }
 			});
             $(".release_invoice").on('click', function(){
-                var r = confirm(" Are you sure you want to release all invoices?");
-                if(r)
-                {
-                    $.ajax({
-                        type    : 'POST',
-                        url     :   "{{ route('release_invoice') }}",
-                        data    :   {
-                            "_token"    :   "{{ csrf_token() }}",
-                            "month"     :   "{{ $month }}",
-                            "year"     :   "{{ $year }}",
-                        },
-                        success     :   function(data){
-                            if(data == 1){
+                var user_ids =[];  
+                $("input:checkbox[name=user_id]:checked").each(function(){
+                    user_ids.push($(this).val());
+                });
+                if(user_ids.length){
+                    var r = confirm(" Are you sure you want to release all invoices?");
+                    if(r){
+                        $.ajax({
+                            type    : 'POST',
+                            url     :   "{{ route('release_invoice') }}",
+                            data    :   {
+                                "_token"    :   "{{ csrf_token() }}",
+                                "month"     :   "{{ $month }}",
+                                "year"     :   "{{ $year }}",
+                                "user_ids"  :   user_ids
+                            },
+                            success     :   function(data){
+                                alert(data.msg);
                                 location.reload();
                             }
-                            else{
-                                alert(data);
-                            }
-                            console.log(data);
-                        }
-                    })
+                        })
+                    } 
                 }
+                
+            })
+            $("#all_checkbox").on('click', function(){
+                var check = $("#all_checkbox").is(":checked");
+                $(".relaease_invoice_checkbox").attr("checked", check);
             })
         });
             
@@ -98,7 +104,7 @@
             	<table class="table table-striped">
             		<thead>
             			<tr>
-            				<th>#</th>
+            				<th><input type="checkbox" id="all_checkbox" />&nbsp;&nbsp;&nbsp; #</th>
             				<th>Player</th>
             				<th>Invoice</th>
             				<th>Payment Due</th>
@@ -111,10 +117,28 @@
             				@php $i=1; @endphp
             				@foreach($users as $user)
             					<tr id="user_{{ $user->id }}">
-            						<td>{{ $i++ }}</td>
+
+            						<td>  {!! count($user->payments2) && !count($user->release_invoice) ? '<input type="checkbox" name="user_id" value="'.$user->id.'" class="relaease_invoice_checkbox" />&nbsp;&nbsp;&nbsp; ' : '' !!} {{ $i++ }}</td>
             						<td><a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a></td>
-            						<td>{!! count($user->payments2) ? '<a href="'.route('showpayment', ['user_id' => $user->id,'month'=> $month,'year'=> $year]) .'" target="_blank" class="btn btn-rounded btn-sm btn-success">View Invoice</a>' : '<a href="/user/payment/'.$user->id.'/'.$month.'/'.$year.'" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>'  !!}</td>
-            						<td>&#x20B9; {{ $user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') }}</td>
+            						<td>
+                                        @if(count($user->payments2))
+                                            <a href="{{route('showpayment', ['user_id' => $user->id,'month'=> $month,'year'=> $year]) }}" target="_blank" class="btn btn-rounded btn-sm btn-success">View Invoice</a>
+                                         @else
+                                            <a href="/user/payment/{{$user->id}}/{{$month}}/{{$year}}" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>
+                                         @endif
+                                         @if(count($user->release_invoice))
+                                            <br>
+                                            <small>
+                                                @if($user->release_invoice->is_completed)
+                                                    Invoice Released
+                                                @else
+                                                    Invoice to be released soon
+                                                @endif
+                                            </small>
+                                         @endif
+                                    </td>
+            						<td>&#x20B9; {{ $user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') }}
+                                    </td>
             						<td>
             							@if(count($user->recordpayments))
             								&#x20B9; {{ $user->recordpayments[0]->payment_received }} <br>

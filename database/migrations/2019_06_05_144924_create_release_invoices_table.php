@@ -17,8 +17,8 @@ class CreateReleaseInvoicesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('month');
             $table->integer('year');
-            $table->bigInteger('club_id')->unsigned()->nullable();
-            $table->foreign('club_id')->references('id')->on('clubs');            
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');            
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });

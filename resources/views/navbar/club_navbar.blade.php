@@ -18,6 +18,7 @@
             </form>
           </div>
           <ul class="navbar-nav navbar-nav-right">
+            @includeWhen(Session::has('admin_id'),'components.loginAsSuperAdmin')
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                 <div class="nav-profile-img">

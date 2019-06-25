@@ -5,7 +5,7 @@
         <div class="content text-center">
             <br>
             <h4 class="card-title text-primary">Membership Plan
-                @if((\Auth::user()->role_id == 10 || \Auth::user()->role_id == 1) && \Auth::user()->club_id == $user->club_id)
+                @if(((\Auth::user()->role_id == 10 || \Auth::user()->role_id == 1) && \Auth::user()->club_id == $user->club_id)|| \Auth::user()->is_superuser)
                     <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#membership_modal" title="Add Membership"><i class="mdi mdi-pencil"></i> </button>
                 @endif
             </h4>

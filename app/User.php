@@ -70,6 +70,8 @@ class User extends Authenticatable
         return $this->hasMany('App\Payment');
     }
 
-
+    public function release_invoice(){
+        return $this->hasOne('App\ReleaseInvoice');
+    }
 
 }
