@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Http\Controllers\ManagerController;
+use App\Http\controllers\ManagerController;
 
 class LoginController extends Controller
 {
@@ -30,9 +30,8 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         $manager    =   new ManagerController;
-        $route =    $manager->findRoutes(\Auth::user() );
+        $route      =   $manager->findUserDashboard();
         return route($route);
-       // return '/';
     }
 
 
@@ -46,3 +45,4 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 }
+

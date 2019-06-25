@@ -31,8 +31,18 @@
                         type    : 'POST',
                         url     :   "{{ route('release_invoice') }}",
                         data    :   {
-                            "_token"    :   "{{ cdrf_token() }}",
-                            ""
+                            "_token"    :   "{{ csrf_token() }}",
+                            "month"     :   "{{ $month }}",
+                            "year"     :   "{{ $year }}",
+                        },
+                        success     :   function(data){
+                            if(data == 1){
+                                location.reload();
+                            }
+                            else{
+                                alert(data);
+                            }
+                            console.log(data);
                         }
                     })
                 }

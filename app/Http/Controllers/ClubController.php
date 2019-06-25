@@ -15,7 +15,6 @@ use Mail;
 use App\Mail\TestEmail;
 use App\Http\Controllers\ManagerController;
 
-
 class ClubController extends Controller
 {
     /**
@@ -25,30 +24,43 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $clubs = Club::paginate(env('RESULT_LIMIT'));
+        $clubs = Club::with('users')->paginate(env('RESULT_LIMIT'));
         $array  =   array('clubs' =>     $clubs);
         return view('admin.showclubs',$array);
     }
 
-
-    public function clubDetails($id){
-        $club = Club::find($id)->with('users')->first();
-        //$club->users  =   User::where($array)->orderBy('role_id')->get();
-        $array  = array('club'  =>  $club);
-        return view('admin/clubDetails', $array);
-    }
-
-    public function loginAsUser($id){
+    public function clubDetail($id){
+        $array  =   array('id'  =>  $id);
+        $club   =   Club::where($array)->with('users')->first();
         $array  =   array(
-                            "id"        =>  $id,
-                            "is_active" =>  1
+                            "club"  =>  $club
                         );
-        $user = User::where($array)->firstOrFail();
-        \Auth::login($user);
-        $manager    =   new ManagerController;
-        $route =    $manager->findRoutes(\Auth::user() );
-        return route($route);
+        return view('admin.clubDetails',$array);
     }
+    public function loginAsUser($id){
+        $user   =   User::findOrFail($id)->with(['users' => function($q){
+            $q->orderby(['role_id']);
+        }]);
+        Session::put('admin_id', \Auth::user()->id);
+        //echo Session::get('admin_id');
+        \Auth::loginUsingId($id);
+        $manager    =   new ManagerController;
+        $route      =   $manager->findUserDashboard();
+        return redirect()->route($route);
+
+    }
+    public function loginAsSuperadmin(){
+        if(Session::has('admin_id'))
+        {
+            $id = Session::get('admin_id');
+            $user   =   User::findOrFail($id);
+            \Auth::loginUsingId($id);
+            Session::forget('admin_id');
+            return redirect()->route('adminDashboard');
+        }
+        return redirect()->route('index');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -269,8 +281,15 @@ class ClubController extends Controller
                                                     "month"   =>  $month,
                                                     "year"   =>  $year,
                                                 );
+                                    $query->where($array)->where('total_amount', '>', 0);
+                                },'recordpayments','payments',
+                                'release_invoice' => function($query) use($month, $year){
+                                    $array  = array(
+                                                    "month"   =>  $month,
+                                                    "year"   =>  $year,
+                                                );
                                     $query->where($array);
-                                },'recordpayments','payments'])->get();
+                                }])->get();
 
         $array  =   array(
                             "month"   =>  $month,
@@ -278,24 +297,23 @@ class ClubController extends Controller
                             'club_id'   =>  \Auth::user()->club_id
                         );
         $release_invoice = true;
-        if(!ReleaseInvoice::where($array)->first() && count($users)){            
-            foreach($users as $user)
-            {
-                if(!count($user->payments2))
-                {
-                    $release_invoice = false;
-                    break;
-                }
-            }            
-        }
-            
-        
+        // if(!ReleaseInvoice::where($array)->first() && count($users)){            
+        //     foreach($users as $user)
+        //     {
+        //         if(!count($user->payments2))
+        //         {
+        //             $release_invoice = false;
+        //             break;
+        //         }
+        //     }            
+        // }     
         $array  =   array(
                             'users'   =>  $users,
                             'month'   =>  $month,
                             'year'   =>  $year,
                             'release_invoice'   =>  $release_invoice
                         );
+        //echo date('Y-M-d',strtotime($year."/".$month."/1"));
         return view('club.payment_module', $array);
     }
     public function update_late_fees(Request $request){
@@ -307,3 +325,4 @@ class ClubController extends Controller
         return back()->withInput();
     }
 }
+

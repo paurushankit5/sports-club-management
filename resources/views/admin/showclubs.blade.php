@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.all')
 
 @section('title' , 'Organization List')
 
@@ -26,6 +26,7 @@
                 <tr>
                   <th> # </th>
                   <th> Organization </th>
+                  <th> Users </th>
                   <th> Contact Details </th>
                   <th> Action </th>
                 </tr>
@@ -44,13 +45,14 @@
                     <tr>
                       <td>{{ $i++ }}</td>
                       <td>{{ $club->club_name }}</td>
+                      <td> {{ count($club->users) }} </td>
                       <td>
                         {{ $club->contact_fname ." ". $club->contact_lname }}<br>
-                        {{ $club->email ." ". $club->alternate_email }}<br>
-                        {{ $club->mobile ." ". $club->alternate_mobile }}
+                        {!! $club->email ."<br>". $club->alternate_email !!}<br>
+                        {!! $club->mobile ."<br>". $club->alternate_mobile !!}
                       </td>
                       <td>
-                        <a href="{{ route('clubDetails', $club->id) }}" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('clubDetail', $club->id) }}" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a>
                         <a href="#" class="btn btn-success" title="Edit"><i class="fa fa-pencil"></i></a>
                         <a href="#" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></a>
                       </td>
