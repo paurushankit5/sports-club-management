@@ -209,16 +209,27 @@ class ClubController extends Controller
                     
     }
 
-    public function fees(){
-        $sports = \Auth::user()->club->sports;
+    public function fees($id = 0){
+        if($id > 0 )
+        {
+            $club = Club::findOrFail($id);
+            $sports     =   $club->sports;
+            $club_id    =   $id;
+        }
+        else{
+            $sports = \Auth::user()->club->sports;
+            $club_id    =   \Auth::user()->club_id;
+            $club =     \Auth::user()->club;
+        }
+        
 
         if(count($sports))
         {
             for($i=0;$i<count($sports);$i++)
             {
                 $array = array(
-                                "club_id" =>    \Auth::user()->club_id,
-                                "sport_id"  =>  $sports[$i]["id"]
+                                "club_id" =>    $club_id,
+                                "sport_id"  =>  $sports[$i]["id"],
                             );
                 $sports[$i]['fees'] = Fee::where($array)->get();
             }
@@ -228,7 +239,7 @@ class ClubController extends Controller
         // {
         //     return view('club.addfees');
         // }
-        $array = compact('sports');
+        $array = compact('sports','club');
         return view('club.fees', $array);
 
         
@@ -316,10 +327,11 @@ class ClubController extends Controller
         //echo date('Y-M-d',strtotime($year."/".$month."/1"));
         return view('club.payment_module', $array);
     }
-    public function update_late_fees(Request $request){
-        if($request->late_fees >= 0  && $request->late_fees <=100000){
-            \Auth::user()->club->late_fees = $request->late_fees;
-            \Auth::user()->club->save();
+    public function update_late_fees(Request $request, $id){
+        if((\Auth::user()->is_superuser || \Auth::user()->club_id == $id ) && ($request->late_fees >= 0  && $request->late_fees <=100000)){
+            $club   =   Club::findOrFail($id);
+            $club->late_fees = $request->late_fees;
+            $club->save();
             Session::flash('alert-success', 'Late fees updated successfully');
         }
         return back()->withInput();

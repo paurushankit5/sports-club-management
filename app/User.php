@@ -74,4 +74,12 @@ class User extends Authenticatable
         return $this->hasOne('App\ReleaseInvoice');
     }
 
+    public function getFullName(){
+        return $this->fname." ".$this->lname;
+    }
+
+    public function getFullNameWithAnchor(){
+        return "<a href='".route('getoneuserprofile', $this->id)."' target='_blank'>".$this->fname." ".$this->lname."</a>";
+    }
+
 }

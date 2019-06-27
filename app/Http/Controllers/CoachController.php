@@ -24,10 +24,13 @@ class CoachController extends Controller
     	$user_ids = 	SportUserClub::where($array)->select('user_id')->get();
     	//print_r( \DB::getQueryLog());
     	$users = 	User::whereIn('id', $user_ids)->get();
-
-        $coaches = User::where('role_id', 10)
-                        ->whereHas('sports', function($q) {
-                            $q->where('sports.id',  request()->segment(3));
+        $array   =  array(
+                            "role_id"   =>  10,
+                            "club_id"   =>  \Auth::user()->club_id
+                        );
+        $coaches = User::where($array)
+                        ->whereHas('sports', function($q) use($sport_id) {
+                            $q->where('sports.id',  $sport_id);
                         })
                         ->get();
     	$array 	= array('users' => $users,

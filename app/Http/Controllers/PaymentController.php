@@ -13,6 +13,7 @@ use App\Mail\SendInvoiceMail;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendInvoiceJob;
 use Carbon\Carbon;
+use App\Http\Controllers\CommonController;
 
 
 
@@ -292,6 +293,22 @@ class PaymentController extends Controller
         //dispatch(new SendInvoiceJob($array, "paurushankit5@gmail.com"))->delay(60 * .5);
         Mail::to('paurushankit5@gmail.com')->send(new SendInvoiceMail($array));
         echo 'email sent';
+    }
+
+    public function playerInvoices($id){
+        $user   =   User::findOrFail($id);
+        if(CommonController::checkSuperUserOrClubOrCoachOrPlayer($user)){
+            
+            $invoices   =   Payment::select('month','year',\DB::raw('SUM(total_amount) as total_amount'))->where("user_id", $id)->groupBy('month','year')->orderByRaw('created_at DESC')->get();
+            $array      =   array(
+                                "invoices"  =>  $invoices,
+                                "user"      =>  $user
+                            );
+            return view('player.playerInvoices', $array);
+        }
+        else{
+            abort(404);
+        }
     }
 
 }

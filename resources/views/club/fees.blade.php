@@ -87,13 +87,13 @@
                                     <tr class="">
                                         <td>Late Fees</td>
                                         <td>
-                                            <span id="late_fees_span_1">&#x20B9; {{ \Auth::user()->club->late_fees }} <button class="btn btn-info btn-sm pull-right edit-late-fees"><i class="mdi mdi-pencil"></i></button></span>
+                                            <span id="late_fees_span_1">&#x20B9; {{ $club->late_fees }} <button class="btn btn-info btn-sm pull-right edit-late-fees"><i class="mdi mdi-pencil"></i></button></span>
                                             <span id="late_fees_span_2" class="d-none">
                                             <div class="form-group">
-                                                <form method="post" action="{{ route('update_late_fees') }}">
+                                                <form method="post" action="{{ route('update_late_fees', $club->id) }}">
                                                     @csrf
                                                     <div class="input-group col-xs-12">
-                                                      <input type="number" value="{{ \Auth::user()->club->late_fees }}" min="0" max="100000" class="form-control" placeholder="Enter Late Fees" name="late_fees">
+                                                      <input type="number" value="{{ $club->late_fees }}" min="0" max="100000" class="form-control" placeholder="Enter Late Fees" name="late_fees">
                                                       <span class="input-group-append">
                                                         <button type="submit" class=" btn btn-gradient-primary" style="height:39px;" type="button"><i class="mdi mdi-content-save-all"></i></button>
                                                       </span>

@@ -27,6 +27,7 @@
       <!-- partial:../../partials/_navbar.html -->
       @includeWhen( \Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 1, 'navbar.club_navbar')
       @includeWhen( \Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 10, 'navbar.coach_navbar')
+      @includeWhen( \Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 2, 'navbar.player_navbar')
       @includeWhen( \Auth::check() && \Auth::user()->is_superuser, 'navbar.admin_navbar')
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
@@ -195,6 +196,7 @@
         <!-- partial:../../partials/_sidebar.html -->
         @includeWhen(\Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 1, 'navbar.club_sidebar')
         @includeWhen(\Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 10, 'navbar.coach_sidebar')
+        @includeWhen(\Auth::check() && !\Auth::user()->is_superuser && \Auth::user()->role->id == 2, 'navbar.player_sidebar')
         @includeWhen(\Auth::check() && \Auth::user()->is_superuser, 'navbar.admin_sidebar')
         <!-- partial -->
         <div class="main-panel">
@@ -214,7 +216,7 @@
             <div class="flash-message">
               @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                   @if(Session::has('alert-' . $msg))
-                      <p class="alert alert-fill-{{ $msg }} alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+                      <p class="alert alert-fill-{{ $msg }} alert-{{ $msg }}">{!! Session::get('alert-' . $msg) !!}</p>
                   @endif
               @endforeach
               @if (isset($errors) && $errors->any())

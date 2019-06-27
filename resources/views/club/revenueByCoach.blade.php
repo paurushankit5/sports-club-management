@@ -2,10 +2,6 @@
 
 @section('title' , 'Payment')
 
-@section('page_header' , "Coach Revenue For ".date('M-Y',strtotime($month.'/01/'.$year)) )
-
-
-
 @section('after_scripts')
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -14,7 +10,7 @@
 				var month 	= 	$("#month").val();
                 if(year != '' && month !='')
                 {
-                    window.location ='/organization/revenueByCoach/'+month+'/'+year ;
+                    window.location ='/revenueByCoach/'+month+'/'+year+'/{{ $club->id }}' ;
                 }
                 else{
                     alert('Invalid Request');
@@ -33,8 +29,11 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title"> 
+                @if(\Auth::user()->is_superuser)
+                <a href="{{ route('clubDetail', $club->id) }}">{{$club->club_name}}'s</a> 
+                @endif
                Coach Revenue For {{ date('M-Y',strtotime($month.'/01/'.$year)) }} 
-                <!-- <a href="{{ route('revenueByCoach', [$month,$year]) }}" class="btn btn-primary pull-right btn-sm">Revenue By Coach</a> -->
+              
             </h4>
             <br>
             <br>    
@@ -101,6 +100,6 @@
       
       
     </div>
-    @includeWhen(\Auth::check() && \Auth::user()->role->id == 1, 'components.recordPaymentComponent')
+    @includeWhen(\Auth::check() && (\Auth::user()->is_superuser || \Auth::user()->role->id == 1), 'components.recordPaymentComponent')
 
 @endsection

@@ -60,7 +60,7 @@
 	              				@foreach($users as $user)
 	              					<tr>
 	              						<th>
-	              							{{ $user->fname." ".$user->lname }}<br>
+	              							<a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a><br>
 	              							Balance  &#x20B9; {{ $user->advance_amount }}
 	              							<input type="hidden" value="{{ $user->id }}" class="user_id">
 	              						</th>

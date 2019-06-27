@@ -105,7 +105,7 @@
 				else{
 					$.ajax({
 						type: 	"POST",
-						url :   "{{ route('storerecordpayment', ".user_id.") }}",
+						url :   "/storerecordpayment/"+user_id,
 						data: {
 							"payment_received"	: payment_received,
 							"payment_date"		: payment_date,

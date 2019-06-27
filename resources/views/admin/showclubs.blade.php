@@ -28,7 +28,6 @@
                   <th> Organization </th>
                   <th> Users </th>
                   <th> Contact Details </th>
-                  <th> Action </th>
                 </tr>
               </thead>
               <tbody>
@@ -44,18 +43,14 @@
                   @foreach($clubs as $club)
                     <tr>
                       <td>{{ $i++ }}</td>
-                      <td>{{ $club->club_name }}</td>
+                      <td><a href="{{ route('clubDetail', $club->id) }}">{{ $club->club_name }}</a></td>
                       <td> {{ count($club->users) }} </td>
                       <td>
                         {{ $club->contact_fname ." ". $club->contact_lname }}<br>
                         {!! $club->email ."<br>". $club->alternate_email !!}<br>
                         {!! $club->mobile ."<br>". $club->alternate_mobile !!}
                       </td>
-                      <td>
-                        <a href="{{ route('clubDetail', $club->id) }}" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn btn-success" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></a>
-                      </td>
+                     
                     </tr>
                   @endforeach
                 @endif

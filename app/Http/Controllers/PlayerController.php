@@ -16,6 +16,10 @@ use Session;
 
 class PlayerController extends Controller
 {
+    public function dashboard(){
+        return view('player.dashboard');
+    }
+
     public function clubuser(){
         $users = User::where('club_id' , \Auth::user()->club_id)->with(['role','club'])->orderBy('users.id','DESC')->paginate(env('RESULT_LIMIT'));
         $array = array('users' => $users);
@@ -166,4 +170,5 @@ class PlayerController extends Controller
         return view('user.getPlayerBySport',$array);
     }
 
+    
 }

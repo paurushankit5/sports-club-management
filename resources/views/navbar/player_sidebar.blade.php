@@ -20,46 +20,35 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('coachDashboard') }}">
+              <a class="nav-link" href="{{ route('clubDashboard') }}">
                 <span class="menu-title">Dashboard</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="{{ route('users.all') }}">
-                <span class="menu-title">Users</span>
-                <i class="mdi mdi-apps menu-icon"></i>
-              </a>
-            </li> -->
-            
             <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#sidebar-player" aria-expanded="false" aria-controls="page-layouts">
-                <span class="menu-title">Add Sessions </span>
-                <i class="menu-arrow"></i>
-                <i class="mdi mdi-apps menu-icon"></i>
-              </a>
-              <div class="collapse" id="sidebar-player">
-                <ul class="nav flex-column sub-menu">
-                  @if(count(\Auth::user()->sports))
-                    @foreach(\Auth::user()->sports as $sport)
-                      <li class="nav-item"> <a class="nav-link" href="{{ route('myplayers', $sport->id) }}">{{ $sport->sport_name }}</a></li>
-                    @endforeach
-                  @endif
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('getOneCoachRevenue',[\Auth::user()->id, date('m'), date('Y')] ) }}">
-                <span class="menu-title">My Revenue</span>
+              <a class="nav-link" href="{{ route('myprofile') }}">
+                <span class="menu-title">My Profile</span>
                 <i class="mdi mdi-apps menu-icon"></i>
               </a>
             </li>
             
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('playerInvoices', \Auth::user()->id  ) }}">
+                <span class="menu-title">Invoice</span>
+                <i class="mdi mdi-currency-inr menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('player.receivedPayments', \Auth::user()->id ) }}">
+                <span class="menu-title">Payments</span>
+                <i class="mdi mdi-currency-inr menu-icon"></i>
+              </a>
+            </li>
+
+           
+           
             
-            <!-- <li class="nav-item sidebar-actions">
-              <span class="nav-link">                
-                <a href="{{ route('users.create') }}" class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add Users</a>                
-              </span>
-            </li> -->
+            
+            
           </ul>
         </nav>

@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}"> -->
 
-<!--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
     <style type="text/css">
       
         .container{
@@ -42,8 +42,8 @@
 <body>
     <div class="container">
         <div class="col-md-12">
-<!--         <a class="pull-right" onclick="window.print()"><i class="fa fa-print fa-2x"></i></a>
- -->        </div>
+        <a href="#" class="pull-right" onclick="window.print()"><i class="fa fa-print fa-2x"></i></a>
+        </div>
         <table class="table table-striped table-bordered">
             <tbody id="dataTable">   
                 <tr><td colspan="6"><h1 style="text-align: center">Sports Club Management</h1></td></tr>

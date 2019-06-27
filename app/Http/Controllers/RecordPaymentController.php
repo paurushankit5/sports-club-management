@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use App\RecordPayment;
 use App\Payment;
 use App\User;
+use App\Club;
 use App\Session as CoachSession;
 use Session;
 use Illuminate\Http\Request;
 use App\ReleaseInvoice;
+use App\Http\Controllers\CommonController;
 
 class RecordPaymentController extends Controller
 {
@@ -72,7 +74,7 @@ class RecordPaymentController extends Controller
             $payment->notes             =   $_REQUEST['notes'];
             $payment->save();
            // return $payment->id;
-            \Session::flash('alert-success', 'Coach assigned successfully');
+            \Session::flash('alert-success', "Payment of &#x20B9;$payment->payment_received recorded successfully");
 
             return redirect(route('getoneuserprofile', $user->id));
         }
@@ -119,38 +121,42 @@ class RecordPaymentController extends Controller
         return $array;
     }
 
-    public function getMonthlyRevenue($month, $year)
+    public function getMonthlyRevenue($month, $year, $club_id)
     {
-        $receivedPayments =     RecordPayment::with('user')
+        $receivedPayments =     RecordPayment::whereHas("user", function($q) use( $club_id ){
+                                                   $q->where("club_id",$club_id);
+                                                })
                                                 ->whereMonth('payment_date', $month)
                                                 ->whereYear('payment_date', $year)
                                                 ->orderBy('payment_date')
                                                 ->get();
+        $club   =   Club::findOrFail($club_id);
         $array  = array('receivedPayments'  =>  $receivedPayments,
                         'month' =>  $month,
-                        'year'  =>  $year
+                        'year'  =>  $year,
+                        'club'  =>  $club
                         );
         return view('club.getMonthlyRevenue',$array);
     }
     
-    public function revenueByCoach($month, $year)
+    public function revenueByCoach($month, $year, $club_id)
     {
         //\DB::connection()->enableQueryLog();
 
         $sessions   =   CoachSession::select('coach_id', \DB::raw('SUM(final_amount) as total_amount'),  \DB::raw('SUM(session_count) as total_sessions'))
                                     ->with('users')
-                                    ->whereHas("users", function($q){
-                                           $q->where("users.club_id",\Auth::user()->club_id);
+                                    ->whereHas("users", function($q) use ($club_id){
+                                           $q->where("users.club_id",$club_id);
                                         })
                                     ->whereMonth('session_date' , $month)
                                     ->whereYear('session_date', $year)
                                     ->groupBy('coach_id')
                                     ->get();
-        //print_r(\DB::getQueryLog());
-        //exit;
+        $club   =   Club::findOrFail($club_id);
         $array  = array('sessions'  =>  $sessions,
                         'month' =>  $month,
-                        'year'  =>  $year
+                        'year'  =>  $year,
+                        'club'  =>  $club
                         );
         return view('club.revenueByCoach',$array);
 
@@ -191,6 +197,44 @@ class RecordPaymentController extends Controller
                         'msg'       =>  $msg
                         );
         return $array;
+    }
+    public function getOneCoachRevenue($user_id, $month, $year){
+        $user = User::findOrFail($user_id);
+        if(CommonController::checkSuperUserOrCoach($user))
+        {
+            $sessions   =   CoachSession::select('*')
+                                ->with(['player','sport'])
+                                ->where('coach_id', $user_id)
+                                ->whereMonth('session_date' , $month)
+                                ->whereYear('session_date', $year)
+                                ->get();   
+            $array  =   array(
+                                'sessions'    =>  $sessions,
+                                'month'    =>  $month,
+                                'year'    =>  $year,
+                                'user'    =>  $user
+                            );
+            return view('coach.getOneCoachRevenue', $array );
+        }
+        else{
+            abort(404);
+        }
+    }
+
+    public function receivedPayments($id){
+        $user   =   User::findOrFail($id);
+        if(CommonController::checkSuperUserOrClubOrCoachOrPlayer($user))
+        {
+            $payments   =   RecordPayment::where("user_id", $id)->orderBy('created_at', 'DESC')->get();
+            $array      =   array(
+                                "payments"  =>  $payments,
+                                "user"      =>  $user
+                            );
+            return view('player.receivedPayments', $array);
+        }
+        else{
+            abort(404);
+        }
     }
 }
 

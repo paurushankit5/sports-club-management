@@ -119,7 +119,9 @@ class UserController extends Controller
 
 
     	if(\Auth::user()->is_superuser || ($user->role_id == 2 || $user->role_id == 10) || (\Auth::user()->role_id == 1 && $user->club_id == \Auth::user()->club_id) )//if user is a player or a coach, anyone can see his/her profile.
-    	{    		
+    	{    
+            if( \Auth::user()->id == $id )
+                return redirect(route('myprofile'));		
             if($user->role_id==2)
             {
                 if(count($user->sports))
@@ -415,4 +417,5 @@ class UserController extends Controller
             return $e->getMessage();
         } 
     }
+    
 }

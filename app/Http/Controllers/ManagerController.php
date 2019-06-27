@@ -18,6 +18,9 @@ class ManagerController extends Controller
 	        else if(\Auth::user()->role_id == 10 ){
 	            return 'coachDashboard';
 	        }
+	        else if(\Auth::user()->role_id == 2 ){
+	            return 'playerDashboard';
+	        }
     	}	    	
         return 'index';
     }

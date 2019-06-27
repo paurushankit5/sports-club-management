@@ -1,29 +1,23 @@
 @extends('layouts.all')
 
-@section('title' , 'Payment')
-
-@section('page_header' , "Revenue For ".date('M-Y',strtotime($month.'/01/'.$year)) )
-
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('clubDashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">revenue</li>
-@endsection
+@section('title' , $user->getFullName()."'s Revenue for the month of ".date('M Y',strtotime($year."/".$month."/1")) )
 
 @section('after_scripts')
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".showpayments").on('click', function(){
-				var year 	= 	$("#year").val();
 				var month 	= 	$("#month").val();
+				var year 	= 	$("#year").val();
                 if(year != '' && month !='')
                 {
-                    window.location ='/organization/revenue/'+month+'/'+year+'/{{ $club->id }}' ;
+                    window.location ='/CoachRevenue/{{$user->id}}/'+month+'/'+year ;
                 }
                 else{
                     alert('Invalid Request');
                 }
 			});
-        });
+		});
+     
             
 	</script>
 @endsection
@@ -35,12 +29,11 @@
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title"> 
-                Revenue For {{ date('M-Y',strtotime($month.'/01/'.$year)) }} 
-                <a href="{{ route('revenueByCoach', [$month,$year,$club->id]) }}" class="btn btn-primary pull-right btn-sm">Revenue By Coach</a>
+            <h4 class="card-title"> {!! $user->getFullNameWithAnchor() !!} Revenue for the month of {{ date('M Y',strtotime($year."/".$month."/1")) }} 
+               
             </h4>
             <br>
-            <br>    
+            <br>
             <div class="row">
 	            <div class="col-md-4">
 	            	<select class="form-control" id="month">
@@ -67,7 +60,7 @@
 	            	</select>
 	            	<br>
 	            </div>
-	            <div class="col-md-4"><button class="btn btn-primary btn-block showpayments">Show Revenue</button></div>
+	            <div class="col-md-4"><button class="btn btn-primary btn-block showpayments">Change Month</button></div>
         	</div>
             <div class="table-responsive">
             	<table class="table table-striped">
@@ -75,29 +68,33 @@
             			<tr>
             				<th>#</th>
             				<th>Player</th>
-            				<th>Amount</th>
-            				<th>Payment Date</th>
+            				<th>Invoice</th>
+            				<th>Payment Due</th>
+            				<th>Last Payment Details</th>
+            				<th>Action</th>
             			</tr>
             		</thead>
             		<tbody>
-            			@if(count($receivedPayments))
-            				@php $i=1; @endphp
-            				@foreach($receivedPayments as $payment)
+            			@if(count($sessions))
+            				@php $i=1; $total =0; @endphp
+            				@foreach($sessions as $session)
             					<tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>
-                                        <a href="{{ route('getoneuserprofile', $payment->user->id) }}" target="_blank">{{ $payment->user->fname." ".$payment->user->lname }}</a>
-                                    </td>
-                                    <td><b>&#x20B9; {{ $payment->payment_received }}</b></td>
-                                    <td> 
-                                        {{ $payment->payment_date }}
-                                        @if($payment->notes != '')
-                                            <br>
-                                            <small>{{ $payment->notes }}</small>
-                                        @endif
-                                    </td>
-                                </tr>
+            						<td>{{ $i++ }}</td>
+            						<td>
+            								{!! $session->player->getFullNameWithAnchor() !!}
+            						</td>
+            						<td>{{ $session->sport->sport_name }}</td>
+            						<td>{{ $session->sessio_date }}</td>
+            						<td>{{ $session->session_count }}</td>
+            						<td> &#x20B9; {{ $session->final_amount }}</td>
+            						 
+            					</tr>
+            					@php $total += $session->final_amount @endphp
             				@endforeach
+            				<tr>
+            					<td colspan="5"><b class="float-right">Total:</b></td>
+            					<td colspan=""><b> &#x20b9; {{ $total }}</b></td>
+            				</tr>
             			@endif
             		</tbody>
             	</table>
@@ -109,6 +106,5 @@
       
       
     </div>
-    @includeWhen(\Auth::check() && (\Auth::user()->is_superuser ||\Auth::user()->role->id == 1), 'components.recordPaymentComponent')
 
 @endsection

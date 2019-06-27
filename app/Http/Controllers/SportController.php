@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Session;
 use App\Sport;
 use App\User;
+use App\Club;
 use App\SportUserClub;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommmonController;
+use App\Http\Middleware\checkSuperUser;
 
-class SportController extends Controller
-{
+class SportController extends Controller{
     public function removeSportUserAssociation(Request $request, $user_id){
         $this->middleware('checkAdmin');
         $array      =   array(
@@ -18,6 +20,7 @@ class SportController extends Controller
                             );
         $sport_user_club = SportUserClub::where($array)->firstOrFail();
         $sport_user_club->delete();
+        Session::flash('alert-success', 'Sport removed successfully');
         return "success";
     }
 
@@ -32,9 +35,7 @@ class SportController extends Controller
                 $array['status'] = 1;
 
             }
-            $array  =   array(
-                                'data'  =>  $data
-                            );
+            $array['data']  =   $data;
             return $array;
         }
         
@@ -65,5 +66,62 @@ class SportController extends Controller
             }
         }
         return redirect(route('getoneuserprofile', $user_id));
+    }
+
+    public function getClubUnassociatedSports($club_id){
+        $club   =   Club::findOrFail($club_id);
+        $status = 0;
+        $data = [];
+
+        if(CommonController::checkClubAdminOrSuperUser(\Auth::user())){
+            $this->middleware('checkSuperUser');
+            $sports     =   Sport::all()->keyBy('id')->toArray();
+            $data = array_diff_key( Sport::all()->keyBy('id')->toArray(),$club->sports->keyBy('id')->toArray());
+            if(count($data))
+                $status = 1;
+        }
+        $array  =   array(
+                            'data'  =>  $data,
+                            'status'    =>  $status
+                        );
+        return $array;
+    }
+    public function storeUnAssociatedSportsToClub(Request $request, $id){
+        $club   =   Club::findOrFail($id);
+        if(\Auth::user()->is_superuser)
+        {
+            if(count($request->add_sports_ids))
+            {
+                foreach ($request->add_sports_ids as $sport_id) {
+                    $array  = array(
+                                        "club_id"   =>  $id,
+                                        "sport_id"  =>  $request->sport_id
+                                    );
+                    if(!count(SportUserClub::where($array)->get()))
+                    {
+                        $sport_user     =   new SportUserClub;
+                        $sport_user->club_id    =   $id;
+                        $sport_user->sport_id   =   $sport_id;
+                        $sport_user->save();
+                    }
+                }
+                Session::flash('alert-success', 'Sport associated successfully');
+            }
+        }
+        return redirect(route('clubDetail', $id));
+    }
+    public function removeSportClubAssociation(Request $request,$id){
+        $this->middleware('checkAdmin');
+        $club   =   Club::findOrFail($id);
+        $array      =   array(
+                                "club_id"   =>  $id,
+                                "sport_id"  =>  $request->sport_id
+                            );
+        $sport_user_club = SportUserClub::where($array)->firstOrFail();
+        $sport_user_club->delete();
+        Session::flash('alert-success', 'Sport removed successfully');
+        return "success";
+
+
     }
 }

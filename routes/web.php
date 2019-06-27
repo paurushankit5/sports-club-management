@@ -73,6 +73,17 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/user/edit/profile/{id}', 'UserController@updateoneuserprofile')->name('updateoneuserprofile');
 
 	Route::post('/storeuseridproof/{id}','UserController@storeuseridproof')->name('storeuseridproof');
+	Route::post('/storeUnAssociatedSportsToClub/{id}','SportController@storeUnAssociatedSportsToClub')->name('storeUnAssociatedSportsToClub');
+
+	Route::get('/getClubUnassociatedSports/{id}', 'SportController@getClubUnassociatedSports')->name('getClubUnassociatedSports');
+
+	Route::post('/removeSportClubAssociation/{id}', 'SportController@removeSportClubAssociation')->name('removeSportClubAssociation');
+	Route::get('/revenueByCoach/{month}/{year}/{club_id}','RecordPaymentController@revenueByCoach')->name('revenueByCoach');
+
+	Route::get('/CoachRevenue/{user_id}/{month}/{year}', 'RecordPaymentcontroller@getOneCoachRevenue')->name('getOneCoachRevenue');
+
+	Route::get('/player/invoices/{id}', 'PaymentController@playerInvoices')->name('playerInvoices');
+	Route::get('/player/receivedPayments/{id}', 'RecordPaymentcontroller@receivedPayments')->name('player.receivedPayments');
 
 });
 

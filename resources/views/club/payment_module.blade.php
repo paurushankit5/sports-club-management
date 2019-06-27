@@ -2,13 +2,6 @@
 
 @section('title' , 'Payment')
 
-@section('page_header' , 'Payment')
-
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('clubDashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Payments</li>
-@endsection
-
 @section('after_scripts')
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -132,7 +125,7 @@
                                                 @if($user->release_invoice->is_completed)
                                                     Invoice Released
                                                 @else
-                                                    Invoice to be released soon
+                                                    Queued For Release.
                                                 @endif
                                             </small>
                                          @endif

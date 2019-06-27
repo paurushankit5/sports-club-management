@@ -44,7 +44,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('revenue_module', array(date('m'), date('Y') )) }}">
+              <a class="nav-link" href="{{ route('revenue_module', array(date('m'), date('Y'), \Auth::user()->club_id )) }}">
                 <span class="menu-title">Revenue</span>
                 <i class="mdi mdi-currency-inr menu-icon"></i>
               </a>

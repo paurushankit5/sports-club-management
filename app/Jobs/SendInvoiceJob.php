@@ -37,6 +37,6 @@ class SendInvoiceJob implements ShouldQueue
         //echo "<pre>";
         //print_r($this->data);
         //print_r($this->email);
-        Mail::to($this->email)->send(new SendInvoiceMail($this->data));
+        Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($this->data));
     }
 }

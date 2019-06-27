@@ -16,7 +16,7 @@
 
 		Route::get('/create/User/{id}','UserController@createUser')->name('clubs.createUser');
 		
-		
+		Route::get('/club/fees/{id}', 'AdminController@getClubFees')->name('admin.fees');
 
 	});
 

@@ -2,10 +2,6 @@
 
 @section('title' ,$user->fname." ".$user->lname ."'s Profile")
 
-@section('page_header' ,$user->fname." ".$user->lname ."'s Profile")
-
-
-
 @section('after_scripts')
     <script type="text/javascript">
         $(".sessionrate").click(function(){
@@ -79,6 +75,8 @@
                     console.log(data.status);
                     $("#add_sports_ids").html();
                     if(data.status == 1){
+                        $("#add_sports_ids").html("");
+
                         $.each(data.data, function(i,value){
                             $("#add_sports_ids").append("<option value='"+i+"'>"+value.sport_name+"</option>");
                         });
@@ -228,9 +226,11 @@
                     @if(\Auth::user()->is_superuser || ( \Auth::user()->club_id == $user->club_id && (\Auth::user()->role_id ==1 || \Auth::user()->club_id ==10)) )
                         <div class="table-responsive">
                             <table class="table">
+                                @if($user->role_id ==2)
                                 <tr>
                                     <th colspan="2"><span class="text-primary"> &#x20B9; <?= $user->advance_amount; ?> </span></th>
                                 </tr>
+                                @endif
                                 <tr>
                                     <th>User Status</th>
                                     <td>    {{ $user->is_active == 1 ? 'Active' : 'Deactive' }} </td>
@@ -240,6 +240,7 @@
                                         <a href="{{ route('changeuserstatus',$user->id) }}" class="btn btn-rounded btn-dark btn-sm changepic">{{ $user->is_active == 0 ? 'Activate' : 'Deactivate' }} User</a>
                                     </td>
                                 </tr>
+                                @if($user->role_id == 2)
                                 <tr>
                                     <th colspan="2">
                                         <a href="/user/payment/{{ $user->id }}/{{ date('m') }}/{{ date('Y') }}" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>
@@ -271,7 +272,13 @@
                                         <a href="{{ route('showreceivedpayment',$user->id) }}" class="btn btn-rounded btn-sm btn-info">Show Received Payment</a>
                                     </th>
                                 </tr>
-                                
+                                @elseif(\Auth::user()->is_superuser && $user->role_id == 10)
+                                    <tr>
+                                        <th colspan="2">
+                                            <a href="{{ route('getOneCoachRevenue',[$user->id, date('m'), date('Y')] ) }}" class="btn btn-rounded btn-sm btn-info">Revenue Generated</a>
+                                        </th>
+                                    </tr>
+                                @endif
                             </table>
                         </div>
                     @endif
