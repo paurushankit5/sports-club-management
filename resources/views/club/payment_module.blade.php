@@ -111,7 +111,12 @@
             				@foreach($users as $user)
             					<tr id="user_{{ $user->id }}">
 
-            						<td>  {!!  !count($user->release_invoice) ? '<input type="checkbox" name="user_id" value="'.$user->id.'" class="relaease_invoice_checkbox" />' : '&nbsp;&nbsp;&nbsp;' !!}&nbsp;&nbsp;&nbsp;  {{ $i++ }}</td>
+            						<td>  
+                                        @if(count($user->payments2) && !count($user->release_invoice))
+                                        <input type="checkbox" name="user_id" value="'.$user->id.'" class="relaease_invoice_checkbox" />
+                                        @endif
+                                        {{ $i++ }}
+                                    </td>
             						<td><a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a></td>
             						<td>
                                         @if(count($user->payments2))
