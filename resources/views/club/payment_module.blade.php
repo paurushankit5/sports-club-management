@@ -110,22 +110,49 @@
                             @php $i=1; @endphp
                             @foreach($users as $user)
                                 <tr id="user_{{ $user->id }}">
+                                    <td>  
+                                        @if( count($user->payments2) && empty($user->release_invoice))
+                                            <input type="checkbox" name="user_id" value="{{$user->id}}" class="relaease_invoice_checkbox" /> 
+                                        @else 
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                        @endif
+                                        &nbsp;&nbsp;&nbsp;
+                                      {{ $i++ }}</td>
+                                    <td><a href="{{ route('getoneuserprofile', $user->id) }}" target="_blank">{{ $user->fname." ".$user->lname }}</a></td>
                                     <td>
-                                        {{ gettype($user->payments2) }}
+                                        @if(count($user->payments2))
+                                            <a href="{{route('showpayment', ['user_id' => $user->id,'month'=> $month,'year'=> $year]) }}" target="_blank" class="btn btn-rounded btn-sm btn-success">View Invoice</a>
+                                         @else
+                                            <a href="/user/payment/{{$user->id}}/{{$month}}/{{$year}}" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>
+                                         @endif
+                                         @if(count($user->release_invoice))
+                                            <br>
+                                            <small>
+                                                @if($user->release_invoice->is_completed)
+                                                    Invoice Released
+                                                @else
+                                                    Queued For Release.
+                                                @endif
+                                            </small>
+                                         @endif
+                                    </td>
+                                    <td>&#x20B9; {{ $user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') }}
                                     </td>
                                     <td>
-                                        {{ $user->payments2 }}
+                                        @if(count($user->recordpayments))
+                                            &#x20B9; {{ $user->recordpayments[0]->payment_received }} <br>
+                                            {{ date('d-M-Y',strtotime($user->recordpayments[0]->payment_date)) }}
+                                        @else
+                                         N/A
+                                        @endif
                                     </td>
-                                    
-                                </tr>
-                                <tr id="user_{{ $user->id }}">
                                     <td>
-                                        {{ gettype($user->release_invoice) }}
+                                        @if($user->payments->sum('total_amount') - $user->recordpayments->sum('payment_received') > 0)
+                                            <button class="btn btn-rounded btn-sm btn-info recordpayment" data-user_id="{{ $user->id }}">Record Payment</button>
+                                        @else
+                                            No Dues
+                                        @endif
                                     </td>
-                                    <td>
-                                        {{ $user->release_invoice }}
-                                    </td>
-                                    
                                 </tr>
                             @endforeach
                         @endif
