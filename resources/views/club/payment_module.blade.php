@@ -3,12 +3,14 @@
 
 @section('content')
     @if(count($users))
+     <table class="table">
     @foreach($users as $user)
-        <table>
+       
             <tr>
                 <td>{{ $user }}</td>
             </tr>
-        </table>
     @endforeach
+    </table>
+
     @endif
 @endsection
