@@ -9,6 +9,12 @@
             <tr>
                 <td>{{ $user }}</td>
             </tr>
+            <tr>
+                <td>{{ $user->payments2 }}</td>
+            </tr>
+            <tr>
+                <td>{{ $user->payments }}</td>
+            </tr>
     @endforeach
     </table>
 
