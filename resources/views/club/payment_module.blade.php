@@ -125,7 +125,7 @@
                                          @else
                                             <a href="/user/payment/{{$user->id}}/{{$month}}/{{$year}}" target="_blank" class="btn btn-rounded btn-sm btn-info">Add Invoice</a>
                                          @endif
-                                         @if(count($user->release_invoice))
+                                         @if(!empty($user->release_invoice))
                                             <br>
                                             <small>
                                                 @if($user->release_invoice->is_completed)
