@@ -34,7 +34,7 @@ class SendInvoiceJob implements ShouldQueue
      */
     public function handle()
     {
-        if (\App::environment('development')) {
+        if (env('APP_ENV') == 'development') {
             Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($this->data));
         }
         else{

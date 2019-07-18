@@ -2,9 +2,6 @@
 
 @section('title' ,  $sport->sport_name." ".$user_type )
 
-@section('page_header' ,  $sport->sport_name." ".$user_type  )
-
-
 
 @section('after_scripts')
     

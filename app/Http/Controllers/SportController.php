@@ -124,4 +124,21 @@ class SportController extends Controller{
 
 
     }
+    public function storeSport(Request $request){
+        $request->validate([
+            'sport_name'               => 'required|unique:sports,sport_name,',
+
+        ]);
+        try {
+            $sport = new Sport;
+            $sport->sport_name  =   $request->sport_name;
+            $sport->save();
+            Session::flash('alert-success', 'Sport added successfully');
+            return redirect(route('adminSports'));
+            
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

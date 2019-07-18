@@ -272,6 +272,14 @@
                                         <a href="{{ route('showreceivedpayment',$user->id) }}" class="btn btn-rounded btn-sm btn-info">Show Received Payment</a>
                                     </th>
                                 </tr>
+                                @if($user->role_id==2)
+                                    <tr>
+                                        <th colspan="2">
+                                            <a href="{{ route('generateidcard',$user->id) }}" class="btn btn-rounded btn-sm btn-info">Generate ID Card</a>
+                                        </th>
+                                    </tr>
+                                @endif
+                                
                                 @elseif(\Auth::user()->is_superuser && $user->role_id == 10)
                                     <tr>
                                         <th colspan="2">

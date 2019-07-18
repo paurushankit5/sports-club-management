@@ -39,6 +39,11 @@
               <a class="dropdown-item" href="{{ route('myprofile') }}">
                   <i class="mdi mdi-account-circle mr-2 text-success"></i> My Profile </a>
                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ route('clubDetail', \Auth::user()->club_id) }}">
+                  <i class="mdi mdi-account-circle mr-2 text-success"></i> My Club </a>
+                <a class="dropdown-item" href="{{ route('editclub', \Auth::user()->club_id) }}">
+                  <i class="mdi mdi-account-circle mr-2 text-success"></i> Edit Club </a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">
                   <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
               </div>

@@ -14,6 +14,7 @@ use Session;
 use Mail;
 use App\Mail\TestEmail;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\CommonController;
 
 class ClubController extends Controller
 {
@@ -30,8 +31,9 @@ class ClubController extends Controller
     }
 
     public function clubDetail($id){
-        $array  =   array('id'  =>  $id);
-        $club   =   Club::where($array)->with('users')->first();
+        if(!CommonController::checkClubAdminOrSuperUser(\Auth::user()))
+            abort(404);
+        $club   =   Club::findOrFail($id);
         $array  =   array(
                             "club"  =>  $club
                         );
@@ -244,7 +246,7 @@ class ClubController extends Controller
 
         
     }
-    public function storefees(Request $request){
+    public function storefees(Request $request, $club_id){
         $request->validate([
             'sport_id'         => 'required',
             'category'         => 'required',
@@ -252,10 +254,7 @@ class ClubController extends Controller
             'quarterly'         => 'required',
             'half_yearly'         => 'required',
             'yearly'         => 'required'
-
-
         ]);
-        //echo "<pre>";
         try{
             if(count($request->category))
             {
@@ -263,7 +262,7 @@ class ClubController extends Controller
                 {
                     $fees = new Fee;
                     $fees->sport_id     =   $request->sport_id;
-                    $fees->club_id      =   \Auth::user()->club_id;
+                    $fees->club_id      =   $club_id;
                     $fees->monthly      =   $request->monthly[$i];
                     $fees->quarterly      =   $request->quarterly[$i];
                     $fees->half_yearly      =   $request->half_yearly[$i];
@@ -274,7 +273,10 @@ class ClubController extends Controller
                     $fees->Save();
                 }
             }
-        return redirect(route('club_fees'));
+            if(\Auth::user()->is_superuser){
+                return redirect(route('admin.fees', $club_id));
+            }
+            return redirect(route('club_fees'));
         }
         catch (\Exception $e) {
             return $e->getMessage();
@@ -336,5 +338,82 @@ class ClubController extends Controller
         }
         return back()->withInput();
     }
+
+    public function editclub($club_id){
+        if(\Auth::user()->is_superuser || ( \Auth::user()->role_id == 1 && \Auth::user()->club_id == $club_id ) ){
+            $club   =   Club::findOrFail($club_id);
+            $sports =   Sport::all();
+            $array  =   array(
+                                "club"  =>  $club
+                            );
+            return view('admin.editclub', $array);
+        }
+        else{
+            Session::flash('alert-success', 'You are not authorized for this action');
+
+            abort(404);
+        }
+    }
+    public function updateclub(Request $request, $club_id){
+
+        $request->validate([
+            'club_name'         => 'required|max:255',
+            'gst_no'            => 'required|unique:clubs,gst_no,'.$club_id,
+            'contact_fname'     => 'required',
+            'contact_lname'     => 'required',
+            'email'             => 'required|unique:clubs,email,'.$club_id,
+            'mobile'            => 'required|unique:clubs,mobile,'.$club_id
+        ]);
+        $club   =   Club::findOrFail($club_id);
+        $club->club_name            = $request->club_name;
+        $club->gst_no               = $request->gst_no;
+        $club->establishment_year   = $request->establishment_year;
+        $club->about_club           = $request->about_club;
+        $club->contact_fname        = $request->contact_fname;
+        $club->contact_lname        = $request->contact_lname;
+        $club->email                = $request->email;
+        $club->alternate_email      = $request->alternate_email;
+        $club->mobile               = $request->mobile;
+        $club->alternate_mobile     = $request->alternate_mobile;
+        $club->adl1                 = $request->adl1;
+        $club->adl2                 = $request->adl2;
+        $club->city                 = $request->city;
+        $club->state                = $request->state;
+        $club->country              = $request->country;
+        $club->pin                  = $request->pin;
+        $club->save();
+        Session::flash('alert-success', 'Organization updated successfully');
+        return redirect(route('editclub', $club->id));
+    }
+
+    public function uploadLogo(Request $request, $club_id){
+        if(!CommonController::checkClubAdminOrSuperUser(\Auth::user()))
+            abort(404);
+        $request->validate([
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        try {
+            $club = Club::findOrFail($club_id);
+            if($club->logo!='')
+            {
+                @unlink(public_path('/images/'.$club->logo));
+            }
+            $image = $request->file('logo');
+            $profile_pic = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $profile_pic);
+
+
+            $club->logo = $profile_pic;
+            $club->save();
+            Session::flash('alert-success', 'Profile Pic updated successfully');
+            return redirect(route('clubDetail',$club_id));
+            
+        }
+        catch (\Exception $e) {
+            return $e->getMessage();
+        } 
+    }
+    
 }
 

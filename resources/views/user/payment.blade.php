@@ -2,10 +2,6 @@
 
 @section('title' , 'Invoice Page for '.$user->fname.' '.$user->lname.' ('.date('M-Y',strtotime($month.'/11/'.$year)).')')
 
-@section('page_header' , 'Invoice Page for '.$user->fname.' '.$user->lname.' ('.date('M-Y',strtotime($month.'/11/'.$year)).')')
-
-
-
 @section('after_scripts')
     <script type="text/javascript">
         var final_amount = parseInt($("#final_amount").html());
@@ -156,8 +152,6 @@
                 <a href="#" class="btn btn-success disabled">{{ date('M-Y',strtotime($month.'/11/'.$year)) }}</a>
                 <a href='{{ route("payment", [$user->id,date("m",strtotime("+1 month",strtotime($month."/11/".$year))),date("Y",strtotime("+1 month",strtotime($month."/11/".$year))) ]) }}' class="btn btn-info">{{ date('M-Y',strtotime("+1 month",strtotime($month.'/11/'.$year))) }}</a>
             </div>
-            <br>
-            <br>
             <br>
         </div> 
         @if(!$invoice_generated)    

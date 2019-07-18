@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function recordpayments()
     {
-        return $this->hasMany('App\RecordPayment')->orderBy('payment_date','DESC');
+        return $this->hasMany('App\RecordPayment')->orderBy('payment_date','DESC')->orderBy('created_at', 'DESC');
     }
 
     public function payments(){

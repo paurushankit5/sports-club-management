@@ -291,13 +291,11 @@ class PaymentController extends Controller
                             );
         //return view('pdf.invoice', $array);
         //dispatch(new SendInvoiceJob($array, "paurushankit5@gmail.com"))->delay(60 * .5);
-        //Mail::to('paurushankit5@gmail.com')->send(new SendInvoiceMail($array));
-        if (\App::environment('development')) {
-             echo "The environment is local";
-        }
-        else{
-            echo "Production";
-        }
+        //Mail::to('paurushankit5@gmail.com')
+        //->send(new SendInvoiceMail($array));
+
+        Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($array));
+        
         echo 'email sent';
     }
 

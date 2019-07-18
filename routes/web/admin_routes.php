@@ -11,12 +11,15 @@
 		
 
 		Route::resource('/clubs','ClubController');
-		Route::get('/clubDetail/{id}','ClubController@clubDetail')->name('clubDetail');
 		Route::get('/loginAsUser/{id}','ClubController@loginAsUser')->name('loginAsUser');
 
 		Route::get('/create/User/{id}','UserController@createUser')->name('clubs.createUser');
 		
 		Route::get('/club/fees/{id}', 'AdminController@getClubFees')->name('admin.fees');
+
+		Route::get('/sports', 'AdminController@sports')->name('adminSports');
+
+		Route::post('/storeSport', 'SportController@storeSport')->name('storeSport');
 
 	});
 

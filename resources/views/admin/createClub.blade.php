@@ -113,7 +113,7 @@
                         </div>
                         <div class="col-md-6">
                             <label>State*</label>
-                            <input type="text" class="form-control" name="state" id="state" value="{{ old('state') }}" required placeholder="Emter State">
+                            <input type="text" class="form-control" name="state" id="state" value="{{ old('state') }}" required placeholder="Enter State">
                         </div>
                     </div>
                   </div>
@@ -125,7 +125,7 @@
                         </div>
                         <div class="col-md-6">
                             <label>Pin Code*</label>
-                            <input type="number" class="form-control" name="pin" id="pin" value="{{ old('pin') }}" required placeholder="Emter pin code">
+                            <input type="number" class="form-control" name="pin" id="pin" value="{{ old('pin') }}" required placeholder="Enter pin code">
                         </div>
                     </div>
                   </div>

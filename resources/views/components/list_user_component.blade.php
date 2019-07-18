@@ -22,7 +22,7 @@
 	                <tr>
 	                  	<td>{{ $i++ }}</td>
 	                  	<td>
-	                    	{{ $user->fname ." ". $user->lname }}
+	                    	{!! $user->getFullNameWithAnchor() !!}
 	                    	@if($user->role->role_name != '' ) {!! "<br>(".$user->role->role_name.")" !!}  @endif
 	                    </td>
 	                   	<td>

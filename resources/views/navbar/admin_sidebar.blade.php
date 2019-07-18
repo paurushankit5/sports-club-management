@@ -25,14 +25,20 @@
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
+             <li class="nav-item">
+              <a class="nav-link" href="{{ route('adminSports') }}">
+                <span class="menu-title">Sports / Activities</span>
+                <i class="mdi mdi-apps menu-icon"></i>
+              </a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ route('clubs.index') }}">
                 <span class="menu-title">Clubs</span>
-                <i class="mdi mdi-home menu-icon"></i>
+                <i class="mdi mdi-apps menu-icon"></i>
               </a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#page-layouts" aria-expanded="false" aria-controls="page-layouts">
                 <span class="menu-title">Games</span>
                 <i class="menu-arrow"></i>
@@ -58,8 +64,8 @@
                   <li class="nav-item"> <a class="nav-link" href="#">Knock-Out</a></li>
                 </ul>
               </div>
-            </li>
-            <li class="nav-item">
+            </li> -->
+            <!-- <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#sidebar-player" aria-expanded="false" aria-controls="page-layouts">
                 <span class="menu-title">Players </span>
                 <i class="menu-arrow"></i>
@@ -72,7 +78,7 @@
                   <li class="nav-item"> <a class="nav-link" href="#">Roller Skating Player</a></li>
                 </ul>
               </div>
-            </li>
+            </li> -->
             
             <li class="nav-item sidebar-actions">
               <span class="nav-link">

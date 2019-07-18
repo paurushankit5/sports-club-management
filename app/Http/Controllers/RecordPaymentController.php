@@ -236,5 +236,47 @@ class RecordPaymentController extends Controller
             abort(404);
         }
     }
+
+    public function revenueBySport($month, $year, $club_id){
+        if(!CommonController::checkClubAdminOrSuperUser(\Auth::user()))
+            abort(404);
+        $club   =   Club::findOrFail($club_id);
+        $club_sport = [];
+        if(count($club->sports))
+        {
+            $user_ids      =   User::where('club_id', $club_id)->select('id')
+                                    ->get()->keyBy('id')
+                                    ->toArray();
+
+            $user_ids  = array_keys($user_ids);
+            $i=0;
+            foreach ($club->sports as $sport) {
+                $array  =   array(
+                                    "month"     =>      $month,
+                                    "year"      =>      $year,
+                                    "sport_id"  =>      $sport->id,
+                                );
+                $payment   =   Payment::select(\DB::raw('SUM(total_amount) as revenue'))
+                                        ->where($array)
+                                        ->whereIn('user_id',    $user_ids)
+                                        ->groupBy('sport_id');
+                if($payment->count()){
+                    $club_sport[$i]['revenue']    =   $payment->first()->revenue;
+                }
+                else{
+                    $club_sport[$i]['revenue']  = 0;
+                }
+                $club_sport[$i]['sport_name']    =   $sport->sport_name;
+                $i++; 
+            }
+        }
+        $array  =   array(
+                            'club'    =>  $club,
+                            'month'   =>  $month,
+                            'year'    =>  $year,
+                            'club_sport'   =>  $club_sport
+                        );
+        return view('club.revenueBySport', $array);
+    }
 }
 

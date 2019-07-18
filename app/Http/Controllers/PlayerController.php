@@ -142,7 +142,7 @@ class PlayerController extends Controller
         $array = array(
                         'users'  =>  $users,
                         "sport"  =>  $sport,
-                        'user_type' => 'Players'   
+                        'user_type' => 'Members'   
                         );
         return view('user.getPlayerBySport',$array);
     }
@@ -164,7 +164,7 @@ class PlayerController extends Controller
         $array = array(
                         'users'  =>  $users,
                         "sport"  =>  $sport,
-                        'user_type' => 'Coaches'   
+                        'user_type' => 'Coaches / Trainers'   
 
                         );
         return view('user.getPlayerBySport',$array);

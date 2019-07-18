@@ -85,6 +85,17 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/player/invoices/{id}', 'PaymentController@playerInvoices')->name('playerInvoices');
 	Route::get('/player/receivedPayments/{id}', 'RecordPaymentcontroller@receivedPayments')->name('player.receivedPayments');
 
+	Route::get('/editclub/{club_id}', 'ClubController@editclub' )->name('editclub');
+	Route::post('club/update/{club_id}', 'ClubController@updateclub')->name('updateclub');
+
+	Route::get('/idcard/{id}','UserController@generateidcard')->name('generateidcard');
+
+	Route::get('/clubDetail/{id}','ClubController@clubDetail')->name('clubDetail');
+
+	Route::get('club/revenue/sports/{month}/{year}/{club_id}', 'RecordPaymentcontroller@revenueBySport')->name('revenueBySport');
+
+	Route::post('club/uploadLogo/{club_id}', 'ClubController@uploadLogo')->name('uploadLogo');
+
 });
 
 Route::get('/mail1','PaymentController@mail');

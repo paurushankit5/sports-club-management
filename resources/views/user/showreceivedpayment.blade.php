@@ -2,10 +2,6 @@
 
 @section('title' ,"Payment  from ".$user->fname." ".$user->lname)
 
-@section('page_header' ,"Payment Received from ".$user->fname." ".$user->lname)
-
-
-
 @section('after_scripts')
 
 @endsection
@@ -35,7 +31,7 @@
                                             <td>{{ $i++ }}</td>
                                             <td>&#x20B9; {{ $recordpayment->payment_received }}</td>
                                             <td>{{ $recordpayment->payment_date }}</td>
-                                            <td>{{ $recordpayment->notes }}</td>
+                                            <td>{{ $recordpayment->notes ? $recordpayment->notes : 'NA' }}</td>
                                         </tr>
                                     @endforeach
                                 @endif

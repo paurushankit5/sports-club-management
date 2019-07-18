@@ -2,13 +2,6 @@
 
 @section('title' , 'Add Users')
 
-@section('page_header' , 'Add Users to '.$club->club_name)
-
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('clubDashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Add Users</li>
-@endsection
-
 @section('after_scripts')
   <script type="text/javascript">
     $("#role").on('change',function(){

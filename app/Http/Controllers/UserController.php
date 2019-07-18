@@ -418,4 +418,12 @@ class UserController extends Controller
         } 
     }
     
+    public function generateidcard($id){
+        $user = User::findOrFail($id);
+        if(CommonController::checkClubAdminOrSuperUser($user)){
+            $array  =   array('user'    =>  $user);
+            return view('card', $array);
+        }
+        abort(404);
+    }
 }

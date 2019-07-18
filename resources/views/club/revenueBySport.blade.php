@@ -1,6 +1,7 @@
 @extends('layouts.all')
 
-@section('title' , 'Revenue')
+@section('title' , 'Revenue By Sports')
+
 
 @section('after_scripts')
 	<script type="text/javascript">
@@ -10,7 +11,7 @@
 				var month 	= 	$("#month").val();
                 if(year != '' && month !='')
                 {
-                    window.location ='/organization/revenue/'+month+'/'+year+'/{{ $club->id }}' ;
+                    window.location ='/club/revenue/sports/'+month+'/'+year+'/{{ $club->id }}' ;
                 }
                 else{
                     alert('Invalid Request');
@@ -31,9 +32,9 @@
             <h4 class="card-title"> 
                 Revenue For {{ date('M-Y',strtotime($month.'/01/'.$year)) }} 
                 
-                <a href="{{ route('revenueByCoach', [$month,$year,$club->id]) }}" style="margin-left: 20px;" class="btn btn-primary pull-right btn-sm">Revenue By Coach</a>
+                <!-- <a href="{{ route('revenueByCoach', [$month,$year,$club->id]) }}" style="margin-left: 20px;" class="btn btn-primary pull-right btn-sm">Revenue By Coach</a>
 
-                <a href="{{ route('revenueBySport', [$month,$year,$club->id]) }}" class="btn btn-primary pull-right btn-sm">Revenue By Sports</a>
+                <a href="{{ route('revenueBySport', [$month,$year,$club->id]) }}" class="btn btn-primary pull-right btn-sm">Revenue By Sports</a> -->
 
             </h4>
             <br>
@@ -41,15 +42,15 @@
             <div class="row">
 	            <div class="col-md-4">
 	            	<select class="form-control" id="month">
-	            		<option value="1" @if($month == 01) selected @endif>Jan</option>
-	            		<option value="2" @if($month == 02) selected @endif>Feb</option>
-	            		<option value="3" @if($month == 03) selected @endif>Mar</option>
-	            		<option value="4" @if($month == 04) selected @endif>Apr</option>
-	            		<option value="5" @if($month == 05) selected @endif>May</option>
-	            		<option value="6" @if($month == 06) selected @endif>Jun</option>
-	            		<option value="7" @if($month == 07) selected @endif>Jul</option>
-	            		<option value="8" @if($month == 08) selected @endif>Aug</option>
-	            		<option value="9" @if($month == 09) selected @endif>Sep</option>
+	            		<option value="01" @if($month == 1) selected @endif>Jan</option>
+	            		<option value="02" @if($month == 2) selected @endif>Feb</option>
+	            		<option value="03" @if($month == 3) selected @endif>Mar</option>
+	            		<option value="04" @if($month == 4) selected @endif>Apr</option>
+	            		<option value="05" @if($month == 5) selected @endif>May</option>
+	            		<option value="06" @if($month == 6) selected @endif>Jun</option>
+	            		<option value="07" @if($month == 7) selected @endif>Jul</option>
+	            		<option value="08" @if($month == 8) selected @endif>Aug</option>
+	            		<option value="09" @if($month == 9) selected @endif>Sep</option>
 	            		<option value="10" @if($month == 10) selected @endif>Oct</option>
 	            		<option value="11" @if($month == 11) selected @endif>Nov</option>
 	            		<option value="12" @if($month == 12) selected @endif>Dec</option>
@@ -73,27 +74,17 @@
             				<th>#</th>
             				<th>Player</th>
             				<th>Amount</th>
-            				<th>Payment Date</th>
             			</tr>
             		</thead>
             		<tbody>
-            			@if(count($receivedPayments))
-            				@php $i=1; @endphp
-            				@foreach($receivedPayments as $payment)
+            			@if($club_sport)
+            				@php 	$i=0; @endphp
+            				@foreach ($club_sport as $sport)
             					<tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>
-                                        <a href="{{ route('getoneuserprofile', $payment->user->id) }}" target="_blank">{{ $payment->user->fname." ".$payment->user->lname }}</a>
-                                    </td>
-                                    <td><b>&#x20B9; {{ $payment->payment_received }}</b></td>
-                                    <td> 
-                                        {{ $payment->payment_date }}
-                                        @if($payment->notes != '')
-                                            <br>
-                                            <small>{{ $payment->notes }}</small>
-                                        @endif
-                                    </td>
-                                </tr>
+            						<td> {{ ++$i }} </td>
+            						<td> {{ $sport['sport_name'] }} </td>
+            						<td> &#X20B9; {{ $sport['revenue'] }} </td>
+            					</tr>
             				@endforeach
             			@endif
             		</tbody>

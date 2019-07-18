@@ -16,7 +16,7 @@ class SendInvoiceMail extends Mailable
      *
      * @return void
      */
-    private $data;
+    public $data;
     public function __construct($array)
     {
         $this->data     =   $array;
@@ -29,6 +29,7 @@ class SendInvoiceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('pdf.invoice', $this->data);
+        return $this->subject(env('APP_NAME').' Invoice')
+                    ->view('pdf.invoice', $this->data);
     }
 }

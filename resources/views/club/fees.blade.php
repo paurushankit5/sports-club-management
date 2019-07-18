@@ -142,7 +142,7 @@
                                             <div class="table-responsive">
                                                 <INPUT type="button" class="btn btn-primary" value="Add More Category" onclick="addRow('dataTable{{$sport->id}}')" />
                                                 <INPUT type="button" class="btn btn-danger" value="Remove Category"   onclick="deleteRow('dataTable{{$sport->id}}')" />
-                                                <form method="post" action="{{ route('fees.store') }}">
+                                                <form method="post" action="{{ route('fees.store', $club->id) }}">
                                                     <input type="hidden" name="sport_id" value={{ $sport->id }}>
                                                     @csrf
                                                     <TABLE    class="table table-striped">
