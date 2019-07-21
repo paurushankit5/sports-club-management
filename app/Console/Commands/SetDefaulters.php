@@ -65,10 +65,7 @@ class SetDefaulters extends Command
                             }
                         }
                     }
-                    echo "today is the day for club_id ".$club->id."\n";
-                }
-                else{
-                    echo "today is not the day for club_id ".$club->id."\n";
+                    Log::info("defaulter cron initiated for club_id ".$club->id);
                 }
             }
         }
