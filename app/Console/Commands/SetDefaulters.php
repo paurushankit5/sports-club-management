@@ -65,6 +65,7 @@ class SetDefaulters extends Command
                             }
                         }
                     }
+                    echo "today is the day for club_id ".$club->id."\n";
                 }
                 else{
                     echo "today is not the day for club_id ".$club->id."\n";
