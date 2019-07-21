@@ -46,7 +46,7 @@
         </div>
         <table class="table table-striped table-bordered">
             <tbody id="dataTable">   
-                <tr><td colspan="6"><h1 style="text-align: center">Sports Club Management</h1></td></tr>
+                <tr><td colspan="6"><h1 style="text-align: center">{{ env('APP_NAME') }}</h1></td></tr>
                 <tr>
                     <th>#</th>
                     <th>Fees</th>

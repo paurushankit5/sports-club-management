@@ -10,6 +10,8 @@ use Session;
 use Illuminate\Http\Request;
 use App\ReleaseInvoice;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\PaymentController;
+
 
 class RecordPaymentController extends Controller
 {
@@ -73,6 +75,14 @@ class RecordPaymentController extends Controller
             $payment->payment_date      =   $_REQUEST['payment_date'];
             $payment->notes             =   $_REQUEST['notes'];
             $payment->save();
+
+
+            $isDefaulter       =   PaymentController::isDefaulter($user);
+            if($isDefaulter == false){
+                $user->is_defaulter = false;
+                $user->save();
+            }
+
            // return $payment->id;
             \Session::flash('alert-success', "Payment of &#x20B9;$payment->payment_received recorded successfully");
 

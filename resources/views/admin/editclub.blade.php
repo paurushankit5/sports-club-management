@@ -26,16 +26,29 @@
                   
                   <div class="form-group">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>GST No.*</label>
                             <input type="text" class="form-control" value="{{ $club->gst_no }}" placeholder="GST Number" name="gst_no" id="gst_no">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Establishment Year</label>
                             <select class="form-control" name="establishment_year" value="{{ old('establishment_year') }}" id="establishment_year" required>
                                 @for($i=date('Y'); $i>=1950;$i--)
                                     <option @if($club->establishment_year == $i) selected  @endif) >{{ $i }}</option>
                                 @endfor
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>GST No.*</label>
+                            <select class="form-control" name="payment_due_date" id="payment_due_date">
+                              <@php
+                                for($i=1;$i<=28;$i++){
+                                  @endphp
+                                    <option value="{{ $i }}" 
+                                    @if($i == $club->payment_due_date) selected @endif >{{ $i }}</option>
+                                  @php
+                                }
+                              @endphp
                             </select>
                         </div>
                     </div>  

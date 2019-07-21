@@ -202,14 +202,14 @@
         <div class="main-panel">
           <div class="content-wrapper">
 
-            <div class="page-header">
+            <!-- <div class="page-header">
               <h3 class="page-title"> @yield('page_header') </h3>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   @yield('breadcrumb')
                 </ol>
-              </nav>
-            </div>
+              </nav>  
+            </div> -->
             <div class="loadingDiv"  id="loadingDiv" style="display:none;position:fixed;top:0px;right:0px;width:100%;height:100%;background-color:#666;background-image:url({{ asset('images/loading.gif') }}); background-repeat:no-repeat;background-position:center;z-index:10000000;  opacity: 0.4;">
           
             </div>

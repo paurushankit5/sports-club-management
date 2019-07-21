@@ -53,19 +53,6 @@
 
 @section('content')
     <div class="row">
-      
-      
-      <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"> Payment 
-                @if($release_invoice)
-                    <button class="btn btn-success btn-sm float-right release_invoice"> Release Invoice</button>
-                @endif
-            </h4>
-            <br>
-            <br>
-            <div class="row">
                 <div class="col-md-4">
                     <select class="form-control" id="month">
                         <option value="1" @if($month == 1) selected @endif>Jan</option>
@@ -93,6 +80,38 @@
                 </div>
                 <div class="col-md-4"><button class="btn btn-primary btn-block showpayments">Show Payments</button></div>
             </div>
+    <div class="row">
+      
+      
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title"> Payment 
+                @if($release_invoice)
+                    <button class="btn btn-success btn-sm float-right release_invoice"> Release Invoice</button>
+                @endif
+            </h4>
+                <form method="get" class="form form-horizontal">
+                    <div class="row">
+                    <div class="col-md-5">
+                        <label>Defaulter Type</label>
+                        <select class="form-control" name="defaulter">
+                            <option value="all" @php if(isset($_GET['defaulter']) && $_GET['defaulter'] == 'all' ){ echo "selected"; } @endphp >All</option>
+                            <option value="defaulter" @php if(isset($_GET['defaulter']) && $_GET['defaulter'] == 'defaulter' ){ echo "selected"; } @endphp >Defaulter</option>
+                            <option value="non-defaulter" @php if(isset($_GET['defaulter']) && $_GET['defaulter'] == 'non-defaulter' ){ echo "selected"; } @endphp >Non-Defaulter</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label>Enter Name</label>
+                        <input type="text" name="name" value="@php if(isset($_GET['name']) ){ 
+                        echo $_GET['name']; } @endphp" class="form-control" placeholder="Search by Name">
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <input type="submit" value="Search" class="btn btn-primary" style="margin-top:10px;">
+                    </div>
+                </div>
+                </form>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -155,6 +174,10 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        @else
+                            <tr>
+                                <td colspan="6">No Records found.</td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>

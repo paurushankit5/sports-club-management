@@ -41,15 +41,15 @@
             <div class="row">
 	            <div class="col-md-4">
 	            	<select class="form-control" id="month">
-	            		<option value="1" @if($month == 01) selected @endif>Jan</option>
-	            		<option value="2" @if($month == 02) selected @endif>Feb</option>
-	            		<option value="3" @if($month == 03) selected @endif>Mar</option>
-	            		<option value="4" @if($month == 04) selected @endif>Apr</option>
-	            		<option value="5" @if($month == 05) selected @endif>May</option>
-	            		<option value="6" @if($month == 06) selected @endif>Jun</option>
-	            		<option value="7" @if($month == 07) selected @endif>Jul</option>
-	            		<option value="8" @if($month == 08) selected @endif>Aug</option>
-	            		<option value="9" @if($month == 09) selected @endif>Sep</option>
+	            		<option value="1" @if($month == 1) selected @endif>Jan</option>
+	            		<option value="2" @if($month == 2) selected @endif>Feb</option>
+	            		<option value="3" @if($month == 3) selected @endif>Mar</option>
+	            		<option value="4" @if($month == 4) selected @endif>Apr</option>
+	            		<option value="5" @if($month == 5) selected @endif>May</option>
+	            		<option value="6" @if($month == 6) selected @endif>Jun</option>
+	            		<option value="7" @if($month == 7) selected @endif>Jul</option>
+	            		<option value="8" @if($month == 8) selected @endif>Aug</option>
+	            		<option value="9" @if($month == 9) selected @endif>Sep</option>
 	            		<option value="10" @if($month == 10) selected @endif>Oct</option>
 	            		<option value="11" @if($month == 11) selected @endif>Nov</option>
 	            		<option value="12" @if($month == 12) selected @endif>Dec</option>

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendInvoiceJob;
 use Carbon\Carbon;
 use App\Http\Controllers\CommonController;
+use App\RecordPayment;
 
 
 
@@ -282,7 +283,7 @@ class PaymentController extends Controller
         return Payment::where($array)->with(array('sport','coach'))->get();
     }
     public function mail(){
-        $payments = $this->getOneMonthInvoice(25,6,2019);
+        $payments = $this->getOneMonthInvoice(25,7,2019);
 
         $user = User::findOrFail(25);
         $array    =     array(  
@@ -294,7 +295,7 @@ class PaymentController extends Controller
         //Mail::to('paurushankit5@gmail.com')
         //->send(new SendInvoiceMail($array));
 
-        Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($array));
+        Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($array,7,2019));
         
         echo 'email sent';
     }
@@ -313,6 +314,27 @@ class PaymentController extends Controller
         else{
             abort(404);
         }
+    }
+
+    public static function isDefaulter(User $user){
+        $invoice_amount = 0;
+        $recieved_amount = 0;
+        $query   =   Payment::select(\DB::raw('SUM(total_amount) as total_amount'))
+                                ->where("user_id", $user->id)
+                                ->groupBy('user_id');
+        if($query->count()){
+            $invoice_amount = $query->first()->total_amount;
+        }
+        $query2     =   RecordPayment::select(\DB::raw('SUM(payment_received) as total_amount'))
+                                ->where("user_id", $user->id)
+                                ->groupBy('user_id');
+        if($query2->count()){
+            $recieved_amount = $query2->first()->total_amount;
+        }
+        if($invoice_amount > $recieved_amount){
+            return true; //user is a defaulter
+        }
+        return false; // user is not defaulter
     }
 
 }

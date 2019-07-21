@@ -54,7 +54,7 @@ class SendInvoiceScheduler extends Command
                                         "payments"  => $payments,
                                         "user"      => $user
                                     );
-                dispatch(new SendInvoiceJob($array, $user->email))->delay(60 * .5); 
+                dispatch(new SendInvoiceJob($array, $user->email,$relase_invoice->month,$relase_invoice->year))->delay(60 * .5); 
                 $relase_invoice->is_completed = 1;
                 $relase_invoice->save();
             }

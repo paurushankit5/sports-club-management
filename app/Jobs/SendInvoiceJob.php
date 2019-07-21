@@ -20,10 +20,14 @@ class SendInvoiceJob implements ShouldQueue
      * @return void
      */
     private $data;
+    private $month;
+    private $year;
     private $email;
-    public function __construct($data, $email_to)
+    public function __construct($data, $email_to, $month, $year)
     {
         $this->data     =   $data;
+        $this->month    =   $month;
+        $this->year     =   $year;
         $this->email    =   $email_to;
     }
 
@@ -35,7 +39,7 @@ class SendInvoiceJob implements ShouldQueue
     public function handle()
     {
         if (env('APP_ENV') == 'development') {
-            Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($this->data));
+            Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($this->data, $this->month, $this->year));
         }
         else{
             Mail::to($this->email)->send(new SendInvoiceMail($this->data));

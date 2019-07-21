@@ -282,13 +282,15 @@ class ClubController extends Controller
             return $e->getMessage();
         }
     }
-    public function payment_module($month, $year){
+    public function payment_module(Request $request, $month, $year){
+        $defaulter  =  $request->defaulter;
+        $name  =   $request->name;
         $array  =   array(
                         'role_id' => 2,
                         'is_active' =>  1,
                         'club_id'   =>  \Auth::user()->club_id
                     );
-        $users  =   User::where($array)->with([
+        $query  =   User::where($array)->with([
                                 'payments2' => function ($query) use($month, $year){
                                 $array  = array(
                                                     "month"   =>  $month,
@@ -302,13 +304,27 @@ class ClubController extends Controller
                                                     "year"   =>  $year,
                                                 );
                                     $query->where($array);
-                                }])->get();
+                                }]);
 
-        $array  =   array(
-                            "month"   =>  $month,
-                            "year"   =>  $year,
-                            'club_id'   =>  \Auth::user()->club_id
-                        );
+        if(!empty($defaulter))
+        {
+            switch ($defaulter){
+                case 'defaulter':
+                    $query->where('is_defaulter', true);
+                    break;
+                case 'non-defaulter':
+                    $query->where('is_defaulter', false);
+                    break; 
+            }
+        }
+        if(!empty($name))
+        {
+            $query->whereRaw('CONCAT(fname," ",lname) LIKE "%'.$name.'%"');
+        }
+
+        //echo $query->toSql(); exit;
+        $users  =   $query->get();
+       
         $release_invoice = true;
         // if(!ReleaseInvoice::where($array)->first() && count($users)){            
         //     foreach($users as $user)
@@ -361,6 +377,7 @@ class ClubController extends Controller
             'gst_no'            => 'required|unique:clubs,gst_no,'.$club_id,
             'contact_fname'     => 'required',
             'contact_lname'     => 'required',
+            'payment_due_date'  => 'required|integer',
             'email'             => 'required|unique:clubs,email,'.$club_id,
             'mobile'            => 'required|unique:clubs,mobile,'.$club_id
         ]);
@@ -381,6 +398,7 @@ class ClubController extends Controller
         $club->state                = $request->state;
         $club->country              = $request->country;
         $club->pin                  = $request->pin;
+        $club->payment_due_date     = $request->payment_due_date;
         $club->save();
         Session::flash('alert-success', 'Organization updated successfully');
         return redirect(route('editclub', $club->id));

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -76,7 +75,9 @@
     <div class="card-body">
     	<div class="row header">
 	  		<div class="col-6">
-	  			<img src="{{ asset('images/logo.png') }}" class="club-logo">
+          @if($user->club && $user->club->logo)
+	  			  <img src="{{ asset('images/'.$user->club->logo) }}" class="club-logo">
+          @endif
 	  		</div>
 	  		<div class="col-6" style="padding-top: 10px;">
 	  			<div class="input-group">
@@ -106,7 +107,7 @@
 		      		</tr>
 		      		<tr>
 		      			<th>Membership</th>
-		      			<th>Paurush Ankit</th>
+		      			<th>{{ $user->id }}</th>
 		      		</tr>
 		      		<tr>
 		      			<th>Validity</th>
@@ -116,7 +117,12 @@
   			</div>
   			<div class="col-md-5">
   				<div class="img-div">
+            @if($user->profile_pic)
+
       				<img src="{{ asset('images/22781561206434.jpg') }}" class="member-logo">
+            @else
+              <img src="{{ asset('noprofilepic.png') }}" class="member-logo">
+            @endif
       			</div>
   			</div>
   		</div>

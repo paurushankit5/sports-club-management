@@ -80,6 +80,10 @@
                             </th>
                         </tr>
                         <tr>
+                          <th>Payment Due Date</th>
+                          <th> {{ $club->payment_due_date }} of every month </th>
+                        </tr>
+                        <tr>
                             <th>Contact Details</th>
                             <th>
                                 {{ $club->contact_fname }} {{ $club->contact_lname }}  <br>
