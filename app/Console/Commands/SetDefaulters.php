@@ -45,6 +45,7 @@ class SetDefaulters extends Command
         $clubs  =   Club::all();
         if(count($clubs)){
             foreach($clubs as $club){
+
                 $payment_due_date = date('Y-m-'.$club->payment_due_date);
                 $today  = date('Y-m-d');
                 $next_day   = date('Y-m-d', (strtotime($payment_due_date)+ 86400) );
@@ -57,6 +58,7 @@ class SetDefaulters extends Command
                     if(count($players)){
                         foreach($players as $player){
                             $isDefaulter       =   PaymentController::isDefaulter($player);
+                            Log::info($player->getFullName()." status is ".$isDefaulter );
                             if($isDefaulter){
                                 $player->is_defaulter = true;
                                 $player->save();
@@ -65,7 +67,7 @@ class SetDefaulters extends Command
                     }
                 }
                 else{
-                    echo $club->users->count();
+                    echo "today is not the day for club_id ".$club->id."\n";
                 }
             }
         }

@@ -39,8 +39,8 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label>GST No.*</label>
-                            <select class="form-control" name="payment_due_date" id="payment_due_date">
+                            <label>Payment Due Date*</label>
+                            <select class="form-control" required name="payment_due_date" id="payment_due_date">
                               <@php
                                 for($i=1;$i<=28;$i++){
                                   @endphp
