@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('index');
 
 foreach(glob(dirname(__FILE__) . '/web/*.php') AS $file){
 	require_once($file);
@@ -29,7 +29,9 @@ Route::get('logout', function(){
 	return redirect('/');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+
+
 
 Route::group(['middleware' => ['auth']], function(){
 		
@@ -99,3 +101,4 @@ Route::group(['middleware' => ['auth']], function(){
 });
 
 Route::get('/mail1','PaymentController@mail');
+
