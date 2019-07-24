@@ -48,15 +48,31 @@
 							 <!-- main nav -->
 							<div class="header-nav navbar-collapse collapse justify-content-end"  id="navbarNavDropdown">
 								<ul class=" nav navbar-nav">
-									<li class="active"> <a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
-										<ul class="sub-menu">
+									<li > <a href="">Home</a>
+										<!-- <ul class="sub-menu">
 											<li><a href="index-2.html">Home 1</a> </li>
 											<li><a href="index-3.html">Home 2</a></li>
 											<li><a href="index-4.html">Home 3</a></li>
 											<li><a href="index-5.html">Home 4</a></li>
-										</ul>
+										</ul> -->
 									</li>
-									<li> <a href="javascript:;">Features<i class="fa fa-chevron-down"></i></a>
+									<li > <a href="">About Us</a></li>
+
+									  @if (Route::has('login'))
+              
+                    @auth
+                       <li> <a href="{{ url('/home') }}">Home</a></li>
+                    @else
+                      <li>  <a href="{{ route('login') }}">Login</a>
+</li>
+                        @if (Route::has('register'))
+                          <li>  <a href="{{ route('register') }}">Register</a>
+                     </li>   
+                     @endif
+                    @endauth
+               
+            @endif
+									<!-- <li> <a href="javascript:;">Features<i class="fa fa-chevron-down"></i></a>
 										<ul class="sub-menu">
 											<li> <a href="javascript:;">Header Style Light<i class="fa fa-chevron-down"></i></a>
 												<ul class="sub-menu">
@@ -252,7 +268,7 @@
 											<li><a href="contact-3.html">Contact us 3</a></li>
 											<li><a href="contact-4.html">Contact us 4</a></li>
 										</ul>
-									</li>
+									</li> -->
 								</ul>
 							</div>
 						</div>

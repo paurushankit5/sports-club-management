@@ -328,7 +328,7 @@ Home page
         </div> -->
         <!-- Team member END -->
         <!-- Sports Offered -->
-        <div class="section-full bg-img-fix p-t70 p-b40 overlay-black-middle" style="background-image:url(jpg/bg1.jpg); background-position:center;">
+      <!--   <div class="section-full bg-img-fix p-t70 p-b40 overlay-black-middle" style="background-image:url(jpg/bg1.jpg); background-position:center;">
             <div class="container">
                 <div class="section-head  text-center text-white">
                     <h2 class="h2">CLUB GALLERY </h2>
@@ -431,7 +431,7 @@ Home page
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Sports Offered END -->
         <!-- Qualified Staff -->
         <!-- <div class="section-full bg-white p-t70 p-b40">
