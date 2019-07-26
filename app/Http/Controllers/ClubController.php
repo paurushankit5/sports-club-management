@@ -25,7 +25,12 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $clubs = Club::with('users')->paginate(env('RESULT_LIMIT'));
+        $limit = env('RESULT_LIMIT');
+        $query = Club::with('users');
+        if(!empty($_GET['search'])){
+             $query->where('club_name', 'like', '%' . $_GET['search'] . '%');
+        }
+        $clubs = $query->orderBy('id', 'DESC')->paginate($limit);
         $array  =   array('clubs' =>     $clubs);
         return view('admin.showclubs',$array);
     }
@@ -424,7 +429,7 @@ class ClubController extends Controller
 
             $club->logo = $profile_pic;
             $club->save();
-            Session::flash('alert-success', 'Profile Pic updated successfully');
+            Session::flash('alert-success', 'Logo updated successfully');
             return redirect(route('clubDetail',$club_id));
             
         }

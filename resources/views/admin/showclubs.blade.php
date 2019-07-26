@@ -24,6 +24,19 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th colspan="4">
+                    <div class="form-group">
+                      <form>
+                        <div class="input-group">
+                          <input type="text" required name="search" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif class="form-control" placeholder="Search Here" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                            <button class="btn btn-sm btn-gradient-primary" type="button">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+                <tr>
                   <th> # </th>
                   <th> Organization </th>
                   <th> Users </th>
@@ -57,7 +70,7 @@
                 
               </tbody>
             </table>
-            {{ $clubs->links() }}
+            {{ $clubs->appends($_GET)->links() }}
           </div>
         </div>
       </div>

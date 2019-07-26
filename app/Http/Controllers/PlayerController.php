@@ -99,7 +99,7 @@ class PlayerController extends Controller
                 $coachFee->save();
             }
 
-            if(count($request->sports))
+            if(!empty($request->sports) && count($request->sports))
             {
                 foreach ($request->sports as $sport) {
                     $user_sport               = new SportUserClub;
