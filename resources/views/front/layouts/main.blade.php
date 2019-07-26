@@ -41,7 +41,8 @@
 <link rel="stylesheet" type="text/css" href="front/css/plugins.css">
 <link rel="stylesheet" type="text/css" href="front/css/style.css">
 <link rel="stylesheet" type="text/css" href="hover.html">
-<link class="skin"  rel="stylesheet" type="text/css" href="front/css/skin-1.css">
+<!-- <link class="skin"  rel="stylesheet" type="text/css" href="front/css/skin-1.css"> -->
+<link class="skin"  rel="stylesheet" type="text/css" href="front/css/skin-2.css">
 <link  rel="stylesheet" type="text/css" href="front/css/templete.css">
 <!-- Revolution Slider Css -->
 <link rel="stylesheet" type="text/css" href="front/css/settings.css">
