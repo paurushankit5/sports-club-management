@@ -94,7 +94,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('/clubDetail/{id}','ClubController@clubDetail')->name('clubDetail');
 
-	Route::get('club/revenue/sports/{month}/{year}/{club_id}', 'RecordPaymentcontroller@revenueBySport')->name('revenueBySport');
+	Route::get('club/revenue/sports/{month}/{year}/{club_id}', 'RecordPaymentController@revenueBySport')->name('revenueBySport');
 
 	Route::post('club/uploadLogo/{club_id}', 'ClubController@uploadLogo')->name('uploadLogo');
 

@@ -53,7 +53,7 @@
       <div class="col-12 grid-margin">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Add User to {{ $club->club_name }}</h4>
+            <h4 class="card-title">Add User to <a href="{{ route('clubDetail', $club->id) }}">{{ $club->club_name }}</a></h4>
             <form method="post" action="{{ route('users.store') }}">
               @csrf
               <input type="hidden" name="club_id" value="{{ $club->id }}">

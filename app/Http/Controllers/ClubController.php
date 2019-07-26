@@ -406,6 +406,8 @@ class ClubController extends Controller
         $club->payment_due_date     = $request->payment_due_date;
         $club->save();
         Session::flash('alert-success', 'Organization updated successfully');
+        if(\Auth::user()->is_superuser)
+            return redirect(route('clubDetail', $club->id));
         return redirect(route('editclub', $club->id));
     }
 
