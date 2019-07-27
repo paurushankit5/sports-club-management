@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ManagerController;
+
 
 class HomeController extends Controller
 {
@@ -24,5 +26,13 @@ class HomeController extends Controller
     public function index()
     {
         return view('front.pages.home');
+    }
+    public function dashboard(){
+        if(\Auth::check()){
+            $manager    =   new ManagerController;
+            $route      =   $manager->findUserDashboard();
+            return redirect(route($route));
+        }
+        return $this->index();
     }
 }

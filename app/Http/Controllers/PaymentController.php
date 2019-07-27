@@ -295,9 +295,14 @@ class PaymentController extends Controller
         //Mail::to('paurushankit5@gmail.com')
         //->send(new SendInvoiceMail($array));
 
-        Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($array,7,2019));
-        
-        echo 'email sent';
+        $data = Mail::to("paurushankit5@gmail.com")->send(new SendInvoiceMail($array,7,2019));
+        if($data)
+        {
+            echo "Success";
+        }
+        else{
+            echo "hello";
+        }
     }
 
     public function playerInvoices($id){

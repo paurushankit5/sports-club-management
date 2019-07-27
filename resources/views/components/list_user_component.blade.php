@@ -37,13 +37,11 @@
 	                            <i class="mdi mdi-eye"></i>
 	                        </a>
 
-	                        <button type="button" class="btn btn-sm btn-gradient-success " title="Edit Details">
+	                        <a href="{{ route('editOneProfile', $user->id) }}" class="btn btn-sm btn-gradient-success " title="Edit Details">
 	                            <i class="mdi mdi-pencil"></i>
-	                        </button>
+	                        </a>
 
-	                        <button type="button" class="btn btn-sm btn-gradient-danger " title="Delete">
-	                            <i class="mdi mdi-delete"></i>
-	                        </button>
+	                       
 	                  	</td>
 	                </tr>
 	            @endforeach

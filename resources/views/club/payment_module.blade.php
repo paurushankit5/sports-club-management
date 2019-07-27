@@ -113,7 +113,7 @@
                 </div>
                 </form>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="all_checkbox" />&nbsp;&nbsp;&nbsp; #</th>
@@ -128,7 +128,7 @@
                         @if(count($users))
                             @php $i=1; @endphp
                             @foreach($users as $user)
-                                <tr id="user_{{ $user->id }}">
+                                <tr id="user_{{ $user->id }}"  @if($user->is_defaulter) class="table-danger" @endif>
                                     <td>  
                                         @if( count($user->payments2) && empty($user->release_invoice))
                                             <input type="checkbox" name="user_id" value="{{$user->id}}" class="relaease_invoice_checkbox" /> 

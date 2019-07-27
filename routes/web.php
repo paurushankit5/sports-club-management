@@ -31,6 +31,7 @@ Route::get('logout', function(){
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/home','HomeController@dashboard');
 
 
 Route::group(['middleware' => ['auth']], function(){
