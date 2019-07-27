@@ -29,9 +29,9 @@ Route::get('logout', function(){
 	return redirect('/');
 });
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('index');
 
-Route::get('/home','HomeController@dashboard');
+Route::get('/home','HomeController@dashboard')->name('home');
 
 
 Route::group(['middleware' => ['auth']], function(){

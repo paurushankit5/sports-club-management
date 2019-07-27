@@ -120,7 +120,7 @@
                                 <h4 class="card-title">{{ $sport->sport_name }}</h4>                                    
                                     @if(count($sport['fees']))
                                         <table class="table table-striped table-bordered">
-                                            <tr>
+                                            <tr class="table-primary">
                                                 <th>Category</th>
                                                 <th>Monthly</th>
                                                 <th>Quarterly</th>
