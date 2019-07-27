@@ -26,7 +26,18 @@ class HomeController extends Controller
     public function index()
     {
         return view('front.pages.home');
+    } 
+
+    public function aboutUs()
+    {
+        return view('front.pages.about');
     }
+     public function contactUs()
+    {
+        return view('front.pages.contact');
+    }
+
+
     public function dashboard(){
         if(\Auth::check()){
             $manager    =   new ManagerController;

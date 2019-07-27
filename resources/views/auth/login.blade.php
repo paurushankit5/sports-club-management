@@ -1,106 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-  
-<!-- Mirrored from www.bootstrapdash.com/demo/purple/jquery/pages/tables/basic-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Apr 2019 16:31:05 GMT -->
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title', env("APP_NAME"))</title>
-    <link rel="stylesheet" href="{{ asset('admin/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/vendor.bundle.addons.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+@extends('front.layouts.main')
 
-    <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
-  
-    <link rel="shortcut icon" href="{{ asset('admin/png/favicon.png') }}" />
-    <style type="text/css">
-        body{
-            background-color: #f2edf3;
-        }
-    </style>
-  </head>
-  <body>
-    
-  <div class="container">
-    <br>
-    <br>
-    <br>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+
+
+@section('title')
+Login
+@endsection
+
+@section('extra_after_css')
+
+@endsection
+
+@section('main')
+
+<div class="page-wrapers">
+    <!-- Content -->
+    <div class="page-content dez-login p-t50 overlay-black-dark bg-img-fix nav" style="background-image:url(front/jpg/bg3.jpg);">
+        <div class="login-form relative z-index3 ">
+            <div class="tab-content">
+                <div id="login" class="tab-pane active text-center">
+                    <form class="p-a30 dez-form  m-t100 signup-margin-top" method="POST" action="{{ route('login') }}">
                         @csrf
+                        <h3 class="form-title m-t0">Sign In</h3>
+                        <div class="dez-separator-outer m-b5">
+                            <div class="dez-separator bg-primary style-liner"></div>
+                        </div>
+                        <p>Enter your e-mail address and your password. </p>
+                        <div class="form-group">
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                              <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}"  autofocus placeholder="Enter Email ID">
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
-                            </div>
                         </div>
+                        <div class="form-group">
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                                       
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+ <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"  placeholder="Type your Secret Password">
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
-
-                       
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                @endif                        </div>
+                        <div class="form-group text-left">
+                            <button class="site-button login-switch" type="submit">login</button>
+                            <label>
+                            <input id="check1" type="checkbox">
+                            <label for="check1">Remember me</label>
+                            </label>
+                           <!--  <a data-toggle="tab" href="#forgot-password" class="m-l15"><i class="fa fa-unlock-alt"></i> Forgot Password</a>-->
+                            </div> 
+                            @if (Route::has('password.request'))
+                                    <a class="m-l15" href="{{ route('password.request') }}">
+                                    <i class="fa fa-unlock-alt"></i>    {{ __('Forgot Password ') }}
                                     </a>
                                 @endif
-                            </div>
-                        </div>
                     </form>
+                    <a href="{{route('register')}}" class="text-white"> <div class="bg-primary p-a15 ">Create an account </div>
+                    </a>
                 </div>
+               
+                
             </div>
         </div>
     </div>
+    <!-- Content END-->
 </div>
-         
-    <!-- plugins:js -->
-    <script src="{{ asset('admin/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('admin/js/vendor.bundle.addons.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="{{ asset('admin/js/off-canvas.js') }}"></script>
-    <script src="{{ asset('admin/js/hoverable-collapse.js') }}"></script>
-    <script src="{{ asset('admin/js/misc.js') }}"></script>
-    <script src="{{ asset('admin/js/settings.js') }}"></script>
-    <script src="{{ asset('admin/js/todolist.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <!-- End custom js for this page-->
-  </body>
 
-</html>
+
+@endsection

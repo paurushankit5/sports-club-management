@@ -7,8 +7,8 @@
 							<div class="row top-bar-crve justify-content-between">
 								<div class="dez-topbar-left">
 									<ul class="social-line text-center pull-right">
-										<li><a href="javascript:void(0);"><i class="fa fa-envelope-o"></i> <span> Companyname@mail.com </span> </a></li>
-										<li><a href="javascript:void(0);"><i class="fa fa-phone"></i> <span> (732) 803-010-03 </span> </a></li>
+										<li><a href="javascript:void(0);"><i class="fa fa-envelope-o"></i> <span> info@sportsclubz.com </span> </a></li>
+										<li><a href="javascript:void(0);"><i class="fa fa-phone"></i> <span> +91 8888868392 </span> </a></li>
 									</ul>
 								</div>                        
 								<div class="dez-topbar-right ">
@@ -33,11 +33,11 @@
 								<span></span>
 							</button>
 							<!-- extra nav -->
-							<div class="extra-nav">
+							<!-- <div class="extra-nav">
 								<div class="extra-cell">
 									<button id="quik-search-btn" type="button" class="site-button radius-xl"><i class="fa fa-search"></i></button>
 								</div>
-							</div>
+							</div> -->
 							<!-- Quik search -->
 							<div class="dez-quik-search bg-primary-dark">
 								<form action="#">
@@ -56,12 +56,14 @@
 											<li><a href="index-5.html">Home 4</a></li>
 										</ul> -->
 									</li>
-									<li > <a href="">About Us</a></li>
+									<li > <a href="{{ route('about')}}">About Us</a></li>
+									<li > <a href="{{ route('contact')}}">Contact Us</a></li>
 
 									  @if (Route::has('login'))
               
                     @auth
-                       <li> <a href="{{ url('/home') }}">Home</a></li>
+                       <li> <a href="{{ route('dash') }}">Dashboard</a></></li>
+                       <li> <a href="{{ route('logout') }}">Logout</a></></li>
                     @else
                       <li>  <a href="{{ route('login') }}">Login</a>
 </li>

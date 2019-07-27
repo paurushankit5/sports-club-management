@@ -27,11 +27,16 @@ Route::get('logout', function(){
 	}
 	Auth::logout();
 	return redirect('/');
-});
+})->name('logout');
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dash', 'HomeController@dashboard')->name('dash');
+Route::get('/about-us', 'HomeController@aboutUs')->name('about');
+Route::get('/contact-us', 'HomeController@contactUs')->name('contact');
+// Route::get('/login', 'HomeController@index')->name('login');
 
-Route::get('/home','HomeController@dashboard');
+// Route::get('/home','HomeController@dashboard');
 
 
 Route::group(['middleware' => ['auth']], function(){
