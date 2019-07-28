@@ -181,36 +181,36 @@
 <!-- <div id="loading-area"></div>
 
  --><!-- JavaScript  files ========================================= -->
-<script src="front/js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
-<script src="front/js/popper.min.js"></script><!-- BOOTSTRAP.MIN JS -->
-<script src="front/js/bootstrap.min.js"></script><!-- BOOTSTRAP.MIN JS -->
-<script src="front/js/bootstrap-select.min.js"></script><!-- FORM JS -->
-<script src="front/js/jquery.bootstrap-touchspin.js"></script><!-- FORM JS -->
-<script src="front/js/magnific-popup.js"></script><!-- MAGNIFIC POPUP JS -->
-<script src="front/js/waypoints-min.js"></script><!-- WAYPOINTS JS -->
-<script src="front/js/counterup.min.js"></script><!-- COUNTERUP JS -->
-<script src="front/js/jquery.countdown.js"></script><!-- COUNTDOWN JS -->
-<script src="front/js/imagesloaded.js"></script><!-- IMAGESLOADED -->
-<script src="front/js/masonry-3.1.4.js"></script><!-- MASONRY -->
-<script src="front/js/masonry.filter.js"></script><!-- MASONRY -->
-<script src="front/js/owl.carousel.js"></script><!-- OWL SLIDER -->
-<script src="front/js/dz.ajax.js"></script><!-- CONTACT JS  -->
+<script src="{{ asset('front/js/jquery.min.js') }}"></script><!-- JQUERY.MIN JS -->
+<script src="{{ asset('front/js/popper.min.js') }}"></script><!-- BOOTSTRAP.MIN JS -->
+<script src="{{ asset('front/js/bootstrap.min.js') }}"></script><!-- BOOTSTRAP.MIN JS -->
+<script src="{{ asset('front/js/bootstrap-select.min.js') }}"></script><!-- FORM JS -->
+<script src="{{ asset('front/js/jquery.bootstrap-touchspin.js') }}"></script><!-- FORM JS -->
+<script src="{{ asset('front/js/magnific-popup.js') }}"></script><!-- MAGNIFIC POPUP JS -->
+<script src="{{ asset('front/js/waypoints-min.js') }}"></script><!-- WAYPOINTS JS -->
+<script src="{{ asset('front/js/counterup.min.js') }}"></script><!-- COUNTERUP JS -->
+<script src="{{ asset('front/js/jquery.countdown.js') }}"></script><!-- COUNTDOWN JS -->
+<script src="{{ asset('front/js/imagesloaded.js') }}"></script><!-- IMAGESLOADED -->
+<script src="{{ asset('front/js/masonry-3.1.4.js') }}"></script><!-- MASONRY -->
+<script src="{{ asset('front/js/masonry.filter.js') }}"></script><!-- MASONRY -->
+<script src="{{ asset('front/js/owl.carousel.js') }}"></script><!-- OWL SLIDER -->
+<script src="{{ asset('front/js/dz.ajax.js') }}"></script><!-- CONTACT JS  -->
 
-<script src="front/js/dz.carousel.js"></script><!-- SORTCODE FUCTIONS  -->
+<script src="{{ asset('front/js/dz.carousel.js') }}"></script><!-- SORTCODE FUCTIONS  -->
 <!-- revolution JS FILES -->
-<script type="text/javascript" src="front/js/jquery.themepunch.tools.min.js"></script>
-<script type="text/javascript" src="front/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="{{ asset('front/js/jquery.themepunch.tools.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/jquery.themepunch.revolution.min.js') }}"></script>
 <!-- Slider revolution 5.0 Extensions  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
-<script type="text/javascript" src="front/js/revolution.extension.actions.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.carousel.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.kenburn.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.layeranimation.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.migration.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.navigation.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.parallax.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.slideanims.min.js"></script>
-<script type="text/javascript" src="front/js/revolution.extension.video.min.js"></script>
-<script type="text/javascript" src="front/js/rev.slider.js"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.actions.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.carousel.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.kenburn.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.layeranimation.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.migration.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.navigation.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.parallax.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.slideanims.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/revolution.extension.video.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('front/js/rev.slider.js') }}"></script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	'use strict';
