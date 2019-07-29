@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('user/payment/{user_id}/{month}/{year}','PaymentController@storepayment')->name('storepayment');	
 
 		 
-	Route::get('/showreceivedpayment/{id}','RecordPaymentcontroller@showreceivedpayment')->name('showreceivedpayment');
+	Route::get('/showreceivedpayment/{id}','RecordPaymentController@showreceivedpayment')->name('showreceivedpayment');
 	Route::post('/getpaymentdetails','RecordPaymentController@getpaymentdetails')->name('getpaymentdetails');
 
 	Route::post('/storerecordpayment/{user_id}', 'RecordPaymentController@storerecordpayment')->name('storerecordpayment');
@@ -91,10 +91,10 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/removeSportClubAssociation/{id}', 'SportController@removeSportClubAssociation')->name('removeSportClubAssociation');
 	Route::get('/revenueByCoach/{month}/{year}/{club_id}','RecordPaymentController@revenueByCoach')->name('revenueByCoach');
 
-	Route::get('/CoachRevenue/{user_id}/{month}/{year}', 'RecordPaymentcontroller@getOneCoachRevenue')->name('getOneCoachRevenue');
+	Route::get('/CoachRevenue/{user_id}/{month}/{year}', 'RecordPaymentController@getOneCoachRevenue')->name('getOneCoachRevenue');
 
 	Route::get('/player/invoices/{id}', 'PaymentController@playerInvoices')->name('playerInvoices');
-	Route::get('/player/receivedPayments/{id}', 'RecordPaymentcontroller@receivedPayments')->name('player.receivedPayments');
+	Route::get('/player/receivedPayments/{id}', 'RecordPaymentController@receivedPayments')->name('player.receivedPayments');
 
 	Route::get('/editclub/{club_id}', 'ClubController@editclub' )->name('editclub');
 	Route::post('club/update/{club_id}', 'ClubController@updateclub')->name('updateclub');

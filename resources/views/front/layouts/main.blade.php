@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <!-- 
 	Template Name: SportsZone: Sports Club, New & Game Magazine Mobile Responsive Bootstrap Html Template 
 	Version: 1.0
